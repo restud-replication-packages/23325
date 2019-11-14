@@ -1,0 +1,1777 @@
+---------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\Users\peleg\OneDrive\Documents\Victor\Other\Teacher Bonuses\For publication\Reproduction\logs\R
+> eplication_Stacked_T6_19Oct19.log
+  log type:  text
+ opened on:  19 Oct 2019, 11:36:18
+
+. 
+. use data\PublicationDataSet, clear
+
+. 
+. *stack outcomes (as in code 'Replication T4 T5 Stacked.do')
+.                 
+. gen pctle_wage_stack_adjusted = pctle_wage_9_afterSchool
+
+. gen sum_wage_stack_adjusted = sum_wage_9_afterSchoola
+
+. gen sum_month_stack_adjusted = months_9_afterSchool
+
+. gen sum_work_stack_adjusted = work_9_afterSchool
+
+. gen avt_stack_adjusted = avt_9_afterSchool
+
+. gen avt_total_stack_adjusted = avt_tot_9_afterSchool
+
+. 
+. gen panel = 2010
+
+. tempfile temp
+
+. save tempA , replace
+file tempA.dta saved
+
+. 
+. use data\PublicationDataSet, clear
+
+. 
+.         
+. append using tempA
+
+. replace panel = 2011 if panel==.
+(13,438 real changes made)
+
+. replace pctle_wage_stack_adjusted = pctle_wage_10_afterSchool if panel==2011
+(13,438 real changes made)
+
+. replace sum_wage_stack_adjusted = sum_wage_10_afterSchoola if panel==2011
+(13,438 real changes made)
+
+. replace sum_month_stack_adjusted = months_10_afterSchool  if panel==2011
+(13,438 real changes made)
+
+. replace sum_work_stack_adjusted = work_10_afterSchool if panel==2011
+(13,438 real changes made)
+
+. replace avt_stack_adjusted = avt_10_afterSchool  if panel==2011
+(13,438 real changes made)
+
+. replace avt_total_stack_adjusted = avt_tot_10_afterSchool  if panel==2011
+(13,438 real changes made)
+
+. 
+. tempfile temp
+
+. save tempB, replace
+file tempB.dta saved
+
+. 
+. use data\PublicationDataSet, clear
+
+. 
+. append using tempB
+
+. replace panel = 2012 if panel==.
+(13,438 real changes made)
+
+. replace pctle_wage_stack_adjusted = pctle_wage_11_afterSchool if panel==2012
+(13,438 real changes made)
+
+. replace sum_wage_stack_adjusted = sum_wage_11_afterSchoola if panel==2012
+(13,438 real changes made)
+
+. replace sum_month_stack_adjusted = months_11_afterSchool  if panel==2012
+(13,438 real changes made)
+
+. replace sum_work_stack_adjusted = work_11_afterSchool if panel==2012
+(13,438 real changes made)
+
+. replace avt_stack_adjusted = avt_11_afterSchool  if panel==2012
+(13,438 real changes made)
+
+. replace avt_total_stack_adjusted = avt_tot_11_afterSchool  if panel==2012
+(13,438 real changes made)
+
+. 
+. 
+. 
+.         
+. ****STACKED REGRESSIONS***
+. 
+. **WHOLE SAMPLE**
+. 
+. gen girl = (boy==0)
+
+. local i = 0
+
+. 
+. foreach sample in NE{  
+  2. 
+.         local i = `i' + 1
+  3.         *in this code we iterate over groups using a loop.              
+.         foreach group in boy girl house_avwage00_02H house_avwage00_02L{
+  4.         
+.                 di "sample is `sample' and quartile is `group'"
+  5.                                 
+.                                 ***Age Adjusted***
+.                                 
+.                                 
+.                                 xi: reg pctle_wage_stack_adjusted afterXtreatment att_lgcr att_lgsc awr_lgcr 
+> e_awr_lgcr asiafr ole boy educav educem m_ahim i.panel i.year i.school_code if `sample' == 1 & `group' == 1 [
+> fweight=hoodWeight], cluster(school_code)
+  6.                                 sum pctle_wage_stack_adjusted if year==2000 & treatment==1 & `sample' == 1
+>  & `group' == 1 [fweight=hoodWeight]
+  7.                                 
+.                                 xi: reg sum_wage_stack_adjusted afterXtreatment att_lgcr att_lgsc awr_lgcr e_
+> awr_lgcr asiafr ole boy educav educem m_ahim i.panel i.year i.school_code if `sample' == 1 & `group' == 1 [fw
+> eight=hoodWeight], cluster(school_code)
+  8.                                 sum sum_wage_stack_adjusted if year==2000 & treatment==1 & `sample' == 1 &
+>  `group' == 1 [fweight=hoodWeight]
+  9. 
+.                                 xi: reg sum_month_stack_adjusted afterXtreatment att_lgcr att_lgsc awr_lgcr e
+> _awr_lgcr asiafr ole boy educav educem m_ahim i.panel i.year i.school_code if `sample' == 1 & `group' == 1 [f
+> weight=hoodWeight], cluster(school_code)
+ 10.                                 sum sum_month_stack_adjusted if year==2000 & treatment==1 & `sample' == 1 
+> & `group' == 1 [fweight=hoodWeight]
+ 11. 
+.                                 
+.                                 xi: reg sum_work_stack_adjusted afterXtreatment att_lgcr att_lgsc awr_lgcr e_
+> awr_lgcr asiafr ole boy educav educem m_ahim i.panel i.year i.school_code if `sample' == 1 & `group' == 1 [fw
+> eight=hoodWeight], cluster(school_code)
+ 12.                                 sum sum_work_stack_adjusted if year==2000 & treatment==1 & `sample' == 1 &
+>  `group' == 1 [fweight=hoodWeight]
+ 13. 
+.                                 
+.                                 
+.         }
+ 14. }
+sample is NE and quartile is boy
+i.panel           _Ipanel_2010-2012   (naturally coded; _Ipanel_2010 omitted)
+i.year            _Iyear_2000-2001    (naturally coded; _Iyear_2000 omitted)
+i.school_code     _Ischool_co_1-49    (naturally coded; _Ischool_co_1 omitted)
+note: boy omitted because of collinearity
+note: _Ischool_co_3 omitted because of collinearity
+note: _Ischool_co_5 omitted because of collinearity
+note: _Ischool_co_6 omitted because of collinearity
+note: _Ischool_co_7 omitted because of collinearity
+note: _Ischool_co_11 omitted because of collinearity
+note: _Ischool_co_13 omitted because of collinearity
+note: _Ischool_co_14 omitted because of collinearity
+note: _Ischool_co_21 omitted because of collinearity
+note: _Ischool_co_27 omitted because of collinearity
+note: _Ischool_co_31 omitted because of collinearity
+note: _Ischool_co_33 omitted because of collinearity
+note: _Ischool_co_34 omitted because of collinearity
+note: _Ischool_co_43 omitted because of collinearity
+note: _Ischool_co_45 omitted because of collinearity
+note: _Ischool_co_49 omitted because of collinearity
+
+Linear regression                               Number of obs     =     23,130
+                                                F(12, 33)         =          .
+                                                Prob > F          =          .
+                                                R-squared         =     0.0124
+                                                Root MSE          =     31.564
+
+                              (Std. Err. adjusted for 34 clusters in school_code)
+---------------------------------------------------------------------------------
+                |               Robust
+pctle_wage_st~d |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+----------------+----------------------------------------------------------------
+afterXtreatment |    2.29167   1.842854     1.24   0.222    -1.457645    6.040985
+       att_lgcr |   .2607965   .3745126     0.70   0.491    -.5011551    1.022748
+       att_lgsc |   .0291983   .0205327     1.42   0.164    -.0125758    .0709724
+       awr_lgcr |  -.3439016   .3386548    -1.02   0.317      -1.0329    .3450969
+     e_awr_lgcr |    .151305   .9133301     0.17   0.869    -1.706879    2.009489
+         asiafr |   1.652316   1.032729     1.60   0.119    -.4487871     3.75342
+            ole |  -6.141671   4.157411    -1.48   0.149    -14.59999    2.316645
+            boy |          0  (omitted)
+         educav |  -.1589769   .1731105    -0.92   0.365    -.5111729    .1932191
+         educem |  -.1628381   .1799956    -0.90   0.372     -.529042    .2033658
+         m_ahim |  -.3845999   .5470209    -0.70   0.487    -1.497522    .7283226
+   _Ipanel_2011 |   1.125032   .3320709     3.39   0.002      .449429    1.800636
+   _Ipanel_2012 |   2.470687   .6462635     3.82   0.001     1.155854     3.78552
+    _Iyear_2001 |  -1.239244   1.418179    -0.87   0.389    -4.124551    1.646063
+  _Ischool_co_2 |   .6979351   1.405582     0.50   0.623    -2.161744    3.557614
+  _Ischool_co_3 |          0  (omitted)
+  _Ischool_co_4 |   3.673215    1.43785     2.55   0.015     .7478867    6.598543
+  _Ischool_co_5 |          0  (omitted)
+  _Ischool_co_6 |          0  (omitted)
+  _Ischool_co_7 |          0  (omitted)
+  _Ischool_co_8 |   2.968091   .9814853     3.02   0.005     .9712439    4.964937
+  _Ischool_co_9 |  -1.854979   1.563005    -1.19   0.244    -5.034937    1.324979
+ _Ischool_co_10 |  -1.747597   .4327239    -4.04   0.000     -2.62798   -.8672133
+ _Ischool_co_11 |          0  (omitted)
+ _Ischool_co_12 |  -2.551454   1.163649    -2.19   0.035    -4.918917    -.183992
+ _Ischool_co_13 |          0  (omitted)
+ _Ischool_co_14 |          0  (omitted)
+ _Ischool_co_15 |  -9.177425   1.166413    -7.87   0.000    -11.55051   -6.804339
+ _Ischool_co_16 |   1.801392   .4783708     3.77   0.001     .8281396    2.774645
+ _Ischool_co_17 |   1.773813   .7631358     2.32   0.026      .221202    3.326425
+ _Ischool_co_18 |   4.839723   2.372435     2.04   0.049     .0129667    9.666479
+ _Ischool_co_19 |   11.41692    .811489    14.07   0.000     9.765935    13.06791
+ _Ischool_co_20 |   6.143807   .7425197     8.27   0.000     4.633139    7.654475
+ _Ischool_co_21 |          0  (omitted)
+ _Ischool_co_22 |   4.568496   .5045619     9.05   0.000     3.541957    5.595035
+ _Ischool_co_23 |   8.781598   1.041504     8.43   0.000     6.662643    10.90055
+ _Ischool_co_24 |   3.575332   1.123566     3.18   0.003     1.289421    5.861244
+ _Ischool_co_25 |     .57028   .9541188     0.60   0.554    -1.370889    2.511449
+ _Ischool_co_26 |    4.53451   1.428618     3.17   0.003     1.627964    7.441055
+ _Ischool_co_27 |          0  (omitted)
+ _Ischool_co_28 |   4.907295   1.021869     4.80   0.000     2.828287    6.986304
+ _Ischool_co_29 |   3.634292   .7381846     4.92   0.000     2.132444     5.13614
+ _Ischool_co_30 |   .3802701   1.135362     0.33   0.740    -1.929642    2.690182
+ _Ischool_co_31 |          0  (omitted)
+ _Ischool_co_32 |   1.171796   1.760035     0.67   0.510    -2.409022    4.752615
+ _Ischool_co_33 |          0  (omitted)
+ _Ischool_co_34 |          0  (omitted)
+ _Ischool_co_35 |   .4871236   1.063534     0.46   0.650    -1.676652    2.650899
+ _Ischool_co_36 |   4.158551   .9970284     4.17   0.000     2.130082    6.187021
+ _Ischool_co_37 |   1.854841   .6948589     2.67   0.012     .4411405    3.268543
+ _Ischool_co_38 |  -2.694936   1.115999    -2.41   0.021    -4.965453   -.4244185
+ _Ischool_co_39 |   2.659522   1.918924     1.39   0.175     -1.24456    6.563603
+ _Ischool_co_40 |   4.547463   1.324817     3.43   0.002     1.852103    7.242822
+ _Ischool_co_41 |   4.074853    1.07237     3.80   0.001     1.893099    6.256607
+ _Ischool_co_42 |   5.162173   .9243505     5.58   0.000     3.281568    7.042778
+ _Ischool_co_43 |          0  (omitted)
+ _Ischool_co_44 |   3.349436   .9921956     3.38   0.002     1.330799    5.368073
+ _Ischool_co_45 |          0  (omitted)
+ _Ischool_co_46 |   2.015446      1.011     1.99   0.055    -.0414494    4.072341
+ _Ischool_co_47 |   2.061531   .4265581     4.83   0.000     1.193692     2.92937
+ _Ischool_co_48 |  -3.030187   1.323499    -2.29   0.029    -5.722867   -.3375068
+ _Ischool_co_49 |          0  (omitted)
+          _cons |   51.89282   1.681249    30.87   0.000     48.47229    55.31335
+---------------------------------------------------------------------------------
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+pctle_wage~d |      6,378    52.17529    31.01274          1        100
+i.panel           _Ipanel_2010-2012   (naturally coded; _Ipanel_2010 omitted)
+i.year            _Iyear_2000-2001    (naturally coded; _Iyear_2000 omitted)
+i.school_code     _Ischool_co_1-49    (naturally coded; _Ischool_co_1 omitted)
+note: boy omitted because of collinearity
+note: _Ischool_co_3 omitted because of collinearity
+note: _Ischool_co_5 omitted because of collinearity
+note: _Ischool_co_6 omitted because of collinearity
+note: _Ischool_co_7 omitted because of collinearity
+note: _Ischool_co_11 omitted because of collinearity
+note: _Ischool_co_13 omitted because of collinearity
+note: _Ischool_co_14 omitted because of collinearity
+note: _Ischool_co_21 omitted because of collinearity
+note: _Ischool_co_27 omitted because of collinearity
+note: _Ischool_co_31 omitted because of collinearity
+note: _Ischool_co_33 omitted because of collinearity
+note: _Ischool_co_34 omitted because of collinearity
+note: _Ischool_co_43 omitted because of collinearity
+note: _Ischool_co_45 omitted because of collinearity
+note: _Ischool_co_49 omitted because of collinearity
+
+Linear regression                               Number of obs     =     23,130
+                                                F(12, 33)         =          .
+                                                Prob > F          =          .
+                                                R-squared         =     0.0360
+                                                Root MSE          =      55322
+
+                              (Std. Err. adjusted for 34 clusters in school_code)
+---------------------------------------------------------------------------------
+                |               Robust
+sum_wage_stac~d |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+----------------+----------------------------------------------------------------
+afterXtreatment |   5547.667   3694.159     1.50   0.143    -1968.157    13063.49
+       att_lgcr |   107.9693   720.2331     0.15   0.882    -1357.356    1573.295
+       att_lgsc |   82.83864   54.25274     1.53   0.136    -27.53938    193.2167
+       awr_lgcr |   510.0874   607.4414     0.84   0.407    -725.7615    1745.936
+     e_awr_lgcr |   1174.656   2379.735     0.49   0.625     -3666.95    6016.262
+         asiafr |   1166.442   1685.805     0.69   0.494    -2263.353    4596.237
+            ole |  -4441.139   7431.951    -0.60   0.554    -19561.56    10679.28
+            boy |          0  (omitted)
+         educav |   178.8408   282.1037     0.63   0.530    -395.1034    752.7851
+         educem |  -330.7258   329.3379    -1.00   0.323    -1000.769    339.3172
+         m_ahim |  -517.6446   1018.423    -0.51   0.615    -2589.642    1554.353
+   _Ipanel_2011 |   9596.707   550.4128    17.44   0.000     8476.884    10716.53
+   _Ipanel_2012 |   20039.15   1180.272    16.98   0.000     17637.87    22440.43
+    _Iyear_2001 |  -882.2732     2534.9    -0.35   0.730    -6039.567     4275.02
+  _Ischool_co_2 |  -224.4625   2833.254    -0.08   0.937    -5988.761    5539.836
+  _Ischool_co_3 |          0  (omitted)
+  _Ischool_co_4 |   229.1854   2610.332     0.09   0.931    -5081.576    5539.947
+  _Ischool_co_5 |          0  (omitted)
+  _Ischool_co_6 |          0  (omitted)
+  _Ischool_co_7 |          0  (omitted)
+  _Ischool_co_8 |   7116.579   2009.726     3.54   0.001      3027.76     11205.4
+  _Ischool_co_9 |  -6766.905   3205.536    -2.11   0.042    -13288.62   -245.1935
+ _Ischool_co_10 |  -7497.087   772.4825    -9.71   0.000    -9068.715    -5925.46
+ _Ischool_co_11 |          0  (omitted)
+ _Ischool_co_12 |  -7863.492   2615.799    -3.01   0.005    -13185.37    -2541.61
+ _Ischool_co_13 |          0  (omitted)
+ _Ischool_co_14 |          0  (omitted)
+ _Ischool_co_15 |   -22916.4   2244.233   -10.21   0.000    -27482.32   -18350.47
+ _Ischool_co_16 |   256.2294   852.7456     0.30   0.766    -1478.695    1991.153
+ _Ischool_co_17 |   1446.934   1372.563     1.05   0.299    -1345.567    4239.435
+ _Ischool_co_18 |   3202.552   5273.728     0.61   0.548    -7526.928    13932.03
+ _Ischool_co_19 |   12324.93   1546.322     7.97   0.000     9178.913    15470.94
+ _Ischool_co_20 |   3751.292   1865.124     2.01   0.053    -43.33173    7545.917
+ _Ischool_co_21 |          0  (omitted)
+ _Ischool_co_22 |   3811.831   1176.774     3.24   0.003     1417.667    6205.996
+ _Ischool_co_23 |   11484.21    2028.52     5.66   0.000     7357.154    15611.26
+ _Ischool_co_24 |   7212.566   2309.397     3.12   0.004     2514.063    11911.07
+ _Ischool_co_25 |   292.0247   1837.613     0.16   0.875    -3446.627    4030.677
+ _Ischool_co_26 |   3645.102   2175.928     1.68   0.103    -781.8581    8072.061
+ _Ischool_co_27 |          0  (omitted)
+ _Ischool_co_28 |   11112.04   2017.546     5.51   0.000     7007.317    15216.77
+ _Ischool_co_29 |   7506.994   1534.037     4.89   0.000     4385.973    10628.02
+ _Ischool_co_30 |  -5452.862    2176.18    -2.51   0.017    -9880.334    -1025.39
+ _Ischool_co_31 |          0  (omitted)
+ _Ischool_co_32 |  -4273.258   3800.551    -1.12   0.269    -12005.54    3459.021
+ _Ischool_co_33 |          0  (omitted)
+ _Ischool_co_34 |          0  (omitted)
+ _Ischool_co_35 |  -4861.361   1692.602    -2.87   0.007    -8304.986   -1417.736
+ _Ischool_co_36 |   1055.473   2152.717     0.49   0.627    -3324.263     5435.21
+ _Ischool_co_37 |   163.1415   1362.612     0.12   0.905    -2609.113    2935.396
+ _Ischool_co_38 |  -4773.095    2219.86    -2.15   0.039    -9289.434   -256.7572
+ _Ischool_co_39 |   1500.591   3926.727     0.38   0.705    -6488.396    9489.578
+ _Ischool_co_40 |   5571.114   2916.192     1.91   0.065    -361.9238    11504.15
+ _Ischool_co_41 |   6322.218   1992.524     3.17   0.003     2268.398    10376.04
+ _Ischool_co_42 |   11744.89   2108.379     5.57   0.000     7455.356    16034.41
+ _Ischool_co_43 |          0  (omitted)
+ _Ischool_co_44 |   679.0621    1633.47     0.42   0.680    -2644.257    4002.382
+ _Ischool_co_45 |          0  (omitted)
+ _Ischool_co_46 |   3975.568   1926.455     2.06   0.047     56.16477     7894.97
+ _Ischool_co_47 |   1308.282   1200.493     1.09   0.284    -1134.139    3750.703
+ _Ischool_co_48 |  -11177.23    2675.46    -4.18   0.000    -16620.49   -5733.964
+ _Ischool_co_49 |          0  (omitted)
+          _cons |   45965.23   3371.443    13.63   0.000     39105.98    52824.48
+---------------------------------------------------------------------------------
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+sum_wage_s~d |      6,378    60673.56    51948.79          0   340768.1
+i.panel           _Ipanel_2010-2012   (naturally coded; _Ipanel_2010 omitted)
+i.year            _Iyear_2000-2001    (naturally coded; _Iyear_2000 omitted)
+i.school_code     _Ischool_co_1-49    (naturally coded; _Ischool_co_1 omitted)
+note: boy omitted because of collinearity
+note: _Ischool_co_3 omitted because of collinearity
+note: _Ischool_co_5 omitted because of collinearity
+note: _Ischool_co_6 omitted because of collinearity
+note: _Ischool_co_7 omitted because of collinearity
+note: _Ischool_co_11 omitted because of collinearity
+note: _Ischool_co_13 omitted because of collinearity
+note: _Ischool_co_14 omitted because of collinearity
+note: _Ischool_co_21 omitted because of collinearity
+note: _Ischool_co_27 omitted because of collinearity
+note: _Ischool_co_31 omitted because of collinearity
+note: _Ischool_co_33 omitted because of collinearity
+note: _Ischool_co_34 omitted because of collinearity
+note: _Ischool_co_43 omitted because of collinearity
+note: _Ischool_co_45 omitted because of collinearity
+note: _Ischool_co_49 omitted because of collinearity
+
+Linear regression                               Number of obs     =     23,130
+                                                F(12, 33)         =          .
+                                                Prob > F          =          .
+                                                R-squared         =     0.0182
+                                                Root MSE          =     4.5118
+
+                              (Std. Err. adjusted for 34 clusters in school_code)
+---------------------------------------------------------------------------------
+                |               Robust
+sum_month_sta~d |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+----------------+----------------------------------------------------------------
+afterXtreatment |   .2474403   .2332583     1.06   0.296    -.2271272    .7220078
+       att_lgcr |    .038436   .0506776     0.76   0.454    -.0646684    .1415404
+       att_lgsc |   -.001128   .0030521    -0.37   0.714    -.0073375    .0050816
+       awr_lgcr |  -.0697215    .051497    -1.35   0.185    -.1744929    .0350499
+     e_awr_lgcr |  -.0706599   .1196659    -0.59   0.559    -.3141219    .1728022
+         asiafr |   .2566564   .1682815     1.53   0.137    -.0857149    .5990276
+            ole |  -1.454945   .5033381    -2.89   0.007    -2.478994   -.4308958
+            boy |          0  (omitted)
+         educav |  -.0377516   .0250868    -1.50   0.142     -.088791    .0132879
+         educem |  -.0032311   .0248523    -0.13   0.897    -.0537935    .0473312
+         m_ahim |  -.0545206   .0664871    -0.82   0.418    -.1897897    .0807484
+   _Ipanel_2011 |   .3976654   .0407943     9.75   0.000     .3146688     .480662
+   _Ipanel_2012 |   .7153048   .0755977     9.46   0.000     .5615001    .8691095
+    _Iyear_2001 |  -.1847638    .177696    -1.04   0.306    -.5462889    .1767614
+  _Ischool_co_2 |  -.1590905   .1437928    -1.11   0.277    -.4516392    .1334582
+  _Ischool_co_3 |          0  (omitted)
+  _Ischool_co_4 |   .9861782   .1876834     5.25   0.000     .6043335    1.368023
+  _Ischool_co_5 |          0  (omitted)
+  _Ischool_co_6 |          0  (omitted)
+  _Ischool_co_7 |          0  (omitted)
+  _Ischool_co_8 |   .1010805   .1434959     0.70   0.486    -.1908641    .3930251
+  _Ischool_co_9 |    .103878   .1507218     0.69   0.496    -.2027679    .4105239
+ _Ischool_co_10 |  -.1600015   .0690988    -2.32   0.027    -.3005841    -.019419
+ _Ischool_co_11 |          0  (omitted)
+ _Ischool_co_12 |  -.4173358   .0945113    -4.42   0.000    -.6096205   -.2250512
+ _Ischool_co_13 |          0  (omitted)
+ _Ischool_co_14 |          0  (omitted)
+ _Ischool_co_15 |  -.6871278    .159736    -4.30   0.000    -1.012113   -.3621424
+ _Ischool_co_16 |   .2349455   .0903922     2.60   0.014     .0510412    .4188499
+ _Ischool_co_17 |   .0410239   .1119265     0.37   0.716    -.1866922    .2687401
+ _Ischool_co_18 |   .7371712   .2160349     3.41   0.002     .2976449    1.176698
+ _Ischool_co_19 |   1.407347   .1159968    12.13   0.000      1.17135    1.643344
+ _Ischool_co_20 |   1.400334   .0726239    19.28   0.000      1.25258    1.548089
+ _Ischool_co_21 |          0  (omitted)
+ _Ischool_co_22 |    .407547   .0621408     6.56   0.000     .2811206    .5339734
+ _Ischool_co_23 |   .8289481   .1398837     5.93   0.000     .5443526    1.113544
+ _Ischool_co_24 |   .0101409   .1312148     0.08   0.939    -.2568177    .2770995
+ _Ischool_co_25 |   .0092883   .1434583     0.06   0.949    -.2825798    .3011564
+ _Ischool_co_26 |   .6831376   .2018659     3.38   0.002     .2724384    1.093837
+ _Ischool_co_27 |          0  (omitted)
+ _Ischool_co_28 |   .4379859    .123339     3.55   0.001     .1870507     .688921
+ _Ischool_co_29 |   .1428128    .089868     1.59   0.122     -.040025    .3256507
+ _Ischool_co_30 |   1.076972   .1511388     7.13   0.000     .7694781    1.384467
+ _Ischool_co_31 |          0  (omitted)
+ _Ischool_co_32 |   .3616709   .1649991     2.19   0.036     .0259776    .6973642
+ _Ischool_co_33 |          0  (omitted)
+ _Ischool_co_34 |          0  (omitted)
+ _Ischool_co_35 |   .4445348   .1388479     3.20   0.003     .1620466    .7270231
+ _Ischool_co_36 |   .7571518   .1192495     6.35   0.000     .5145368    .9997667
+ _Ischool_co_37 |   .1141272   .0741034     1.54   0.133    -.0366373    .2648918
+ _Ischool_co_38 |  -.9231597   .1465534    -6.30   0.000    -1.221325   -.6249945
+ _Ischool_co_39 |   .5597575   .2151608     2.60   0.014     .1220096    .9975054
+ _Ischool_co_40 |   .4314079   .1522664     2.83   0.008     .1216196    .7411962
+ _Ischool_co_41 |   .3795378    .147834     2.57   0.015     .0787673    .6803083
+ _Ischool_co_42 |   .3207076   .1100285     2.91   0.006      .096853    .5445622
+ _Ischool_co_43 |          0  (omitted)
+ _Ischool_co_44 |   .7008591   .1618935     4.33   0.000     .3714844    1.030234
+ _Ischool_co_45 |          0  (omitted)
+ _Ischool_co_46 |  -.0148931   .1380118    -0.11   0.915    -.2956803    .2658942
+ _Ischool_co_47 |   .3445828   .0542219     6.36   0.000     .2342676    .4548981
+ _Ischool_co_48 |   .2239745   .1520298     1.47   0.150    -.0853325    .5332815
+ _Ischool_co_49 |          0  (omitted)
+          _cons |   9.111928   .2590629    35.17   0.000     8.584861    9.638996
+---------------------------------------------------------------------------------
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+sum_month_~d |      6,378    9.019128    4.522515          0         12
+i.panel           _Ipanel_2010-2012   (naturally coded; _Ipanel_2010 omitted)
+i.year            _Iyear_2000-2001    (naturally coded; _Iyear_2000 omitted)
+i.school_code     _Ischool_co_1-49    (naturally coded; _Ischool_co_1 omitted)
+note: boy omitted because of collinearity
+note: _Ischool_co_3 omitted because of collinearity
+note: _Ischool_co_5 omitted because of collinearity
+note: _Ischool_co_6 omitted because of collinearity
+note: _Ischool_co_7 omitted because of collinearity
+note: _Ischool_co_11 omitted because of collinearity
+note: _Ischool_co_13 omitted because of collinearity
+note: _Ischool_co_14 omitted because of collinearity
+note: _Ischool_co_21 omitted because of collinearity
+note: _Ischool_co_27 omitted because of collinearity
+note: _Ischool_co_31 omitted because of collinearity
+note: _Ischool_co_33 omitted because of collinearity
+note: _Ischool_co_34 omitted because of collinearity
+note: _Ischool_co_43 omitted because of collinearity
+note: _Ischool_co_45 omitted because of collinearity
+note: _Ischool_co_49 omitted because of collinearity
+
+Linear regression                               Number of obs     =     23,130
+                                                F(12, 33)         =          .
+                                                Prob > F          =          .
+                                                R-squared         =     0.0151
+                                                Root MSE          =     .35758
+
+                              (Std. Err. adjusted for 34 clusters in school_code)
+---------------------------------------------------------------------------------
+                |               Robust
+sum_work_stac~d |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+----------------+----------------------------------------------------------------
+afterXtreatment |   .0239448   .0205971     1.16   0.253    -.0179602    .0658499
+       att_lgcr |   .0043901   .0036039     1.22   0.232    -.0029421    .0117223
+       att_lgsc |  -.0003445   .0002359    -1.46   0.154    -.0008244    .0001354
+       awr_lgcr |  -.0059451   .0040553    -1.47   0.152    -.0141956    .0023054
+     e_awr_lgcr |  -.0053519   .0085293    -0.63   0.535     -.022705    .0120011
+         asiafr |    .010032   .0116431     0.86   0.395    -.0136561    .0337201
+            ole |  -.1141524    .046419    -2.46   0.019    -.2085926   -.0197122
+            boy |          0  (omitted)
+         educav |  -.0024278   .0018746    -1.30   0.204    -.0062417    .0013862
+         educem |  -.0001271   .0017633    -0.07   0.943    -.0037146    .0034604
+         m_ahim |   -.004656    .004435    -1.05   0.301     -.013679     .004367
+   _Ipanel_2011 |   .0088197   .0035315     2.50   0.018     .0016348    .0160046
+   _Ipanel_2012 |   .0178988   .0057856     3.09   0.004      .006128    .0296696
+    _Iyear_2001 |  -.0177822   .0164008    -1.08   0.286    -.0511499    .0155855
+  _Ischool_co_2 |  -.0343814    .010343    -3.32   0.002    -.0554245   -.0133384
+  _Ischool_co_3 |          0  (omitted)
+  _Ischool_co_4 |   .0657008   .0118703     5.53   0.000     .0415506     .089851
+  _Ischool_co_5 |          0  (omitted)
+  _Ischool_co_6 |          0  (omitted)
+  _Ischool_co_7 |          0  (omitted)
+  _Ischool_co_8 |   .0183611   .0137048     1.34   0.189    -.0095214    .0462437
+  _Ischool_co_9 |    .005187   .0100709     0.52   0.610    -.0153025    .0256765
+ _Ischool_co_10 |  -.0042182   .0048895    -0.86   0.395    -.0141659    .0057296
+ _Ischool_co_11 |          0  (omitted)
+ _Ischool_co_12 |  -.0351734   .0065182    -5.40   0.000    -.0484347   -.0219122
+ _Ischool_co_13 |          0  (omitted)
+ _Ischool_co_14 |          0  (omitted)
+ _Ischool_co_15 |   .1565311    .011574    13.52   0.000     .1329837    .1800786
+ _Ischool_co_16 |   .0095574   .0056942     1.68   0.103    -.0020276    .0211424
+ _Ischool_co_17 |   .0188523   .0105073     1.79   0.082    -.0025249    .0402296
+ _Ischool_co_18 |   .0498245   .0177126     2.81   0.008      .013788     .085861
+ _Ischool_co_19 |   .1021493   .0096151    10.62   0.000     .0825871    .1217114
+ _Ischool_co_20 |   .0952502   .0055841    17.06   0.000     .0838893    .1066111
+ _Ischool_co_21 |          0  (omitted)
+ _Ischool_co_22 |   .0349918    .003865     9.05   0.000     .0271285    .0428551
+ _Ischool_co_23 |   .0476471   .0127381     3.74   0.001     .0217312    .0735631
+ _Ischool_co_24 |  -.0153402    .010901    -1.41   0.169    -.0375184     .006838
+ _Ischool_co_25 |   .0184344   .0127358     1.45   0.157    -.0074769    .0443456
+ _Ischool_co_26 |   .0411218   .0163551     2.51   0.017     .0078471    .0743965
+ _Ischool_co_27 |          0  (omitted)
+ _Ischool_co_28 |   .0145874   .0103907     1.40   0.170    -.0065527    .0357274
+ _Ischool_co_29 |  -.0183716   .0059165    -3.11   0.004    -.0304088   -.0063345
+ _Ischool_co_30 |   .0389358    .014041     2.77   0.009     .0103693    .0675024
+ _Ischool_co_31 |          0  (omitted)
+ _Ischool_co_32 |   .0145905   .0123391     1.18   0.245    -.0105136    .0396946
+ _Ischool_co_33 |          0  (omitted)
+ _Ischool_co_34 |          0  (omitted)
+ _Ischool_co_35 |   .0589358   .0102096     5.77   0.000     .0381642    .0797075
+ _Ischool_co_36 |   .0652961   .0110236     5.92   0.000     .0428684    .0877239
+ _Ischool_co_37 |   .0042619   .0051759     0.82   0.416    -.0062686    .0147923
+ _Ischool_co_38 |  -.0813186   .0134741    -6.04   0.000    -.1087318   -.0539054
+ _Ischool_co_39 |   .0294729   .0139083     2.12   0.042     .0011762    .0577696
+ _Ischool_co_40 |   .0277646   .0101166     2.74   0.010     .0071822     .048347
+ _Ischool_co_41 |   .0470159   .0120369     3.91   0.000     .0225267    .0715051
+ _Ischool_co_42 |    .003222   .0103517     0.31   0.758    -.0178386    .0242826
+ _Ischool_co_43 |          0  (omitted)
+ _Ischool_co_44 |   .0525058   .0119675     4.39   0.000     .0281577    .0768538
+ _Ischool_co_45 |          0  (omitted)
+ _Ischool_co_46 |  -.0042478   .0118855    -0.36   0.723    -.0284289    .0199334
+ _Ischool_co_47 |  -.0057279   .0044054    -1.30   0.203    -.0146908    .0032349
+ _Ischool_co_48 |   .0559038   .0107004     5.22   0.000     .0341338    .0776739
+ _Ischool_co_49 |          0  (omitted)
+          _cons |   .8874995   .0277998    31.92   0.000     .8309403    .9440586
+---------------------------------------------------------------------------------
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+sum_work_s~d |      6,378    .8488554    .3582178          0          1
+sample is NE and quartile is girl
+i.panel           _Ipanel_2010-2012   (naturally coded; _Ipanel_2010 omitted)
+i.year            _Iyear_2000-2001    (naturally coded; _Iyear_2000 omitted)
+i.school_code     _Ischool_co_1-49    (naturally coded; _Ischool_co_1 omitted)
+note: boy omitted because of collinearity
+note: _Ischool_co_2 omitted because of collinearity
+note: _Ischool_co_3 omitted because of collinearity
+note: _Ischool_co_5 omitted because of collinearity
+note: _Ischool_co_6 omitted because of collinearity
+note: _Ischool_co_7 omitted because of collinearity
+note: _Ischool_co_11 omitted because of collinearity
+note: _Ischool_co_13 omitted because of collinearity
+note: _Ischool_co_14 omitted because of collinearity
+note: _Ischool_co_17 omitted because of collinearity
+note: _Ischool_co_23 omitted because of collinearity
+note: _Ischool_co_31 omitted because of collinearity
+note: _Ischool_co_32 omitted because of collinearity
+note: _Ischool_co_33 omitted because of collinearity
+note: _Ischool_co_34 omitted because of collinearity
+note: _Ischool_co_35 omitted because of collinearity
+note: _Ischool_co_38 omitted because of collinearity
+note: _Ischool_co_43 omitted because of collinearity
+note: _Ischool_co_45 omitted because of collinearity
+note: _Ischool_co_49 omitted because of collinearity
+
+Linear regression                               Number of obs     =     24,579
+                                                F(12, 29)         =          .
+                                                Prob > F          =          .
+                                                R-squared         =     0.1267
+                                                Root MSE          =     25.922
+
+                              (Std. Err. adjusted for 30 clusters in school_code)
+---------------------------------------------------------------------------------
+                |               Robust
+pctle_wage_st~d |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+----------------+----------------------------------------------------------------
+afterXtreatment |   1.476987   1.268487     1.16   0.254    -1.117361    4.071335
+       att_lgcr |   .0732687   .3878505     0.19   0.851    -.7199746     .866512
+       att_lgsc |   .1322234   .0511753     2.58   0.015     .0275581    .2368886
+       awr_lgcr |   1.335446   .4868289     2.74   0.010     .3397689    2.331123
+     e_awr_lgcr |  -1.456725   .8277053    -1.76   0.089    -3.149572    .2361225
+         asiafr |    2.39124   1.030893     2.32   0.028     .2828273    4.499652
+            ole |   1.644261    3.85849     0.43   0.673    -6.247238     9.53576
+            boy |          0  (omitted)
+         educav |   .1490483   .1177961     1.27   0.216    -.0918718    .3899685
+         educem |    .289223    .104922     2.76   0.010     .0746334    .5038126
+         m_ahim |  -.3011639   .2788203    -1.08   0.289    -.8714155    .2690877
+   _Ipanel_2011 |  -1.693397   .3800923    -4.46   0.000    -2.470773   -.9160209
+   _Ipanel_2012 |  -3.067619   .6492775    -4.72   0.000     -4.39554   -1.739697
+    _Iyear_2001 |  -1.301451   .7208006    -1.81   0.081    -2.775654     .172752
+  _Ischool_co_2 |          0  (omitted)
+  _Ischool_co_3 |          0  (omitted)
+  _Ischool_co_4 |  -14.00743   1.075863   -13.02   0.000    -16.20782   -11.80705
+  _Ischool_co_5 |          0  (omitted)
+  _Ischool_co_6 |          0  (omitted)
+  _Ischool_co_7 |          0  (omitted)
+  _Ischool_co_8 |   2.949825   .8823126     3.34   0.002     1.145293    4.754357
+  _Ischool_co_9 |   1.443126   1.271857     1.13   0.266    -1.158113    4.044365
+ _Ischool_co_10 |    2.41939   .3590141     6.74   0.000     1.685123    3.153656
+ _Ischool_co_11 |          0  (omitted)
+ _Ischool_co_12 |  -3.991919   1.374552    -2.90   0.007    -6.803193   -1.180645
+ _Ischool_co_13 |          0  (omitted)
+ _Ischool_co_14 |          0  (omitted)
+ _Ischool_co_15 |   -3.12177   .9588235    -3.26   0.003    -5.082784   -1.160756
+ _Ischool_co_16 |    2.28516   .7949007     2.87   0.007     .6594056    3.910914
+ _Ischool_co_17 |          0  (omitted)
+ _Ischool_co_18 |   1.006577   2.082759     0.48   0.633    -3.253142    5.266297
+ _Ischool_co_19 |    4.53505   .8496645     5.34   0.000     2.797291    6.272809
+ _Ischool_co_20 |  -4.994712   1.642277    -3.04   0.005    -8.353546   -1.635878
+ _Ischool_co_21 |   -13.3556   .9833276   -13.58   0.000    -15.36674   -11.34447
+ _Ischool_co_22 |  -.3719893    .290505    -1.28   0.211    -.9661388    .2221602
+ _Ischool_co_23 |          0  (omitted)
+ _Ischool_co_24 |  -1.756131    .728916    -2.41   0.023    -3.246931   -.2653301
+ _Ischool_co_25 |   4.500943   .6523145     6.90   0.000      3.16681    5.835076
+ _Ischool_co_26 |   4.196624   1.336594     3.14   0.004     1.462982    6.930267
+ _Ischool_co_27 |  -8.173099   1.119957    -7.30   0.000    -10.46367    -5.88253
+ _Ischool_co_28 |   .2399745   .6966021     0.34   0.733    -1.184737    1.664686
+ _Ischool_co_29 |   -3.21745   .8068828    -3.99   0.000    -4.867711    -1.56719
+ _Ischool_co_30 |   7.532646   1.526005     4.94   0.000     4.411616    10.65368
+ _Ischool_co_31 |          0  (omitted)
+ _Ischool_co_32 |          0  (omitted)
+ _Ischool_co_33 |          0  (omitted)
+ _Ischool_co_34 |          0  (omitted)
+ _Ischool_co_35 |          0  (omitted)
+ _Ischool_co_36 |  -6.063692   1.071694    -5.66   0.000    -8.255552   -3.871832
+ _Ischool_co_37 |  -2.474646   .5578852    -4.44   0.000    -3.615649   -1.333643
+ _Ischool_co_38 |          0  (omitted)
+ _Ischool_co_39 |   -17.1741   1.387268   -12.38   0.000    -20.01138   -14.33682
+ _Ischool_co_40 |   3.427443   1.364938     2.51   0.018     .6358321    6.219054
+ _Ischool_co_41 |  -1.675251   .7374798    -2.27   0.031    -3.183567   -.1669357
+ _Ischool_co_42 |  -1.320486   .7924228    -1.67   0.106    -2.941173    .3002002
+ _Ischool_co_43 |          0  (omitted)
+ _Ischool_co_44 |   5.364703   1.806646     2.97   0.006     1.669697    9.059708
+ _Ischool_co_45 |          0  (omitted)
+ _Ischool_co_46 |  -.6312503   .8647881    -0.73   0.471     -2.39994     1.13744
+ _Ischool_co_47 |  -5.934937   .3570881   -16.62   0.000    -6.665264    -5.20461
+ _Ischool_co_48 |   -29.4048   1.587112   -18.53   0.000    -32.65081    -26.1588
+ _Ischool_co_49 |          0  (omitted)
+          _cons |   31.92608   4.111354     7.77   0.000     23.51741    40.33474
+---------------------------------------------------------------------------------
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+pctle_wage~d |      6,135    44.19527    29.00393          1        100
+i.panel           _Ipanel_2010-2012   (naturally coded; _Ipanel_2010 omitted)
+i.year            _Iyear_2000-2001    (naturally coded; _Iyear_2000 omitted)
+i.school_code     _Ischool_co_1-49    (naturally coded; _Ischool_co_1 omitted)
+note: boy omitted because of collinearity
+note: _Ischool_co_2 omitted because of collinearity
+note: _Ischool_co_3 omitted because of collinearity
+note: _Ischool_co_5 omitted because of collinearity
+note: _Ischool_co_6 omitted because of collinearity
+note: _Ischool_co_7 omitted because of collinearity
+note: _Ischool_co_11 omitted because of collinearity
+note: _Ischool_co_13 omitted because of collinearity
+note: _Ischool_co_14 omitted because of collinearity
+note: _Ischool_co_17 omitted because of collinearity
+note: _Ischool_co_23 omitted because of collinearity
+note: _Ischool_co_31 omitted because of collinearity
+note: _Ischool_co_32 omitted because of collinearity
+note: _Ischool_co_33 omitted because of collinearity
+note: _Ischool_co_34 omitted because of collinearity
+note: _Ischool_co_35 omitted because of collinearity
+note: _Ischool_co_38 omitted because of collinearity
+note: _Ischool_co_43 omitted because of collinearity
+note: _Ischool_co_45 omitted because of collinearity
+note: _Ischool_co_49 omitted because of collinearity
+
+Linear regression                               Number of obs     =     24,579
+                                                F(12, 29)         =          .
+                                                Prob > F          =          .
+                                                R-squared         =     0.1268
+                                                Root MSE          =      39287
+
+                              (Std. Err. adjusted for 30 clusters in school_code)
+---------------------------------------------------------------------------------
+                |               Robust
+sum_wage_stac~d |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+----------------+----------------------------------------------------------------
+afterXtreatment |   3019.804   2326.797     1.30   0.205    -1739.029    7778.638
+       att_lgcr |  -256.4662   540.6055    -0.47   0.639    -1362.128    849.1961
+       att_lgsc |   170.7271   72.73474     2.35   0.026     21.96791    319.4864
+       awr_lgcr |   2865.329   704.2655     4.07   0.000     1424.945    4305.714
+     e_awr_lgcr |  -1836.703   1642.599    -1.12   0.273    -5196.195    1522.789
+         asiafr |   4091.527   2232.018     1.83   0.077    -473.4617    8656.517
+            ole |   3383.612   5743.577     0.59   0.560    -8363.323    15130.55
+            boy |          0  (omitted)
+         educav |   237.2656   146.0576     1.62   0.115    -61.45571     535.987
+         educem |   585.3109   139.7387     4.19   0.000     299.5132    871.1086
+         m_ahim |  -690.9413    414.285    -1.67   0.106    -1538.249    156.3666
+   _Ipanel_2011 |   4442.099   460.9926     9.64   0.000     3499.263    5384.935
+   _Ipanel_2012 |    8824.13   861.6814    10.24   0.000     7061.794    10586.47
+    _Iyear_2001 |  -2982.515   1674.547    -1.78   0.085    -6407.348    442.3183
+  _Ischool_co_2 |          0  (omitted)
+  _Ischool_co_3 |          0  (omitted)
+  _Ischool_co_4 |  -15692.12   2039.476    -7.69   0.000    -19863.31   -11520.92
+  _Ischool_co_5 |          0  (omitted)
+  _Ischool_co_6 |          0  (omitted)
+  _Ischool_co_7 |          0  (omitted)
+  _Ischool_co_8 |   5216.891   1242.403     4.20   0.000     2675.892     7757.89
+  _Ischool_co_9 |  -658.4013   1867.732    -0.35   0.727    -4478.342     3161.54
+ _Ischool_co_10 |   2244.349   604.0424     3.72   0.001     1008.943    3479.754
+ _Ischool_co_11 |          0  (omitted)
+ _Ischool_co_12 |  -8408.061   2115.578    -3.97   0.000     -12734.9   -4081.218
+ _Ischool_co_13 |          0  (omitted)
+ _Ischool_co_14 |          0  (omitted)
+ _Ischool_co_15 |  -6355.421    1699.73    -3.74   0.001     -9831.76   -2879.082
+ _Ischool_co_16 |   -496.295    1266.86    -0.39   0.698    -3087.314    2094.724
+ _Ischool_co_17 |          0  (omitted)
+ _Ischool_co_18 |  -872.0207   2908.648    -0.30   0.766    -6820.873    5076.831
+ _Ischool_co_19 |    3490.72   1649.394     2.12   0.043     117.3311     6864.11
+ _Ischool_co_20 |  -8401.549    2666.08    -3.15   0.004     -13854.3   -2948.802
+ _Ischool_co_21 |  -20361.27   1890.876   -10.77   0.000    -24228.55      -16494
+ _Ischool_co_22 |  -3056.254   531.6695    -5.75   0.000    -4143.641   -1968.868
+ _Ischool_co_23 |          0  (omitted)
+ _Ischool_co_24 |  -4537.785   1150.109    -3.95   0.000    -6890.022   -2185.549
+ _Ischool_co_25 |   4263.086   1258.148     3.39   0.002     1689.884    6836.288
+ _Ischool_co_26 |    3294.96   2324.563     1.42   0.167    -1459.305    8049.225
+ _Ischool_co_27 |   -15912.5   1852.111    -8.59   0.000     -19700.5   -12124.51
+ _Ischool_co_28 |  -1029.045   1297.596    -0.79   0.434    -3682.928    1624.838
+ _Ischool_co_29 |  -8660.496   1241.793    -6.97   0.000    -11200.25   -6120.745
+ _Ischool_co_30 |   10973.43   2424.372     4.53   0.000     6015.033    15931.83
+ _Ischool_co_31 |          0  (omitted)
+ _Ischool_co_32 |          0  (omitted)
+ _Ischool_co_33 |          0  (omitted)
+ _Ischool_co_34 |          0  (omitted)
+ _Ischool_co_35 |          0  (omitted)
+ _Ischool_co_36 |  -13589.12   1855.784    -7.32   0.000    -17384.62   -9793.612
+ _Ischool_co_37 |  -4520.324   943.6309    -4.79   0.000    -6450.265   -2590.382
+ _Ischool_co_38 |          0  (omitted)
+ _Ischool_co_39 |  -20262.82   2477.374    -8.18   0.000    -25329.62   -15196.03
+ _Ischool_co_40 |   2908.773   2179.791     1.33   0.192    -1549.401    7366.947
+ _Ischool_co_41 |  -2865.654   1481.572    -1.93   0.063    -5895.808     164.501
+ _Ischool_co_42 |  -3019.651   1296.648    -2.33   0.027    -5671.594   -367.7076
+ _Ischool_co_43 |          0  (omitted)
+ _Ischool_co_44 |   6297.161   3399.171     1.85   0.074    -654.9238    13249.25
+ _Ischool_co_45 |          0  (omitted)
+ _Ischool_co_46 |  -4048.835   1695.592    -2.39   0.024    -7516.709   -580.9602
+ _Ischool_co_47 |  -11652.75   467.6499   -24.92   0.000     -12609.2    -10696.3
+ _Ischool_co_48 |  -36060.28   2769.126   -13.02   0.000    -41723.78   -30396.79
+ _Ischool_co_49 |          0  (omitted)
+          _cons |   21079.94   6065.409     3.48   0.002     8674.788     33485.1
+---------------------------------------------------------------------------------
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+sum_wage_s~d |      6,135     46778.1     43319.3          0   370303.6
+i.panel           _Ipanel_2010-2012   (naturally coded; _Ipanel_2010 omitted)
+i.year            _Iyear_2000-2001    (naturally coded; _Iyear_2000 omitted)
+i.school_code     _Ischool_co_1-49    (naturally coded; _Ischool_co_1 omitted)
+note: boy omitted because of collinearity
+note: _Ischool_co_2 omitted because of collinearity
+note: _Ischool_co_3 omitted because of collinearity
+note: _Ischool_co_5 omitted because of collinearity
+note: _Ischool_co_6 omitted because of collinearity
+note: _Ischool_co_7 omitted because of collinearity
+note: _Ischool_co_11 omitted because of collinearity
+note: _Ischool_co_13 omitted because of collinearity
+note: _Ischool_co_14 omitted because of collinearity
+note: _Ischool_co_17 omitted because of collinearity
+note: _Ischool_co_23 omitted because of collinearity
+note: _Ischool_co_31 omitted because of collinearity
+note: _Ischool_co_32 omitted because of collinearity
+note: _Ischool_co_33 omitted because of collinearity
+note: _Ischool_co_34 omitted because of collinearity
+note: _Ischool_co_35 omitted because of collinearity
+note: _Ischool_co_38 omitted because of collinearity
+note: _Ischool_co_43 omitted because of collinearity
+note: _Ischool_co_45 omitted because of collinearity
+note: _Ischool_co_49 omitted because of collinearity
+
+Linear regression                               Number of obs     =     24,579
+                                                F(12, 29)         =          .
+                                                Prob > F          =          .
+                                                R-squared         =     0.0952
+                                                Root MSE          =     4.1827
+
+                              (Std. Err. adjusted for 30 clusters in school_code)
+---------------------------------------------------------------------------------
+                |               Robust
+sum_month_sta~d |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+----------------+----------------------------------------------------------------
+afterXtreatment |   .1977189   .1845615     1.07   0.293    -.1797518    .5751896
+       att_lgcr |   .0955508   .0604044     1.58   0.125      -.02799    .2190916
+       att_lgsc |   .0160091   .0073388     2.18   0.037     .0009996    .0310187
+       awr_lgcr |  -.0041124   .0692382    -0.06   0.953    -.1457204    .1374956
+     e_awr_lgcr |    .088579    .087861     1.01   0.322     -.091117     .268275
+         asiafr |   .2141792    .092475     2.32   0.028     .0250467    .4033118
+            ole |  -.4991742   .5286914    -0.94   0.353     -1.58047    .5821211
+            boy |          0  (omitted)
+         educav |   .0160683    .015496     1.04   0.308    -.0156245    .0477612
+         educem |   .0051792   .0223049     0.23   0.818    -.0404394    .0507978
+         m_ahim |   -.041539   .0525744    -0.79   0.436    -.1490656    .0659876
+   _Ipanel_2011 |   .0291712   .0540128     0.54   0.593    -.0812974    .1396398
+   _Ipanel_2012 |   .0893446   .0849762     1.05   0.302    -.0844513    .2631404
+    _Iyear_2001 |   .0238188   .0883824     0.27   0.789    -.1569434    .2045811
+  _Ischool_co_2 |          0  (omitted)
+  _Ischool_co_3 |          0  (omitted)
+  _Ischool_co_4 |  -2.583714   .2152659   -12.00   0.000    -3.023983   -2.143446
+  _Ischool_co_5 |          0  (omitted)
+  _Ischool_co_6 |          0  (omitted)
+  _Ischool_co_7 |          0  (omitted)
+  _Ischool_co_8 |   .4711273   .1217539     3.87   0.001     .2221126    .7201419
+  _Ischool_co_9 |   .8350621   .1763152     4.74   0.000      .474457    1.195667
+ _Ischool_co_10 |   .6493141   .0559031    11.62   0.000     .5349795    .7636487
+ _Ischool_co_11 |          0  (omitted)
+ _Ischool_co_12 |   .4089539   .1715834     2.38   0.024     .0580265    .7598813
+ _Ischool_co_13 |          0  (omitted)
+ _Ischool_co_14 |          0  (omitted)
+ _Ischool_co_15 |  -.0767544   .1303202    -0.59   0.560    -.3432892    .1897803
+ _Ischool_co_16 |   .5522067   .1551888     3.56   0.001       .23481    .8696033
+ _Ischool_co_17 |          0  (omitted)
+ _Ischool_co_18 |   .5040151   .2737326     1.84   0.076     -.055831    1.063861
+ _Ischool_co_19 |   1.141206   .1421047     8.03   0.000     .8505689    1.431842
+ _Ischool_co_20 |  -.2961941   .2061989    -1.44   0.162    -.7179182      .12553
+ _Ischool_co_21 |  -1.150556   .1336979    -8.61   0.000    -1.423999   -.8771128
+ _Ischool_co_22 |   .2856689   .0395724     7.22   0.000     .2047342    .3666035
+ _Ischool_co_23 |          0  (omitted)
+ _Ischool_co_24 |   .5078578   .0996969     5.09   0.000     .3039547     .711761
+ _Ischool_co_25 |   .8622072   .0975918     8.83   0.000     .6626095    1.061805
+ _Ischool_co_26 |   .8806125   .2031777     4.33   0.000     .4650673    1.296158
+ _Ischool_co_27 |  -.2009644   .1626689    -1.24   0.227    -.5336597    .1317308
+ _Ischool_co_28 |   .3676864   .0960397     3.83   0.001     .1712632    .5641096
+ _Ischool_co_29 |  -.0808338   .0770832    -1.05   0.303    -.2384866     .076819
+ _Ischool_co_30 |    1.88326   .2546976     7.39   0.000     1.362345    2.404175
+ _Ischool_co_31 |          0  (omitted)
+ _Ischool_co_32 |          0  (omitted)
+ _Ischool_co_33 |          0  (omitted)
+ _Ischool_co_34 |          0  (omitted)
+ _Ischool_co_35 |          0  (omitted)
+ _Ischool_co_36 |   .2260973    .124087     1.82   0.079     -.027689    .4798837
+ _Ischool_co_37 |    .019442   .0689882     0.28   0.780    -.1216546    .1605386
+ _Ischool_co_38 |          0  (omitted)
+ _Ischool_co_39 |  -2.791897   .2393887   -11.66   0.000    -3.281502   -2.302292
+ _Ischool_co_40 |   1.040386   .2116191     4.92   0.000     .6075765    1.473196
+ _Ischool_co_41 |   .0934186   .1058835     0.88   0.385    -.1231375    .3099748
+ _Ischool_co_42 |   .3137863   .1031029     3.04   0.005     .1029171    .5246554
+ _Ischool_co_43 |          0  (omitted)
+ _Ischool_co_44 |   1.281283   .2917255     4.39   0.000     .6846369    1.877928
+ _Ischool_co_45 |          0  (omitted)
+ _Ischool_co_46 |   .6765005   .1119227     6.04   0.000     .4475929    .9054081
+ _Ischool_co_47 |   .1391454   .0686898     2.03   0.052    -.0013411    .2796319
+ _Ischool_co_48 |  -4.934981   .2238216   -22.05   0.000    -5.392748   -4.477215
+ _Ischool_co_49 |          0  (omitted)
+          _cons |   7.001334   .6887839    10.16   0.000     5.592613    8.410055
+---------------------------------------------------------------------------------
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+sum_month_~d |      6,135    8.317196    4.784238          0         12
+i.panel           _Ipanel_2010-2012   (naturally coded; _Ipanel_2010 omitted)
+i.year            _Iyear_2000-2001    (naturally coded; _Iyear_2000 omitted)
+i.school_code     _Ischool_co_1-49    (naturally coded; _Ischool_co_1 omitted)
+note: boy omitted because of collinearity
+note: _Ischool_co_2 omitted because of collinearity
+note: _Ischool_co_3 omitted because of collinearity
+note: _Ischool_co_5 omitted because of collinearity
+note: _Ischool_co_6 omitted because of collinearity
+note: _Ischool_co_7 omitted because of collinearity
+note: _Ischool_co_11 omitted because of collinearity
+note: _Ischool_co_13 omitted because of collinearity
+note: _Ischool_co_14 omitted because of collinearity
+note: _Ischool_co_17 omitted because of collinearity
+note: _Ischool_co_23 omitted because of collinearity
+note: _Ischool_co_31 omitted because of collinearity
+note: _Ischool_co_32 omitted because of collinearity
+note: _Ischool_co_33 omitted because of collinearity
+note: _Ischool_co_34 omitted because of collinearity
+note: _Ischool_co_35 omitted because of collinearity
+note: _Ischool_co_38 omitted because of collinearity
+note: _Ischool_co_43 omitted because of collinearity
+note: _Ischool_co_45 omitted because of collinearity
+note: _Ischool_co_49 omitted because of collinearity
+
+Linear regression                               Number of obs     =     24,579
+                                                F(12, 29)         =          .
+                                                Prob > F          =          .
+                                                R-squared         =     0.0889
+                                                Root MSE          =     .33096
+
+                              (Std. Err. adjusted for 30 clusters in school_code)
+---------------------------------------------------------------------------------
+                |               Robust
+sum_work_stac~d |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+----------------+----------------------------------------------------------------
+afterXtreatment |   .0010415   .0159538     0.07   0.948    -.0315876    .0336706
+       att_lgcr |   .0097853   .0047566     2.06   0.049      .000057    .0195135
+       att_lgsc |   .0011082    .000631     1.76   0.090    -.0001823    .0023986
+       awr_lgcr |  -.0042622   .0056556    -0.75   0.457    -.0158291    .0073047
+     e_awr_lgcr |   .0028755   .0058297     0.49   0.626    -.0090475    .0147985
+         asiafr |   .0071409   .0064823     1.10   0.280     -.006117    .0203987
+            ole |  -.0553738   .0405416    -1.37   0.182    -.1382906    .0275431
+            boy |          0  (omitted)
+         educav |   .0001492    .001419     0.11   0.917     -.002753    .0030514
+         educem |   .0001082   .0021094     0.05   0.959     -.004206    .0044225
+         m_ahim |   .0002479   .0036742     0.07   0.947    -.0072668    .0077625
+   _Ipanel_2011 |  -.0041499    .004132    -1.00   0.324    -.0126009    .0043011
+   _Ipanel_2012 |  -.0074454   .0045534    -1.64   0.113    -.0167581    .0018673
+    _Iyear_2001 |   .0175667   .0076391     2.30   0.029     .0019431    .0331904
+  _Ischool_co_2 |          0  (omitted)
+  _Ischool_co_3 |          0  (omitted)
+  _Ischool_co_4 |  -.2506216   .0149526   -16.76   0.000     -.281203   -.2200401
+  _Ischool_co_5 |          0  (omitted)
+  _Ischool_co_6 |          0  (omitted)
+  _Ischool_co_7 |          0  (omitted)
+  _Ischool_co_8 |   .0217558   .0102502     2.12   0.042     .0007917    .0427199
+  _Ischool_co_9 |   .0493559    .011449     4.31   0.000     .0259401    .0727718
+ _Ischool_co_10 |   .0485757   .0039355    12.34   0.000     .0405268    .0566247
+ _Ischool_co_11 |          0  (omitted)
+ _Ischool_co_12 |   .0269422   .0117288     2.30   0.029     .0029541    .0509304
+ _Ischool_co_13 |          0  (omitted)
+ _Ischool_co_14 |          0  (omitted)
+ _Ischool_co_15 |   .0013284   .0097467     0.14   0.893    -.0186058    .0212626
+ _Ischool_co_16 |   .0371399   .0110544     3.36   0.002     .0145312    .0597486
+ _Ischool_co_17 |          0  (omitted)
+ _Ischool_co_18 |   .0464711   .0210559     2.21   0.035     .0034069    .0895352
+ _Ischool_co_19 |   .0692543   .0108361     6.39   0.000      .047092    .0914165
+ _Ischool_co_20 |  -.0274184   .0142326    -1.93   0.064    -.0565274    .0016906
+ _Ischool_co_21 |  -.1049649   .0100823   -10.41   0.000    -.1255856   -.0843442
+ _Ischool_co_22 |   .0312407   .0024684    12.66   0.000     .0261922    .0362891
+ _Ischool_co_23 |          0  (omitted)
+ _Ischool_co_24 |   .0407336   .0096031     4.24   0.000     .0210931    .0603741
+ _Ischool_co_25 |   .0605495   .0082093     7.38   0.000     .0437596    .0773394
+ _Ischool_co_26 |   .0534043   .0124481     4.29   0.000     .0279451    .0788635
+ _Ischool_co_27 |   .0029887   .0152559     0.20   0.846    -.0282131    .0341906
+ _Ischool_co_28 |   .0079916   .0082345     0.97   0.340    -.0088499    .0248331
+ _Ischool_co_29 |   -.009709   .0062537    -1.55   0.131    -.0224992    .0030812
+ _Ischool_co_30 |   .0794577   .0193323     4.11   0.000     .0399187    .1189967
+ _Ischool_co_31 |          0  (omitted)
+ _Ischool_co_32 |          0  (omitted)
+ _Ischool_co_33 |          0  (omitted)
+ _Ischool_co_34 |          0  (omitted)
+ _Ischool_co_35 |          0  (omitted)
+ _Ischool_co_36 |  -.0140263   .0097952    -1.43   0.163    -.0340597    .0060071
+ _Ischool_co_37 |  -.0098867   .0053609    -1.84   0.075    -.0208509    .0010776
+ _Ischool_co_38 |          0  (omitted)
+ _Ischool_co_39 |  -.2606961   .0158007   -16.50   0.000    -.2930122     -.22838
+ _Ischool_co_40 |   .0647563   .0142771     4.54   0.000     .0355563    .0939563
+ _Ischool_co_41 |   .0137932   .0089742     1.54   0.135    -.0045611    .0321475
+ _Ischool_co_42 |   .0230302   .0092189     2.50   0.018     .0041753     .041885
+ _Ischool_co_43 |          0  (omitted)
+ _Ischool_co_44 |   .0895586   .0212847     4.21   0.000     .0460265    .1330906
+ _Ischool_co_45 |          0  (omitted)
+ _Ischool_co_46 |    .041279   .0088725     4.65   0.000     .0231327    .0594252
+ _Ischool_co_47 |   .0112888   .0050597     2.23   0.034     .0009406    .0216369
+ _Ischool_co_48 |  -.3651311   .0145727   -25.06   0.000    -.3949355   -.3353266
+ _Ischool_co_49 |          0  (omitted)
+          _cons |   .7403716   .0559322    13.24   0.000     .6259774    .8547658
+---------------------------------------------------------------------------------
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+sum_work_s~d |      6,135    .8102689    .3921202          0          1
+sample is NE and quartile is house_avwage00_02H
+i.panel           _Ipanel_2010-2012   (naturally coded; _Ipanel_2010 omitted)
+i.year            _Iyear_2000-2001    (naturally coded; _Iyear_2000 omitted)
+i.school_code     _Ischool_co_1-49    (naturally coded; _Ischool_co_1 omitted)
+note: _Ischool_co_3 omitted because of collinearity
+note: _Ischool_co_5 omitted because of collinearity
+note: _Ischool_co_6 omitted because of collinearity
+note: _Ischool_co_7 omitted because of collinearity
+note: _Ischool_co_11 omitted because of collinearity
+note: _Ischool_co_13 omitted because of collinearity
+note: _Ischool_co_14 omitted because of collinearity
+note: _Ischool_co_31 omitted because of collinearity
+note: _Ischool_co_33 omitted because of collinearity
+note: _Ischool_co_34 omitted because of collinearity
+note: _Ischool_co_43 omitted because of collinearity
+note: _Ischool_co_45 omitted because of collinearity
+note: _Ischool_co_49 omitted because of collinearity
+
+Linear regression                               Number of obs     =     27,195
+                                                F(13, 35)         =          .
+                                                Prob > F          =          .
+                                                R-squared         =     0.0274
+                                                Root MSE          =     29.814
+
+                              (Std. Err. adjusted for 36 clusters in school_code)
+---------------------------------------------------------------------------------
+                |               Robust
+pctle_wage_st~d |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+----------------+----------------------------------------------------------------
+afterXtreatment |   1.075198    1.41256     0.76   0.452    -1.792452    3.942848
+       att_lgcr |   .5267215   .3876144     1.36   0.183    -.2601775    1.313621
+       att_lgsc |   .0820267   .0288688     2.84   0.007       .02342    .1406334
+       awr_lgcr |   .1328461   .4320574     0.31   0.760    -.7442772    1.009969
+     e_awr_lgcr |  -.4926215    .741929    -0.66   0.511    -1.998817    1.013574
+         asiafr |   3.549808   1.574107     2.26   0.030     .3542008    6.745415
+            ole |  -3.747445   3.242564    -1.16   0.256     -10.3302     2.83531
+            boy |   4.250852   1.086637     3.91   0.000     2.044861    6.456843
+         educav |  -.1587812   .1578349    -1.01   0.321     -.479203    .1616405
+         educem |    .092144   .2052148     0.45   0.656    -.3244641    .5087521
+         m_ahim |  -.0375998   .4010905    -0.09   0.926    -.8518568    .7766573
+   _Ipanel_2011 |   .1994484   .4928031     0.40   0.688    -.8009951    1.199892
+   _Ipanel_2012 |   1.261224   .6693373     1.88   0.068    -.0976025    2.620052
+    _Iyear_2001 |  -.0227963   .9613018    -0.02   0.981    -1.974343     1.92875
+  _Ischool_co_2 |   4.161235   .9680708     4.30   0.000     2.195946    6.126523
+  _Ischool_co_3 |          0  (omitted)
+  _Ischool_co_4 |   9.276162   1.638124     5.66   0.000     5.950594    12.60173
+  _Ischool_co_5 |          0  (omitted)
+  _Ischool_co_6 |          0  (omitted)
+  _Ischool_co_7 |          0  (omitted)
+  _Ischool_co_8 |    2.00825   .7375406     2.72   0.010      .510963    3.505537
+  _Ischool_co_9 |  -2.743822   .7759784    -3.54   0.001    -4.319142   -1.168502
+ _Ischool_co_10 |   .4174635   .3991057     1.05   0.303    -.3927642    1.227691
+ _Ischool_co_11 |          0  (omitted)
+ _Ischool_co_12 |  -7.054521   .6700887   -10.53   0.000    -8.414873   -5.694169
+ _Ischool_co_13 |          0  (omitted)
+ _Ischool_co_14 |          0  (omitted)
+ _Ischool_co_15 |   1.082687    .998426     1.08   0.286    -.9442255      3.1096
+ _Ischool_co_16 |   1.560085   .4754024     3.28   0.002     .5949671    2.525204
+ _Ischool_co_17 |  -.4368634   .9611669    -0.45   0.652    -2.388136    1.514409
+ _Ischool_co_18 |   1.277281   1.793283     0.71   0.481    -2.363277    4.917838
+ _Ischool_co_19 |   8.252673   .6569856    12.56   0.000     6.918922    9.586425
+ _Ischool_co_20 |    2.09992   .6754196     3.11   0.004     .7287452    3.471095
+ _Ischool_co_21 |  -11.19665   .9662899   -11.59   0.000    -13.15832   -9.234973
+ _Ischool_co_22 |   2.394366   .2949453     8.12   0.000     1.795595    2.993137
+ _Ischool_co_23 |   3.975149   1.228945     3.23   0.003     1.480258    6.470041
+ _Ischool_co_24 |   3.127234   .9953655     3.14   0.003     1.106535    5.147934
+ _Ischool_co_25 |   .8531395   .7645618     1.12   0.272    -.6990034    2.405282
+ _Ischool_co_26 |   5.884684   1.093195     5.38   0.000      3.66538    8.103989
+ _Ischool_co_27 |  -1.922019   1.319754    -1.46   0.154    -4.601261    .7572233
+ _Ischool_co_28 |   1.812209   .9228702     1.96   0.058    -.0613169    3.685735
+ _Ischool_co_29 |  -.8822608   .6768774    -1.30   0.201    -2.256395    .4918734
+ _Ischool_co_30 |   4.249691   1.032968     4.11   0.000     2.152656    6.346727
+ _Ischool_co_31 |          0  (omitted)
+ _Ischool_co_32 |   3.038003   1.252619     2.43   0.021     .4950519    5.580955
+ _Ischool_co_33 |          0  (omitted)
+ _Ischool_co_34 |          0  (omitted)
+ _Ischool_co_35 |  -5.750902   .7983928    -7.20   0.000    -7.371725   -4.130078
+ _Ischool_co_36 |   -3.10226   1.158205    -2.68   0.011    -5.453542   -.7509784
+ _Ischool_co_37 |  -.4415743    .419746    -1.05   0.300    -1.293704    .4105554
+ _Ischool_co_38 |  -7.430364   1.334688    -5.57   0.000    -10.13992   -4.720803
+ _Ischool_co_39 |  -6.434299   1.678585    -3.83   0.001    -9.842008    -3.02659
+ _Ischool_co_40 |   3.797096   .8224845     4.62   0.000     2.127364    5.466828
+ _Ischool_co_41 |     .34974    .878581     0.40   0.693    -1.433874    2.133354
+ _Ischool_co_42 |   .7189399   1.152891     0.62   0.537    -1.621554    3.059433
+ _Ischool_co_43 |          0  (omitted)
+ _Ischool_co_44 |  -1.611912   .9007491    -1.79   0.082     -3.44053    .2167057
+ _Ischool_co_45 |          0  (omitted)
+ _Ischool_co_46 |  -2.784176   .9402537    -2.96   0.005    -4.692993   -.8753599
+ _Ischool_co_47 |  -2.789845   .4221102    -6.61   0.000    -3.646774   -1.932916
+ _Ischool_co_48 |  -14.47362   .8918651   -16.23   0.000     -16.2842   -12.66303
+ _Ischool_co_49 |          0  (omitted)
+          _cons |   40.25682   2.272912    17.71   0.000     35.64257    44.87108
+---------------------------------------------------------------------------------
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+pctle_wage~d |      6,951    51.25752    29.85869          1        100
+i.panel           _Ipanel_2010-2012   (naturally coded; _Ipanel_2010 omitted)
+i.year            _Iyear_2000-2001    (naturally coded; _Iyear_2000 omitted)
+i.school_code     _Ischool_co_1-49    (naturally coded; _Ischool_co_1 omitted)
+note: _Ischool_co_3 omitted because of collinearity
+note: _Ischool_co_5 omitted because of collinearity
+note: _Ischool_co_6 omitted because of collinearity
+note: _Ischool_co_7 omitted because of collinearity
+note: _Ischool_co_11 omitted because of collinearity
+note: _Ischool_co_13 omitted because of collinearity
+note: _Ischool_co_14 omitted because of collinearity
+note: _Ischool_co_31 omitted because of collinearity
+note: _Ischool_co_33 omitted because of collinearity
+note: _Ischool_co_34 omitted because of collinearity
+note: _Ischool_co_43 omitted because of collinearity
+note: _Ischool_co_45 omitted because of collinearity
+note: _Ischool_co_49 omitted because of collinearity
+
+Linear regression                               Number of obs     =     27,195
+                                                F(13, 35)         =          .
+                                                Prob > F          =          .
+                                                R-squared         =     0.0624
+                                                Root MSE          =      51593
+
+                              (Std. Err. adjusted for 36 clusters in school_code)
+---------------------------------------------------------------------------------
+                |               Robust
+sum_wage_stac~d |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+----------------+----------------------------------------------------------------
+afterXtreatment |   3449.027   3145.446     1.10   0.280    -2936.568    9834.621
+       att_lgcr |   503.5534   616.6059     0.82   0.420    -748.2232     1755.33
+       att_lgsc |   121.7456   57.13248     2.13   0.040     5.760467    237.7306
+       awr_lgcr |   1443.833   632.5485     2.28   0.029     159.6907    2727.974
+     e_awr_lgcr |   200.1626   2042.353     0.10   0.922    -3946.034    4346.359
+         asiafr |   5003.529   2391.487     2.09   0.044      148.553    9858.505
+            ole |  -1169.532    4555.86    -0.26   0.799    -10418.42    8079.356
+            boy |   13040.97   2287.634     5.70   0.000     8396.825    17685.11
+         educav |  -69.27656    259.261    -0.27   0.791    -595.6043    457.0512
+         educem |   180.9141   340.4112     0.53   0.598    -510.1572    871.9855
+         m_ahim |  -322.3253   907.9561    -0.36   0.725    -2165.574    1520.924
+   _Ipanel_2011 |   8325.279   593.7354    14.02   0.000     7119.932    9530.626
+   _Ipanel_2012 |   17814.92   1039.939    17.13   0.000     15703.73    19926.11
+    _Iyear_2001 |   274.0529   1750.918     0.16   0.877    -3280.499    3828.605
+  _Ischool_co_2 |   2822.604    1398.31     2.02   0.051    -16.11609    5661.324
+  _Ischool_co_3 |          0  (omitted)
+  _Ischool_co_4 |   10263.77   3111.919     3.30   0.002     3946.241     16581.3
+  _Ischool_co_5 |          0  (omitted)
+  _Ischool_co_6 |          0  (omitted)
+  _Ischool_co_7 |          0  (omitted)
+  _Ischool_co_8 |   4590.325   1510.914     3.04   0.004     1523.007    7657.643
+  _Ischool_co_9 |  -7191.247   1597.072    -4.50   0.000    -10433.48   -3949.019
+ _Ischool_co_10 |  -2553.156   791.9896    -3.22   0.003    -4160.981   -945.3321
+ _Ischool_co_11 |          0  (omitted)
+ _Ischool_co_12 |  -14850.91   1039.989   -14.28   0.000     -16962.2   -12739.62
+ _Ischool_co_13 |          0  (omitted)
+ _Ischool_co_14 |          0  (omitted)
+ _Ischool_co_15 |  -290.7552   1786.074    -0.16   0.872    -3916.679    3335.169
+ _Ischool_co_16 |   14.26059   978.0498     0.01   0.988    -1971.286    1999.807
+ _Ischool_co_17 |  -777.8196   1931.956    -0.40   0.690    -4699.898    3144.259
+ _Ischool_co_18 |  -1048.653   3292.145    -0.32   0.752    -7732.063    5634.758
+ _Ischool_co_19 |   8494.276   1448.608     5.86   0.000     5553.444    11435.11
+ _Ischool_co_20 |  -973.5795   1028.654    -0.95   0.350    -3061.858    1114.699
+ _Ischool_co_21 |  -17949.08   1984.844    -9.04   0.000    -21978.53   -13919.64
+ _Ischool_co_22 |    735.086   807.4129     0.91   0.369    -904.0493    2374.221
+ _Ischool_co_23 |   5134.191   2295.529     2.24   0.032     474.0181    9794.363
+ _Ischool_co_24 |   6675.183   2259.876     2.95   0.006     2087.391    11262.97
+ _Ischool_co_25 |  -642.5025   1684.502    -0.38   0.705    -4062.224    2777.219
+ _Ischool_co_26 |   5742.025   1800.253     3.19   0.003     2087.317    9396.733
+ _Ischool_co_27 |  -9619.246   2252.965    -4.27   0.000    -14193.01   -5045.483
+ _Ischool_co_28 |   3955.922   1949.876     2.03   0.050    -2.536514    7914.381
+ _Ischool_co_29 |  -2557.703   1334.334    -1.92   0.063    -5266.545    151.1385
+ _Ischool_co_30 |   4703.325   1786.281     2.63   0.013     1076.983    8329.668
+ _Ischool_co_31 |          0  (omitted)
+ _Ischool_co_32 |  -5658.928   2036.015    -2.78   0.009    -9792.258   -1525.597
+ _Ischool_co_33 |          0  (omitted)
+ _Ischool_co_34 |          0  (omitted)
+ _Ischool_co_35 |  -13448.21   1369.726    -9.82   0.000     -16228.9   -10667.52
+ _Ischool_co_36 |  -10313.21    2420.39    -4.26   0.000    -15226.86   -5399.557
+ _Ischool_co_37 |  -2575.355   845.5006    -3.05   0.004    -4291.813   -858.8978
+ _Ischool_co_38 |  -13237.35   2421.233    -5.47   0.000    -18152.72   -8321.989
+ _Ischool_co_39 |  -4756.257    3764.36    -1.26   0.215    -12398.31      2885.8
+ _Ischool_co_40 |   5253.565   1949.484     2.69   0.011     1295.903    9211.227
+ _Ischool_co_41 |  -134.0304   1968.741    -0.07   0.946    -4130.786    3862.725
+ _Ischool_co_42 |   1672.828   2449.998     0.68   0.499    -3300.932    6646.588
+ _Ischool_co_43 |          0  (omitted)
+ _Ischool_co_44 |  -3438.266   1963.123    -1.75   0.089    -7423.618    547.0867
+ _Ischool_co_45 |          0  (omitted)
+ _Ischool_co_46 |  -5883.432   1792.374    -3.28   0.002    -9522.145   -2244.718
+ _Ischool_co_47 |   -7291.97   804.3627    -9.07   0.000    -8924.913   -5659.027
+ _Ischool_co_48 |  -22148.11   2040.233   -10.86   0.000    -26290.01   -18006.22
+ _Ischool_co_49 |          0  (omitted)
+          _cons |   26629.16   4805.035     5.54   0.000     16874.42     36383.9
+---------------------------------------------------------------------------------
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+sum_wage_s~d |      6,951    58649.44    50828.97          0   340768.1
+i.panel           _Ipanel_2010-2012   (naturally coded; _Ipanel_2010 omitted)
+i.year            _Iyear_2000-2001    (naturally coded; _Iyear_2000 omitted)
+i.school_code     _Ischool_co_1-49    (naturally coded; _Ischool_co_1 omitted)
+note: _Ischool_co_3 omitted because of collinearity
+note: _Ischool_co_5 omitted because of collinearity
+note: _Ischool_co_6 omitted because of collinearity
+note: _Ischool_co_7 omitted because of collinearity
+note: _Ischool_co_11 omitted because of collinearity
+note: _Ischool_co_13 omitted because of collinearity
+note: _Ischool_co_14 omitted because of collinearity
+note: _Ischool_co_31 omitted because of collinearity
+note: _Ischool_co_33 omitted because of collinearity
+note: _Ischool_co_34 omitted because of collinearity
+note: _Ischool_co_43 omitted because of collinearity
+note: _Ischool_co_45 omitted because of collinearity
+note: _Ischool_co_49 omitted because of collinearity
+
+Linear regression                               Number of obs     =     27,195
+                                                F(13, 35)         =          .
+                                                Prob > F          =          .
+                                                R-squared         =     0.0173
+                                                Root MSE          =     4.3231
+
+                              (Std. Err. adjusted for 36 clusters in school_code)
+---------------------------------------------------------------------------------
+                |               Robust
+sum_month_sta~d |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+----------------+----------------------------------------------------------------
+afterXtreatment |    .001076   .1583516     0.01   0.995    -.3203948    .3225468
+       att_lgcr |   .0872267   .0712716     1.22   0.229    -.0574622    .2319157
+       att_lgsc |   .0092007   .0035187     2.61   0.013     .0020574     .016344
+       awr_lgcr |  -.0690933   .0702183    -0.98   0.332     -.211644    .0734573
+     e_awr_lgcr |   -.030933   .0928052    -0.33   0.741    -.2193376    .1574717
+         asiafr |   .4388315   .2318525     1.89   0.067    -.0318541    .9095171
+            ole |  -1.276338   .4716821    -2.71   0.010    -2.233903   -.3187722
+            boy |   -.248559   .1086364    -2.29   0.028    -.4691027   -.0280154
+         educav |  -.0339833   .0218283    -1.56   0.129    -.0782971    .0103305
+         educem |   .0095097   .0279816     0.34   0.736    -.0472961    .0663154
+         m_ahim |   .0167389   .0494412     0.34   0.737    -.0836322    .1171099
+   _Ipanel_2011 |   .2052951   .0899324     2.28   0.029     .0227227    .3878675
+   _Ipanel_2012 |   .5003861   .1049205     4.77   0.000     .2873861    .7133861
+    _Iyear_2001 |   .0796418   .0989217     0.81   0.426    -.1211799    .2804636
+  _Ischool_co_2 |   .3582043   .1480262     2.42   0.021     .0576952    .6587135
+  _Ischool_co_3 |          0  (omitted)
+  _Ischool_co_4 |   .9527174   .1967639     4.84   0.000     .5532654    1.352169
+  _Ischool_co_5 |          0  (omitted)
+  _Ischool_co_6 |          0  (omitted)
+  _Ischool_co_7 |          0  (omitted)
+  _Ischool_co_8 |   .1292358    .101983     1.27   0.213    -.0778008    .3362723
+  _Ischool_co_9 |   .1713735   .1034178     1.66   0.106    -.0385758    .3813228
+ _Ischool_co_10 |   .3362109    .052805     6.37   0.000      .229011    .4434109
+ _Ischool_co_11 |          0  (omitted)
+ _Ischool_co_12 |  -.5862932   .1222016    -4.80   0.000    -.8343756   -.3382108
+ _Ischool_co_13 |          0  (omitted)
+ _Ischool_co_14 |          0  (omitted)
+ _Ischool_co_15 |  -.1130275   .1484783    -0.76   0.452    -.4144544    .1883994
+ _Ischool_co_16 |   .3437903   .0835639     4.11   0.000     .1741465    .5134341
+ _Ischool_co_17 |  -.0580633   .1125643    -0.52   0.609    -.2865809    .1704543
+ _Ischool_co_18 |   .3050733   .2094933     1.46   0.154    -.1202207    .7303673
+ _Ischool_co_19 |   1.077332   .0921724    11.69   0.000      .890212    1.264452
+ _Ischool_co_20 |   .7563195   .1259367     6.01   0.000     .5006545    1.011985
+ _Ischool_co_21 |  -1.426223   .1280679   -11.14   0.000    -1.686215   -1.166232
+ _Ischool_co_22 |   .4319355   .0367151    11.76   0.000     .3573998    .5064712
+ _Ischool_co_23 |   .4262316   .1641909     2.60   0.014     .0929064    .7595568
+ _Ischool_co_24 |   .1893919   .0967165     1.96   0.058     -.006953    .3857369
+ _Ischool_co_25 |   .2334015   .0951417     2.45   0.019     .0402537    .4265494
+ _Ischool_co_26 |   .7795448   .1446214     5.39   0.000     .4859477    1.073142
+ _Ischool_co_27 |   .2586048   .1349876     1.92   0.064    -.0154347    .5326442
+ _Ischool_co_28 |   .3018649     .10412     2.90   0.006       .09049    .5132398
+ _Ischool_co_29 |  -.0402268   .0993664    -0.40   0.688    -.2419514    .1614977
+ _Ischool_co_30 |   1.218574   .1433832     8.50   0.000     .9274901    1.509657
+ _Ischool_co_31 |          0  (omitted)
+ _Ischool_co_32 |   1.438356   .1860424     7.73   0.000      1.06067    1.816042
+ _Ischool_co_33 |          0  (omitted)
+ _Ischool_co_34 |          0  (omitted)
+ _Ischool_co_35 |   .0304872   .1342143     0.23   0.822    -.2419823    .3029567
+ _Ischool_co_36 |   .1861007   .1290536     1.44   0.158    -.0758921    .4480934
+ _Ischool_co_37 |   .0162161   .0554219     0.29   0.772    -.0962963    .1287286
+ _Ischool_co_38 |  -1.342107   .1836231    -7.31   0.000    -1.714881   -.9693319
+ _Ischool_co_39 |  -1.562006   .1763171    -8.86   0.000    -1.919949   -1.204063
+ _Ischool_co_40 |   .5673101   .0972637     5.83   0.000     .3698543     .764766
+ _Ischool_co_41 |   .0948826   .0967831     0.98   0.334    -.1015976    .2913628
+ _Ischool_co_42 |    .089714   .1257102     0.71   0.480    -.1654913    .3449193
+ _Ischool_co_43 |          0  (omitted)
+ _Ischool_co_44 |   .4258233   .1086019     3.92   0.000     .2053497    .6462968
+ _Ischool_co_45 |          0  (omitted)
+ _Ischool_co_46 |  -.1890147   .1275473    -1.48   0.147    -.4479495    .0699201
+ _Ischool_co_47 |   .2382094   .0476068     5.00   0.000     .1415624    .3348564
+ _Ischool_co_48 |  -1.505274   .1098801   -13.70   0.000    -1.728342   -1.282205
+ _Ischool_co_49 |          0  (omitted)
+          _cons |    8.25463   .3296108    25.04   0.000     7.585485    8.923776
+---------------------------------------------------------------------------------
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+sum_month_~d |      6,951    9.098979    4.412212          0         12
+i.panel           _Ipanel_2010-2012   (naturally coded; _Ipanel_2010 omitted)
+i.year            _Iyear_2000-2001    (naturally coded; _Iyear_2000 omitted)
+i.school_code     _Ischool_co_1-49    (naturally coded; _Ischool_co_1 omitted)
+note: _Ischool_co_3 omitted because of collinearity
+note: _Ischool_co_5 omitted because of collinearity
+note: _Ischool_co_6 omitted because of collinearity
+note: _Ischool_co_7 omitted because of collinearity
+note: _Ischool_co_11 omitted because of collinearity
+note: _Ischool_co_13 omitted because of collinearity
+note: _Ischool_co_14 omitted because of collinearity
+note: _Ischool_co_31 omitted because of collinearity
+note: _Ischool_co_33 omitted because of collinearity
+note: _Ischool_co_34 omitted because of collinearity
+note: _Ischool_co_43 omitted because of collinearity
+note: _Ischool_co_45 omitted because of collinearity
+note: _Ischool_co_49 omitted because of collinearity
+
+Linear regression                               Number of obs     =     27,195
+                                                F(13, 35)         =          .
+                                                Prob > F          =          .
+                                                R-squared         =     0.0172
+                                                Root MSE          =     .33758
+
+                              (Std. Err. adjusted for 36 clusters in school_code)
+---------------------------------------------------------------------------------
+                |               Robust
+sum_work_stac~d |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+----------------+----------------------------------------------------------------
+afterXtreatment |   -.009811   .0143265    -0.68   0.498    -.0388953    .0192733
+       att_lgcr |   .0072614   .0046039     1.58   0.124    -.0020851    .0166079
+       att_lgsc |   .0003396   .0002629     1.29   0.205    -.0001941    .0008733
+       awr_lgcr |  -.0061609   .0047693    -1.29   0.205     -.015843    .0035212
+     e_awr_lgcr |  -.0029889   .0056281    -0.53   0.599    -.0144144    .0084367
+         asiafr |   .0228624   .0161782     1.41   0.166    -.0099812    .0557059
+            ole |  -.1294586   .0388432    -3.33   0.002    -.2083144   -.0506027
+            boy |  -.0416625   .0101838    -4.09   0.000    -.0623366   -.0209883
+         educav |  -.0022029   .0019202    -1.15   0.259    -.0061012    .0016954
+         educem |   .0003824   .0021164     0.18   0.858    -.0039142     .004679
+         m_ahim |   .0014058    .002985     0.47   0.641    -.0046541    .0074658
+   _Ipanel_2011 |    .001765   .0036172     0.49   0.629    -.0055783    .0091084
+   _Ipanel_2012 |   .0108108   .0050706     2.13   0.040     .0005169    .0211047
+    _Iyear_2001 |    .013376   .0084445     1.58   0.122    -.0037673    .0305193
+  _Ischool_co_2 |   .0031007    .009721     0.32   0.752    -.0166339    .0228354
+  _Ischool_co_3 |          0  (omitted)
+  _Ischool_co_4 |   .0248304   .0143333     1.73   0.092    -.0042678    .0539287
+  _Ischool_co_5 |          0  (omitted)
+  _Ischool_co_6 |          0  (omitted)
+  _Ischool_co_7 |          0  (omitted)
+  _Ischool_co_8 |   .0083895   .0097127     0.86   0.394    -.0113284    .0281074
+  _Ischool_co_9 |   .0028961   .0075291     0.38   0.703    -.0123887    .0181809
+ _Ischool_co_10 |   .0188874   .0036264     5.21   0.000     .0115254    .0262494
+ _Ischool_co_11 |          0  (omitted)
+ _Ischool_co_12 |  -.0317818    .008578    -3.71   0.001     -.049196   -.0143676
+ _Ischool_co_13 |          0  (omitted)
+ _Ischool_co_14 |          0  (omitted)
+ _Ischool_co_15 |   .0114183   .0116248     0.98   0.333    -.0121812    .0350179
+ _Ischool_co_16 |   .0244109   .0058711     4.16   0.000     .0124919    .0363299
+ _Ischool_co_17 |   .0118519   .0104625     1.13   0.265    -.0093881    .0330919
+ _Ischool_co_18 |   .0260171   .0186146     1.40   0.171    -.0117726    .0638067
+ _Ischool_co_19 |   .0704538   .0074796     9.42   0.000     .0552694    .0856382
+ _Ischool_co_20 |   .0363337   .0083793     4.34   0.000     .0193228    .0533445
+ _Ischool_co_21 |  -.1001051   .0100748    -9.94   0.000    -.1205579   -.0796522
+ _Ischool_co_22 |   .0432881   .0021807    19.85   0.000      .038861    .0477152
+ _Ischool_co_23 |   .0217763   .0112584     1.93   0.061    -.0010795    .0446321
+ _Ischool_co_24 |   -.000176   .0073231    -0.02   0.981    -.0150427    .0146907
+ _Ischool_co_25 |   .0298966    .007855     3.81   0.001     .0139501    .0458431
+ _Ischool_co_26 |   .0488807   .0117611     4.16   0.000     .0250044     .072757
+ _Ischool_co_27 |   .0359307     .01138     3.16   0.003     .0128281    .0590332
+ _Ischool_co_28 |    .003185   .0074888     0.43   0.673    -.0120181    .0183881
+ _Ischool_co_29 |  -.0097226   .0067777    -1.43   0.160    -.0234821     .004037
+ _Ischool_co_30 |   .0589095   .0132499     4.45   0.000     .0320108    .0858081
+ _Ischool_co_31 |          0  (omitted)
+ _Ischool_co_32 |    .099081   .0124623     7.95   0.000     .0737813    .1243807
+ _Ischool_co_33 |          0  (omitted)
+ _Ischool_co_34 |          0  (omitted)
+ _Ischool_co_35 |   .0469759   .0107294     4.38   0.000     .0251941    .0687577
+ _Ischool_co_36 |  -.0040959   .0097069    -0.42   0.676    -.0238019    .0156101
+ _Ischool_co_37 |  -.0038006   .0040324    -0.94   0.352    -.0119868    .0043857
+ _Ischool_co_38 |  -.1133139   .0129511    -8.75   0.000    -.1396061   -.0870217
+ _Ischool_co_39 |  -.1464442   .0106142   -13.80   0.000    -.1679923   -.1248961
+ _Ischool_co_40 |   .0361501    .006945     5.21   0.000      .022051    .0502492
+ _Ischool_co_41 |   .0241552   .0084465     2.86   0.007     .0070078    .0413026
+ _Ischool_co_42 |   .0047039     .00956     0.49   0.626    -.0147041    .0241118
+ _Ischool_co_43 |          0  (omitted)
+ _Ischool_co_44 |   .0382396   .0094757     4.04   0.000     .0190029    .0574762
+ _Ischool_co_45 |          0  (omitted)
+ _Ischool_co_46 |  -.0194476   .0087526    -2.22   0.033    -.0372162   -.0016789
+ _Ischool_co_47 |    .015184   .0028402     5.35   0.000     .0094181    .0209498
+ _Ischool_co_48 |  -.1175101   .0086079   -13.65   0.000     -.134985   -.1000351
+ _Ischool_co_49 |          0  (omitted)
+          _cons |   .8490892   .0244441    34.74   0.000      .799465    .8987133
+---------------------------------------------------------------------------------
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+sum_work_s~d |      6,951    .8621781    .3447378          0          1
+sample is NE and quartile is house_avwage00_02L
+i.panel           _Ipanel_2010-2012   (naturally coded; _Ipanel_2010 omitted)
+i.year            _Iyear_2000-2001    (naturally coded; _Iyear_2000 omitted)
+i.school_code     _Ischool_co_1-49    (naturally coded; _Ischool_co_1 omitted)
+note: _Ischool_co_3 omitted because of collinearity
+note: _Ischool_co_5 omitted because of collinearity
+note: _Ischool_co_6 omitted because of collinearity
+note: _Ischool_co_7 omitted because of collinearity
+note: _Ischool_co_11 omitted because of collinearity
+note: _Ischool_co_13 omitted because of collinearity
+note: _Ischool_co_14 omitted because of collinearity
+note: _Ischool_co_31 omitted because of collinearity
+note: _Ischool_co_33 omitted because of collinearity
+note: _Ischool_co_34 omitted because of collinearity
+note: _Ischool_co_43 omitted because of collinearity
+note: _Ischool_co_45 omitted because of collinearity
+note: _Ischool_co_49 omitted because of collinearity
+
+Linear regression                               Number of obs     =     20,514
+                                                F(13, 35)         =          .
+                                                Prob > F          =          .
+                                                R-squared         =     0.0795
+                                                Root MSE          =     28.049
+
+                              (Std. Err. adjusted for 36 clusters in school_code)
+---------------------------------------------------------------------------------
+                |               Robust
+pctle_wage_st~d |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+----------------+----------------------------------------------------------------
+afterXtreatment |   3.124932   1.486578     2.10   0.043     .1070191    6.142845
+       att_lgcr |  -.5669265   .4940409    -1.15   0.259    -1.569883    .4360298
+       att_lgsc |   .0366918   .0339951     1.08   0.288    -.0323219    .1057054
+       awr_lgcr |   1.304459   .4126693     3.16   0.003     .4666961    2.142223
+     e_awr_lgcr |  -1.686967   .8990933    -1.88   0.069    -3.512224    .1382893
+         asiafr |    .379643    1.10914     0.34   0.734    -1.872031    2.631317
+            ole |   2.484874   5.064841     0.49   0.627      -7.7973    12.76705
+            boy |   10.65461   2.649031     4.02   0.000     5.276792    16.03243
+         educav |  -.0306672   .1469681    -0.21   0.836    -.3290282    .2676939
+         educem |   .0924411   .2070001     0.45   0.658    -.3277914    .5126736
+         m_ahim |  -.6649135   .3362912    -1.98   0.056    -1.347621    .0177939
+   _Ipanel_2011 |  -1.024861   .3918482    -2.62   0.013    -1.820355    -.229367
+   _Ipanel_2012 |  -2.561714   .4355324    -5.88   0.000    -3.445892   -1.677536
+    _Iyear_2001 |  -2.560445    1.13864    -2.25   0.031    -4.872006   -.2488833
+  _Ischool_co_2 |  -1.995389   2.761313    -0.72   0.475    -7.601153    3.610375
+  _Ischool_co_3 |          0  (omitted)
+  _Ischool_co_4 |  -5.523189   1.068735    -5.17   0.000    -7.692835   -3.353542
+  _Ischool_co_5 |          0  (omitted)
+  _Ischool_co_6 |          0  (omitted)
+  _Ischool_co_7 |          0  (omitted)
+  _Ischool_co_8 |   8.673084    1.77983     4.87   0.000     5.059836    12.28633
+  _Ischool_co_9 |   4.799094   1.770393     2.71   0.010     1.205005    8.393183
+ _Ischool_co_10 |   3.445232   .6623385     5.20   0.000     2.100613    4.789851
+ _Ischool_co_11 |          0  (omitted)
+ _Ischool_co_12 |  -.0911192   1.551748    -0.06   0.954    -3.241336    3.059098
+ _Ischool_co_13 |          0  (omitted)
+ _Ischool_co_14 |          0  (omitted)
+ _Ischool_co_15 |   4.660336    1.40658     3.31   0.002     1.804827    7.515845
+ _Ischool_co_16 |   2.921119   1.076348     2.71   0.010     .7360162    5.106222
+ _Ischool_co_17 |  -10.47972   1.565757    -6.69   0.000    -13.65838   -7.301069
+ _Ischool_co_18 |   7.347178   2.753135     2.67   0.011     1.758016    12.93634
+ _Ischool_co_19 |   9.991798    1.01581     9.84   0.000     7.929594      12.054
+ _Ischool_co_20 |   3.575817   1.563738     2.29   0.028     .4012591    6.750374
+ _Ischool_co_21 |  -4.934569   1.461578    -3.38   0.002     -7.90173   -1.967407
+ _Ischool_co_22 |   3.551242   .7321603     4.85   0.000     2.064878    5.037607
+ _Ischool_co_23 |   7.805171   1.816012     4.30   0.000     4.118471    11.49187
+ _Ischool_co_24 |   1.337253   .9721978     1.38   0.178    -.6364132     3.31092
+ _Ischool_co_25 |    8.82682   .9373692     9.42   0.000      6.92386    10.72978
+ _Ischool_co_26 |   5.438649   1.613415     3.37   0.002     2.163242    8.714056
+ _Ischool_co_27 |   4.989765   1.445668     3.45   0.001     2.054903    7.924627
+ _Ischool_co_28 |   5.284953   .9499155     5.56   0.000     3.356522    7.213384
+ _Ischool_co_29 |    2.89396    .696422     4.16   0.000     1.480149    4.307772
+ _Ischool_co_30 |   1.327225   1.192219     1.11   0.273    -1.093109    3.747559
+ _Ischool_co_31 |          0  (omitted)
+ _Ischool_co_32 |   .0707627   3.102525     0.02   0.982    -6.227698    6.369224
+ _Ischool_co_33 |          0  (omitted)
+ _Ischool_co_34 |          0  (omitted)
+ _Ischool_co_35 |  -2.260994   1.674531    -1.35   0.186    -5.660473    1.138485
+ _Ischool_co_36 |   4.503565   1.088206     4.14   0.000     2.294389    6.712741
+ _Ischool_co_37 |   2.236642   .5263206     4.25   0.000     1.168154     3.30513
+ _Ischool_co_38 |  -6.335739   1.781335    -3.56   0.001    -9.952042   -2.719436
+ _Ischool_co_39 |  -4.776404   1.347251    -3.55   0.001    -7.511469   -2.041338
+ _Ischool_co_40 |   6.407177   1.709822     3.75   0.001     2.936055    9.878299
+ _Ischool_co_41 |   4.921147   1.017187     4.84   0.000     2.856147    6.986147
+ _Ischool_co_42 |    4.46982    .911622     4.90   0.000     2.619129    6.320511
+ _Ischool_co_43 |          0  (omitted)
+ _Ischool_co_44 |   9.017896   1.813743     4.97   0.000     5.335801    12.69999
+ _Ischool_co_45 |          0  (omitted)
+ _Ischool_co_46 |   7.500572   .8253587     9.09   0.000     5.825005    9.176139
+ _Ischool_co_47 |   1.246094   1.038538     1.20   0.238    -.8622498    3.354438
+ _Ischool_co_48 |  -13.65092   1.281594   -10.65   0.000     -16.2527   -11.04915
+ _Ischool_co_49 |          0  (omitted)
+          _cons |   39.12458   3.087503    12.67   0.000     32.85662    45.39255
+---------------------------------------------------------------------------------
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+pctle_wage~d |      5,562    44.52014    30.44978          1        100
+i.panel           _Ipanel_2010-2012   (naturally coded; _Ipanel_2010 omitted)
+i.year            _Iyear_2000-2001    (naturally coded; _Iyear_2000 omitted)
+i.school_code     _Ischool_co_1-49    (naturally coded; _Ischool_co_1 omitted)
+note: _Ischool_co_3 omitted because of collinearity
+note: _Ischool_co_5 omitted because of collinearity
+note: _Ischool_co_6 omitted because of collinearity
+note: _Ischool_co_7 omitted because of collinearity
+note: _Ischool_co_11 omitted because of collinearity
+note: _Ischool_co_13 omitted because of collinearity
+note: _Ischool_co_14 omitted because of collinearity
+note: _Ischool_co_31 omitted because of collinearity
+note: _Ischool_co_33 omitted because of collinearity
+note: _Ischool_co_34 omitted because of collinearity
+note: _Ischool_co_43 omitted because of collinearity
+note: _Ischool_co_45 omitted because of collinearity
+note: _Ischool_co_49 omitted because of collinearity
+
+Linear regression                               Number of obs     =     20,514
+                                                F(13, 35)         =          .
+                                                Prob > F          =          .
+                                                R-squared         =     0.0971
+                                                Root MSE          =      42429
+
+                              (Std. Err. adjusted for 36 clusters in school_code)
+---------------------------------------------------------------------------------
+                |               Robust
+sum_wage_stac~d |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+----------------+----------------------------------------------------------------
+afterXtreatment |   6154.265   2320.435     2.65   0.012     1443.532       10865
+       att_lgcr |  -827.9067   814.7773    -1.02   0.317    -2481.993    826.1793
+       att_lgsc |   83.35438   50.73856     1.64   0.109    -19.65038    186.3591
+       awr_lgcr |     2191.8   667.8861     3.28   0.002     835.9195    3547.681
+     e_awr_lgcr |  -3225.711    1380.11    -2.34   0.025    -6027.483   -423.9391
+         asiafr |  -3.080259   1353.868    -0.00   0.998    -2751.579    2745.418
+            ole |   4135.053   8019.509     0.52   0.609    -12145.42    20415.52
+            boy |   19077.57   2897.716     6.58   0.000     13194.89    24960.25
+         educav |   237.8956   221.2813     1.08   0.290    -211.3293    687.1205
+         educem |    65.1869   319.6782     0.20   0.840    -583.7943    714.1681
+         m_ahim |  -1003.495   472.0133    -2.13   0.041    -1961.733   -45.25695
+   _Ipanel_2011 |   5106.183   598.0955     8.54   0.000     3891.984    6320.381
+   _Ipanel_2012 |   9550.413   721.2156    13.24   0.000     8086.268    11014.56
+    _Iyear_2001 |  -4996.057   1770.948    -2.82   0.008    -8591.272   -1400.841
+  _Ischool_co_2 |  -1704.855   3809.225    -0.45   0.657    -9437.993    6028.284
+  _Ischool_co_3 |          0  (omitted)
+  _Ischool_co_4 |  -7291.734    1565.28    -4.66   0.000    -10469.42   -4114.046
+  _Ischool_co_5 |          0  (omitted)
+  _Ischool_co_6 |          0  (omitted)
+  _Ischool_co_7 |          0  (omitted)
+  _Ischool_co_8 |   15015.21   2421.322     6.20   0.000     10099.67    19930.76
+  _Ischool_co_9 |   3704.507    2637.76     1.40   0.169    -1650.431    9059.445
+ _Ischool_co_10 |   3331.408   919.0501     3.62   0.001     1465.637    5197.179
+ _Ischool_co_11 |          0  (omitted)
+ _Ischool_co_12 |  -1775.309   2357.593    -0.75   0.456    -6561.476    3010.858
+ _Ischool_co_13 |          0  (omitted)
+ _Ischool_co_14 |          0  (omitted)
+ _Ischool_co_15 |    5290.59   2182.516     2.42   0.021     859.8474    9721.333
+ _Ischool_co_16 |   1050.911   1766.497     0.59   0.556    -2535.268     4637.09
+ _Ischool_co_17 |  -19179.73   2079.226    -9.22   0.000    -23400.78   -14958.68
+ _Ischool_co_18 |   8644.645   3895.575     2.22   0.033     736.2069    16553.08
+ _Ischool_co_19 |   11577.51   1456.431     7.95   0.000       8620.8    14534.23
+ _Ischool_co_20 |   2263.761   2351.078     0.96   0.342    -2509.181    7036.703
+ _Ischool_co_21 |   -6466.75   1812.251    -3.57   0.001    -10145.81   -2787.684
+ _Ischool_co_22 |   3466.262   1161.672     2.98   0.005     1107.942    5824.581
+ _Ischool_co_23 |   8725.942   2677.662     3.26   0.002         3290    14161.88
+ _Ischool_co_24 |   273.2929   1244.368     0.22   0.827    -2252.909    2799.494
+ _Ischool_co_25 |   14691.33   1324.623    11.09   0.000      12002.2    17380.45
+ _Ischool_co_26 |   5607.169   2636.523     2.13   0.041     254.7437     10959.6
+ _Ischool_co_27 |   5519.942   2044.928     2.70   0.011     1368.517    9671.367
+ _Ischool_co_28 |   8748.772   1337.313     6.54   0.000     6033.882    11463.66
+ _Ischool_co_29 |   6881.578   1170.507     5.88   0.000     4505.322    9257.834
+ _Ischool_co_30 |  -3002.285   2024.778    -1.48   0.147    -7112.802    1108.233
+ _Ischool_co_31 |          0  (omitted)
+ _Ischool_co_32 |    -1890.8   4450.217    -0.42   0.674    -10925.22    7143.622
+ _Ischool_co_33 |          0  (omitted)
+ _Ischool_co_34 |          0  (omitted)
+ _Ischool_co_35 |   -9529.97    1991.71    -4.78   0.000    -13573.36   -5486.585
+ _Ischool_co_36 |   2865.794   2000.223     1.43   0.161    -1194.874    6926.463
+ _Ischool_co_37 |   2524.531   765.0143     3.30   0.002     971.4693    4077.593
+ _Ischool_co_38 |  -7702.887   2539.679    -3.03   0.005    -12858.71   -2547.063
+ _Ischool_co_39 |  -5680.499   1951.777    -2.91   0.006    -9642.817   -1718.181
+ _Ischool_co_40 |   7173.242   2469.594     2.90   0.006     2159.699    12186.79
+ _Ischool_co_41 |   8768.119   1566.946     5.60   0.000     5587.049    11949.19
+ _Ischool_co_42 |   9003.481   1189.499     7.57   0.000     6588.668    11418.29
+ _Ischool_co_43 |          0  (omitted)
+ _Ischool_co_44 |   11678.79   2553.744     4.57   0.000     6494.418    16863.17
+ _Ischool_co_45 |          0  (omitted)
+ _Ischool_co_46 |   12034.11    1577.98     7.63   0.000     8830.642    15237.58
+ _Ischool_co_47 |     2172.7   1480.027     1.47   0.151    -831.9157    5177.315
+ _Ischool_co_48 |  -18875.83   1909.762    -9.88   0.000    -22752.85    -14998.8
+ _Ischool_co_49 |          0  (omitted)
+          _cons |   27978.98   3708.185     7.55   0.000     20450.97       35507
+---------------------------------------------------------------------------------
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+sum_wage_s~d |      5,562    47876.18    44494.74          0   370303.6
+i.panel           _Ipanel_2010-2012   (naturally coded; _Ipanel_2010 omitted)
+i.year            _Iyear_2000-2001    (naturally coded; _Iyear_2000 omitted)
+i.school_code     _Ischool_co_1-49    (naturally coded; _Ischool_co_1 omitted)
+note: _Ischool_co_3 omitted because of collinearity
+note: _Ischool_co_5 omitted because of collinearity
+note: _Ischool_co_6 omitted because of collinearity
+note: _Ischool_co_7 omitted because of collinearity
+note: _Ischool_co_11 omitted because of collinearity
+note: _Ischool_co_13 omitted because of collinearity
+note: _Ischool_co_14 omitted because of collinearity
+note: _Ischool_co_31 omitted because of collinearity
+note: _Ischool_co_33 omitted because of collinearity
+note: _Ischool_co_34 omitted because of collinearity
+note: _Ischool_co_43 omitted because of collinearity
+note: _Ischool_co_45 omitted because of collinearity
+note: _Ischool_co_49 omitted because of collinearity
+
+Linear regression                               Number of obs     =     20,514
+                                                F(13, 35)         =          .
+                                                Prob > F          =          .
+                                                R-squared         =     0.0470
+                                                Root MSE          =     4.4975
+
+                              (Std. Err. adjusted for 36 clusters in school_code)
+---------------------------------------------------------------------------------
+                |               Robust
+sum_month_sta~d |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+----------------+----------------------------------------------------------------
+afterXtreatment |   .4830705    .181565     2.66   0.012     .1144739    .8516671
+       att_lgcr |  -.0314472   .0772126    -0.41   0.686     -.188197    .1253027
+       att_lgsc |   .0005793   .0050634     0.11   0.910    -.0096999    .0108586
+       awr_lgcr |    .066877   .0696311     0.96   0.343    -.0744816    .2082356
+     e_awr_lgcr |  -.0286492   .1244884    -0.23   0.819    -.2813741    .2240758
+         asiafr |   .0285821   .2328015     0.12   0.903    -.4440301    .5011944
+            ole |  -.2005679   .6920516    -0.29   0.774    -1.605507    1.204372
+            boy |   .6813838   .5719163     1.19   0.242     -.479668    1.842436
+         educav |  -.0131919   .0219772    -0.60   0.552    -.0578079    .0314242
+         educem |   .0026955   .0269442     0.10   0.921    -.0520041    .0573952
+         m_ahim |  -.1137931   .0560338    -2.03   0.050    -.2275478   -.0000384
+   _Ipanel_2011 |   .2111729   .0883692     2.39   0.022     .0317738    .3905719
+   _Ipanel_2012 |   .2502194   .0651311     3.84   0.000     .1179961    .3824426
+    _Iyear_2001 |  -.1806622   .1130653    -1.60   0.119    -.4101969    .0488726
+  _Ischool_co_2 |  -.2867374   .4721132    -0.61   0.548    -1.245178    .6717033
+  _Ischool_co_3 |          0  (omitted)
+  _Ischool_co_4 |  -.7993931   .1796672    -4.45   0.000    -1.164137   -.4346494
+  _Ischool_co_5 |          0  (omitted)
+  _Ischool_co_6 |          0  (omitted)
+  _Ischool_co_7 |          0  (omitted)
+  _Ischool_co_8 |   .9158394   .2243391     4.08   0.000     .4604069    1.371272
+  _Ischool_co_9 |    1.15204    .246783     4.67   0.000      .651044    1.653036
+ _Ischool_co_10 |   .5638474   .1162276     4.85   0.000     .3278929    .7998019
+ _Ischool_co_11 |          0  (omitted)
+ _Ischool_co_12 |   .6924905   .2107947     3.29   0.002     .2645544    1.120427
+ _Ischool_co_13 |          0  (omitted)
+ _Ischool_co_14 |          0  (omitted)
+ _Ischool_co_15 |   1.010423   .2604554     3.88   0.000     .4816701    1.539175
+ _Ischool_co_16 |    .612987   .1355033     4.52   0.000     .3379007    .8880733
+ _Ischool_co_17 |  -.9536192   .3057699    -3.12   0.004    -1.574365   -.3328733
+ _Ischool_co_18 |   1.326214   .3688068     3.60   0.001      .577496    2.074931
+ _Ischool_co_19 |   1.752565   .1442962    12.15   0.000     1.459628    2.045502
+ _Ischool_co_20 |   1.087415   .2113196     5.15   0.000     .6584138    1.516417
+ _Ischool_co_21 |   -.072989   .3064321    -0.24   0.813    -.6950791    .5491012
+ _Ischool_co_22 |   .4977704   .1056367     4.71   0.000     .2833165    .7122242
+ _Ischool_co_23 |   1.165202   .3512963     3.32   0.002     .4520326    1.878371
+ _Ischool_co_24 |   .7950379   .1537198     5.17   0.000     .4829702    1.107106
+ _Ischool_co_25 |   1.070976   .1414264     7.57   0.000     .7838652    1.358087
+ _Ischool_co_26 |   1.080092   .2141703     5.04   0.000     .6453028     1.51488
+ _Ischool_co_27 |   .8830605   .2742236     3.22   0.003     .3263569    1.439764
+ _Ischool_co_28 |   .7302299   .1351829     5.40   0.000     .4557939    1.004666
+ _Ischool_co_29 |   .3001905   .0993867     3.02   0.005     .0984247    .5019563
+ _Ischool_co_30 |   1.754159   .1678098    10.45   0.000     1.413487    2.094831
+ _Ischool_co_31 |          0  (omitted)
+ _Ischool_co_32 |   -.041195   .4980283    -0.08   0.935    -1.052246    .9698561
+ _Ischool_co_33 |          0  (omitted)
+ _Ischool_co_34 |          0  (omitted)
+ _Ischool_co_35 |   .3947492   .3113701     1.27   0.213    -.2373657    1.026864
+ _Ischool_co_36 |   1.249572   .1482887     8.43   0.000     .9485304    1.550614
+ _Ischool_co_37 |   .4378818   .0855947     5.12   0.000     .2641153    .6116483
+ _Ischool_co_38 |    -.78554   .3460395    -2.27   0.029    -1.488038   -.0830424
+ _Ischool_co_39 |   -.695901   .2221917    -3.13   0.003    -1.146974   -.2448278
+ _Ischool_co_40 |   1.062145   .2525578     4.21   0.000     .5494257    1.574865
+ _Ischool_co_41 |   .7401752   .1644228     4.50   0.000     .4063791    1.073971
+ _Ischool_co_42 |   .8117165   .1337984     6.07   0.000     .5400913    1.083342
+ _Ischool_co_43 |          0  (omitted)
+ _Ischool_co_44 |    1.50813   .2880008     5.24   0.000     .9234576    2.092803
+ _Ischool_co_45 |          0  (omitted)
+ _Ischool_co_46 |   1.292239   .1047025    12.34   0.000     1.079682    1.504797
+ _Ischool_co_47 |   .5307527   .1573921     3.37   0.002     .2112297    .8502756
+ _Ischool_co_48 |  -2.122316   .1919639   -11.06   0.000    -2.512024   -1.732609
+ _Ischool_co_49 |          0  (omitted)
+          _cons |   8.013258   .5871898    13.65   0.000       6.8212    9.205317
+---------------------------------------------------------------------------------
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+sum_month_~d |      5,562    8.145092    4.913565          0         12
+i.panel           _Ipanel_2010-2012   (naturally coded; _Ipanel_2010 omitted)
+i.year            _Iyear_2000-2001    (naturally coded; _Iyear_2000 omitted)
+i.school_code     _Ischool_co_1-49    (naturally coded; _Ischool_co_1 omitted)
+note: _Ischool_co_3 omitted because of collinearity
+note: _Ischool_co_5 omitted because of collinearity
+note: _Ischool_co_6 omitted because of collinearity
+note: _Ischool_co_7 omitted because of collinearity
+note: _Ischool_co_11 omitted because of collinearity
+note: _Ischool_co_13 omitted because of collinearity
+note: _Ischool_co_14 omitted because of collinearity
+note: _Ischool_co_31 omitted because of collinearity
+note: _Ischool_co_33 omitted because of collinearity
+note: _Ischool_co_34 omitted because of collinearity
+note: _Ischool_co_43 omitted because of collinearity
+note: _Ischool_co_45 omitted because of collinearity
+note: _Ischool_co_49 omitted because of collinearity
+
+Linear regression                               Number of obs     =     20,514
+                                                F(13, 35)         =          .
+                                                Prob > F          =          .
+                                                R-squared         =     0.0391
+                                                Root MSE          =     .36204
+
+                              (Std. Err. adjusted for 36 clusters in school_code)
+---------------------------------------------------------------------------------
+                |               Robust
+sum_work_stac~d |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+----------------+----------------------------------------------------------------
+afterXtreatment |   .0373854    .017459     2.14   0.039     .0019417    .0728291
+       att_lgcr |  -.0001774   .0059224    -0.03   0.976    -.0122005    .0118458
+       att_lgsc |   4.05e-06    .000447     0.01   0.993    -.0009034    .0009115
+       awr_lgcr |   .0020912   .0065434     0.32   0.751    -.0111927    .0153751
+     e_awr_lgcr |  -.0039091   .0108127    -0.36   0.720    -.0258601    .0180419
+         asiafr |  -.0064185   .0214435    -0.30   0.766    -.0499512    .0371142
+            ole |   .0181363   .0380996     0.48   0.637    -.0592101    .0954827
+            boy |   .0356822   .0468162     0.76   0.451    -.0593598    .1307242
+         educav |  -.0021384   .0017352    -1.23   0.226    -.0056612    .0013843
+         educem |   .0007784   .0018307     0.43   0.673    -.0029381    .0044949
+         m_ahim |  -.0065659   .0041441    -1.58   0.122    -.0149789     .001847
+   _Ipanel_2011 |   .0026323   .0057514     0.46   0.650    -.0090437    .0143084
+   _Ipanel_2012 |  -.0030711   .0075727    -0.41   0.688    -.0184445    .0123024
+    _Iyear_2001 |  -.0078802   .0106056    -0.74   0.462    -.0294108    .0136503
+  _Ischool_co_2 |  -.0589759   .0353166    -1.67   0.104    -.1306724    .0127207
+  _Ischool_co_3 |          0  (omitted)
+  _Ischool_co_4 |  -.1019392   .0137423    -7.42   0.000    -.1298375   -.0740408
+  _Ischool_co_5 |          0  (omitted)
+  _Ischool_co_6 |          0  (omitted)
+  _Ischool_co_7 |          0  (omitted)
+  _Ischool_co_8 |   .0503712   .0182574     2.76   0.009     .0133068    .0874357
+  _Ischool_co_9 |   .0792836   .0171074     4.63   0.000     .0445537    .1140135
+ _Ischool_co_10 |   .0532416   .0091658     5.81   0.000     .0346339    .0718492
+ _Ischool_co_11 |          0  (omitted)
+ _Ischool_co_12 |    .032462   .0148894     2.18   0.036      .002235    .0626891
+ _Ischool_co_13 |          0  (omitted)
+ _Ischool_co_14 |          0  (omitted)
+ _Ischool_co_15 |   .0675021   .0234693     2.88   0.007     .0198568    .1151474
+ _Ischool_co_16 |   .0285796   .0097209     2.94   0.006     .0088451    .0483141
+ _Ischool_co_17 |  -.0442791    .023928    -1.85   0.073    -.0928555    .0042973
+ _Ischool_co_18 |   .0897717   .0251084     3.58   0.001     .0387989    .1407446
+ _Ischool_co_19 |   .1162107   .0130626     8.90   0.000     .0896921    .1427292
+ _Ischool_co_20 |   .0735347   .0144404     5.09   0.000     .0442192    .1028502
+ _Ischool_co_21 |  -.0540838   .0288105    -1.88   0.069    -.1125723    .0044047
+ _Ischool_co_22 |   .0323478   .0081426     3.97   0.000     .0158174    .0488783
+ _Ischool_co_23 |   .0578358   .0264983     2.18   0.036     .0040413    .1116303
+ _Ischool_co_24 |   .0573061   .0147958     3.87   0.000      .027269    .0873432
+ _Ischool_co_25 |   .0554326   .0142615     3.89   0.000     .0264801     .084385
+ _Ischool_co_26 |   .0664384   .0159635     4.16   0.000     .0340309    .0988459
+ _Ischool_co_27 |   .0578149   .0237167     2.44   0.020     .0096675    .1059624
+ _Ischool_co_28 |   .0316133    .012661     2.50   0.017     .0059102    .0573164
+ _Ischool_co_29 |  -.0218957   .0072073    -3.04   0.004    -.0365273   -.0072641
+ _Ischool_co_30 |   .0464063   .0129631     3.58   0.001     .0200899    .0727228
+ _Ischool_co_31 |          0  (omitted)
+ _Ischool_co_32 |  -.0324877   .0354156    -0.92   0.365    -.1043853    .0394098
+ _Ischool_co_33 |          0  (omitted)
+ _Ischool_co_34 |          0  (omitted)
+ _Ischool_co_35 |   .0146214   .0244047     0.60   0.553    -.0349229    .0641657
+ _Ischool_co_36 |   .0696266   .0120725     5.77   0.000      .045118    .0941351
+ _Ischool_co_37 |   .0154921   .0075135     2.06   0.047     .0002389    .0307453
+ _Ischool_co_38 |  -.0782345   .0263157    -2.97   0.005    -.1316583   -.0248107
+ _Ischool_co_39 |  -.0958655   .0174371    -5.50   0.000    -.1312648   -.0604663
+ _Ischool_co_40 |   .0628358   .0174567     3.60   0.001     .0273968    .0982748
+ _Ischool_co_41 |   .0498467   .0156033     3.19   0.003     .0181703    .0815231
+ _Ischool_co_42 |   .0388712    .012757     3.05   0.004      .012973    .0647693
+ _Ischool_co_43 |          0  (omitted)
+ _Ischool_co_44 |   .0976424   .0239082     4.08   0.000     .0491061    .1461787
+ _Ischool_co_45 |          0  (omitted)
+ _Ischool_co_46 |   .0858039   .0090794     9.45   0.000     .0673718     .104236
+ _Ischool_co_47 |  -.0018502   .0111082    -0.17   0.869     -.024401    .0207007
+ _Ischool_co_48 |  -.1449388   .0145315    -9.97   0.000    -.1744394   -.1154383
+ _Ischool_co_49 |          0  (omitted)
+          _cons |   .8202013   .0518403    15.82   0.000       .71496    .9254427
+---------------------------------------------------------------------------------
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+sum_work_s~d |      5,562     .789644    .4075981          0          1
+
+. 
+end of do-file
+
+. do "C:\Users\peleg\AppData\Local\Temp\STD00000000.tmp"
+
+. /************************************************
+> Table 7 - Personal Status outcomes
+> Description: This code recreates all of table 7 - the DID estimates for the program's effect on personal stat
+> us outcomes - marrige and fertility.
+> *************************************************/
+. 
+. clear all
+
+. set mem 500m
+set memory ignored.
+    Memory no longer needs to be set in modern Statas; memory adjustments are performed on the fly
+    automatically.
+
+. set matsize 800
+
+. *set more off
+. set logtype text
+
+. 
+. *set name for result and log file
+. global name Replication_T7 
+
+. 
+. 
+. *generate local with current date, to not overwrite pervious logs
+. local today = "$S_DATE"
+
+. local day = word("`today'",1)
+
+. local month = word("`today'",2)
+
+. local year = substr(word("`today'",3),3,2)
+
+. if `day' < 10 local `day' = "0`day'"
+
+. 
+. /**************************************************
+> I. ENTER THE PATH NAME WHERE THE DATA FILE IS FOUND
+> ***************************************************/
+. 
+. cd "C:\Users\peleg\OneDrive\Documents\Victor\Other\Teacher Bonuses\For publication\Reproduction\"
+C:\Users\peleg\OneDrive\Documents\Victor\Other\Teacher Bonuses\For publication\Reproduction
+
+. cap log close

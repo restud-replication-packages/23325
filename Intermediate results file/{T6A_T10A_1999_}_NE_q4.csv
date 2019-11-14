@@ -1,0 +1,56 @@
+rowKey,B0,Binteraction
+B sum_wage_11_afterSchoola,59963,401
+SCHOOL YEAR CLUSTERED SE sum_wage_11_afterSchoola,52898,2215
+,,
+N OBS NE_treated_before,2680,
+N OBS NE,10263,
+Weighted N OBS NE+treated_before,2680,
+Weighted N OBS NE,8151,
+,,
+B work_11_afterSchoola,0.829,0.005
+SCHOOL YEAR CLUSTERED SE work_11_afterSchoola,0.377,0.016
+,,
+N OBS NE_treated_before,2680,
+N OBS NE,10263,
+Weighted N OBS NE+treated_before,2680,
+Weighted N OBS NE,8151,
+,,
+B months_11_afterSchoola,8.811,-0.005
+SCHOOL YEAR CLUSTERED SE months_11_afterSchoola,4.658,0.181
+,,
+N OBS NE_treated_before,2680,
+N OBS NE,10263,
+Weighted N OBS NE+treated_before,2680,
+Weighted N OBS NE,8151,
+,,
+B A_12_afterSchoola,0.206,0.017
+SCHOOL YEAR CLUSTERED SE A_12_afterSchoola,0.404,0.019
+,,
+N OBS NE_treated_before,2680,
+N OBS NE,10263,
+Weighted N OBS NE+treated_before,2680,
+Weighted N OBS NE,8151,
+,,
+B B_12_afterSchoola,0.140,0.019
+SCHOOL YEAR CLUSTERED SE B_12_afterSchoola,0.347,0.012
+,,
+N OBS NE_treated_before,2680,
+N OBS NE,10263,
+Weighted N OBS NE+treated_before,2680,
+Weighted N OBS NE,8151,
+,,
+B col_12_afterSchoola,0.380,0.028
+SCHOOL YEAR CLUSTERED SE col_12_afterSchoola,1.075,0.039
+,,
+N OBS NE_treated_before,2680,
+N OBS NE,10263,
+Weighted N OBS NE+treated_before,2680,
+Weighted N OBS NE,8151,
+,,
+B uni_12_afterSchoola,0.824,0.024
+SCHOOL YEAR CLUSTERED SE uni_12_afterSchoola,1.898,0.075
+,,
+N OBS NE_treated_before,2680,
+N OBS NE,10263,
+Weighted N OBS NE+treated_before,2680,
+Weighted N OBS NE,8151,

@@ -1,0 +1,551 @@
+-------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  W:\victor_lavi\Incoming\olim1\elior\Teachers Bonuses\logs\DataSetC
+> reationForPublication_25Jul19.log
+  log type:  text
+ opened on:  25 Jul 2019, 11:03:08
+
+. 
+. use data\BL_SAMPLE_FULL_UPDATED_WithParents, clear
+
+. 
+. * KEEPING OBSERVATIONS THAT ARE FOUND IN THE DEMOGRAPHIC SAMPLE *
+. keep if dmg == 1
+(258 observations deleted)
+
+. 
+. * DROPPING INDIVIDUALS WHO HAVE WAGE PROBLEM*
+. drop if wage_problem_2000 == 1
+(>10 observations deleted)
+
+. drop if wage_problem_2001 == 1
+(>10 observations deleted)
+
+. drop if wage_problem_2002 == 1
+(18 observations deleted)
+
+. drop if wage_problem_2003 == 1
+(11 observations deleted)
+
+. drop if wage_problem_2004 == 1
+(13 observations deleted)
+
+. drop if wage_problem_2005 == 1
+(12 observations deleted)
+
+. drop if wage_problem_2006 == 1
+(15 observations deleted)
+
+. drop if wage_problem_2007 == 1
+(18 observations deleted)
+
+. drop if wage_problem_2008 == 1
+(21 observations deleted)
+
+. drop if wage_problem_2009 == 1
+(64 observations deleted)
+
+. drop if wage_problem_2010 == 1
+(82 observations deleted)
+
+. drop if wage_problem_2011 == 1
+(17 observations deleted)
+
+. drop if wage_problem_2012 == 1
+(17 observations deleted)
+
+. drop if wage_problem_2013 == 1
+(13 observations deleted)
+
+. 
+. *DROP INDIVIDUALS WITH WAGES HIGHER THAN 400,000 NIS *
+. 
+. drop if sum_wage_2000a > 400000 |sum_wage_2001a > 400000 |sum_wage_2002a > 40
+> 0000 |sum_wage_2003a > 400000 |sum_wage_2004a > 400000 |sum_wage_2005a > 4000
+> 00 |sum_wage_2006a > 400000 |sum_wage_2007a > 400000 |sum_wage_2008a > 400000
+>  |sum_wage_2009a > 400000 | sum_wage_2010a > 400000 | sum_wage_2011a > 400000
+>  | sum_wage_2012a > 400000 | sum_wage_2013a > 400000
+(125 observations deleted)
+
+. 
+. * INFLATION-ADJUSTING OF WAGES (2009 PRICES)*
+. 
+. replace sum_wage_2010a = sum_wage_2010a / 1.026
+(20,835 real changes made)
+
+. replace sum_wage_2011a = sum_wage_2011a / ((1.026)*(1.0217))
+(21,358 real changes made)
+
+. replace sum_wage_2012a = sum_wage_2012a / ((1.026)*(1.0217)*(1.0163))
+(21,105 real changes made)
+
+. replace sum_wage_2013a = sum_wage_2013a / ((1.026)*(1.0217)*(1.0163)*(1.0182)
+> )
+(21,345 real changes made)
+
+. replace sum_wage_2008a = sum_wage_2008a * 1.0391
+(21,736 real changes made)
+
+. replace sum_wage_2007a = sum_wage_2007a * 1.0391 * 1.038
+(21,412 real changes made)
+
+. replace sum_wage_2006a = sum_wage_2006a * 1.0391 * 1.038 * 1.034
+(21,075 real changes made)
+
+. replace sum_wage_2005a = sum_wage_2005a * 1.0391 * 1.038 * 1.034 * 0.999
+(20,655 real changes made)
+
+. replace sum_wage_2004a = sum_wage_2004a * 1.0391 * 1.038 * 1.034 * 0.999 * 1.
+> 0239 
+(18,367 real changes made)
+
+. replace sum_wage_2003a = sum_wage_2003a * 1.0391 * 1.038 * 1.034 * 0.999 * 1.
+> 0239 * 1.0121 
+(14,809 real changes made)
+
+. replace sum_wage_2002a = sum_wage_2002a * 1.0391 * 1.038 * 1.034 * 0.999 * 1.
+> 0239 * 1.0121 * 0.9811
+(12,318 real changes made)
+
+. replace sum_wage_2001a = sum_wage_2001a * 1.0391 * 1.038 * 1.034 * 0.999 * 1.
+> 0239 * 1.0121 * 0.9811 * 1.065
+(14,502 real changes made)
+
+. replace sum_wage_2000a = sum_wage_2000a * 1.0391 * 1.038 * 1.034 * 0.999 * 1.
+> 0239 * 1.0121 * 0.9811 * 1.065 * 1.0141
+(15,314 real changes made)
+
+. 
+. 
+. ***Drop if wage is negative***
+. 
+. foreach year in 2000 2001 2002 2003 2004 2005 2006 2007 2008 2009 2010 2011 2
+> 012 2013 {
+  2.         drop if sum_wage_`year'a<0
+  3.         drop if sum_wage_`year'b<0
+  4.         drop if sum_wage_`year'c<0
+  5.         }
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(1 observation deleted)
+(0 observations deleted)
+(0 observations deleted)
+(1 observation deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(3 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(1 observation deleted)
+(0 observations deleted)
+(0 observations deleted)
+(4 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(1 observation deleted)
+(0 observations deleted)
+(0 observations deleted)
+(2 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(23 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(2 observations deleted)
+(0 observations deleted)
+
+. 
+.         
+. /*adding madmug         
+> compress
+> merge 1:1 zehut using "W:\victor_lavi\Incoming\olim1\Boaz\Teachers Bonuses\pr
+> ograms\Revision 2017 - Assaf\for merge madmug.dta"
+> replace madmug=. if _merge!=3
+> drop if _merge==2
+> */
+.         
+.         
+.         
+. *In order to cluster by school_codeYear
+. gen school_codeYear = school_code
+
+. replace school_codeYear = school_code * 1000 if year == 2001
+(12,449 real changes made)
+
+. 
+. ***generate mean wage for father and mother for the years 2000-2002***
+. gen av_avwage00_02 = (av_sum_wage_2000a + av_sum_wage_2001a + av_sum_wage_200
+> 2a)/3
+(1,708 missing values generated)
+
+. gen em_avwage00_02 = (em_sum_wage_2000a + em_sum_wage_2001a + em_sum_wage_200
+> 2a)/3
+(619 missing values generated)
+
+. 
+. 
+. 
+. ***generate household income***
+. foreach year in 2000 2001 2002 {
+  2.         gen house_sum_wage_`year'a = av_sum_wage_`year'a + em_sum_wage_`ye
+> ar'a
+  3.         }
+(1,510 missing values generated)
+(1,689 missing values generated)
+(1,790 missing values generated)
+
+. gen house_avwage00_02 = (house_sum_wage_2000a + house_sum_wage_2001a + house_
+> sum_wage_2002a)/3
+(2,124 missing values generated)
+
+. 
+. *Generate dummy for above median household salary       
+. sum house_avwage00_02, detail
+
+                      house_avwage00_02
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%         1682              0       Obs              22,975
+25%     42848.67              0       Sum of Wgt.      22,975
+
+50%       105066                      Mean           144539.9
+                        Largest       Std. Dev.      161489.8
+75%     198026.3        2702040
+90%     316821.7        2740905       Variance       2.61e+10
+95%     414157.7        3064296       Skewness       5.118723
+99%     701901.3        5585889       Kurtosis       88.39085
+
+. local med = r(p50)
+
+. gen house_avwage00_02H = (house_avwage00_02>=`med')
+
+. gen house_avwage00_02L = (house_avwage00_02<`med')
+
+. 
+. /**************************************************
+> II. DEFINE `after' AND `before' 
+> ***************************************************/
+. 
+. gen before = (year == 2000)
+
+. gen after = (year == 2001)
+
+. 
+. /**************************************************
+> III. DEFINE TREATMENT AND CONTROL GROUPS
+> ***************************************************/
+. 
+. gen treatment = (treated == 1)
+
+. gen control = (treated == 0)
+
+. 
+. gen afterXtreatment = after * treatment
+
+. 
+. *** SET QUARTILES SAMPLES ***
+. drop q1 q2 q3 q4
+
+. gen q4 = 1
+
+. gen q3 = (q != 4)
+
+. 
+. 
+. *** SET EXPERIMENT SAMPLE GROUPS ***
+. rename inNE NE
+
+. rename inRD RD
+
+. 
+. /**************************************************
+> IV. CREATE LAGGED VARIABLES
+> ***************************************************/
+. 
+. ***Generate lag education for the 2000 cohort (E A B educ uni col)
+. foreach var in E A B educ uni col {
+  2. foreach year in  2010 2011 2012 2013 2014 2015 {
+  3.         local years_after_school = `year'-2001
+  4.         gen `var'_`years_after_school'_afterSchool = `var'`year'
+  5.         local yearMinus1 = `year'-1
+  6.         replace `var'_`years_after_school'_afterSchool = `var'`yearMinus1'
+>  if year==2000
+  7.         }
+  8.         }
+(97 real changes made)
+(171 real changes made)
+(75 real changes made)
+(50 real changes made)
+(55 real changes made)
+(0 real changes made)
+(69 real changes made)
+(78 real changes made)
+(71 real changes made)
+(43 real changes made)
+(42 real changes made)
+(0 real changes made)
+(89 real changes made)
+(192 real changes made)
+(64 real changes made)
+(62 real changes made)
+(46 real changes made)
+(0 real changes made)
+(1,490 real changes made)
+(1,329 real changes made)
+(1,020 real changes made)
+(837 real changes made)
+(713 real changes made)
+(1 real change made)
+(758 real changes made)
+(598 real changes made)
+(499 real changes made)
+(474 real changes made)
+(371 real changes made)
+(0 real changes made)
+(446 real changes made)
+(484 real changes made)
+(342 real changes made)
+(220 real changes made)
+(193 real changes made)
+(0 real changes made)
+
+. 
+. 
+. ***Generate lagged labor market outcomes
+.         foreach year in  2010 2011 2012  {
+  2.         local years_after_school = `year'-2001
+  3.         gen sum_wage_`years_after_school'_afterSchoola = sum_wage_`year'a
+  4.         gen work_`years_after_school'_afterSchoola = work_`year'a
+  5.         local yearMinus1 = `year'-1
+  6.         replace sum_wage_`years_after_school'_afterSchoola = sum_wage_`yea
+> rMinus1'a if year==2000
+  7.         replace work_`years_after_school'_afterSchoola = work_`yearMinus1'
+> a if year==2000
+  8.         gen months_`years_after_school'_afterSchoola = sum_month_`year'a
+  9.         gen avt_`years_after_school'_afterSchool = avt`year'
+ 10.         gen avt_tot_`years_after_school'_afterSchool = avt_tot`year'
+ 11.         replace months_`years_after_school'_afterSchoola = sum_month_`year
+> Minus1'a if year==2000
+ 12.         replace avt_`years_after_school'_afterSchool = avt`yearMinus1' if 
+> year==2000
+ 13.         replace avt_tot_`years_after_school'_afterSchool = avt_tot`yearMin
+> us1' if year==2000
+ 14.         }
+(11,066 real changes made)
+(1,196 real changes made)
+(5,722 real changes made)
+(1,272 real changes made)
+(1,436 real changes made)
+(11,081 real changes made)
+(1,026 real changes made)
+(5,340 real changes made)
+(1,128 real changes made)
+(1,361 real changes made)
+(11,104 real changes made)
+(964 real changes made)
+(4,972 real changes made)
+(1,295 real changes made)
+(1,513 real changes made)
+
+. 
+. ***Generate lagged percentile rank      
+.         foreach i in 9 10 11 {
+  2.                 xtile pctle_wage_`i'_afterSchool = sum_wage_`i'_afterSchoo
+> la if year==2000, nquantiles(100)
+  3.                 xtile Ppctle_wage_`i'_afterSchool = sum_wage_`i'_afterScho
+> ola if year==2001, nquantiles(100)
+  4.                 replace pctle_wage_`i'_afterSchool = Ppctle_wage_`i'_after
+> School if year==2001
+  5.                 drop Ppctle_wage_`i'_afterSchool
+  6.                 }
+(12,449 real changes made)
+(12,449 real changes made)
+(12,449 real changes made)
+
+. 
+. *gen  school type dummy
+. gen arab =  schtype=="NON JEWISH"
+
+. replace arab=. if  schtype==""
+(0 real changes made)
+
+. gen dati =  schtype=="JEWISH REL."
+
+. replace dati=. if  schtype==""
+(0 real changes made)
+
+. encode schtype , g(schtype2)
+
+. 
+.                         
+. *Generate age at birth of first child (in months)
+. gen  age_at_first_birth=(gil_yld1_yy-leda_yy)*12+(gil_yld1_mm-leda_mm)
+(15,071 missing values generated)
+
+. 
+. *Generate age at marriage (in months)
+. 
+. *gen age_at_marriage=(nis1_tar_yy-leda_yy)*12+(nis1_tar_mm-leda_mm)
+. *gen age_at_first_birth_y=gil_yld1_yy-leda_yy
+. 
+. gen age_at_first_birth_years=gil_yld1_yy-leda_yy
+(15,071 missing values generated)
+
+. gen age_at_marriage_years=(nis1_tar_yy-leda_yy)
+(11,931 missing values generated)
+
+. 
+.         
+. *Generate variables for having children and getting married x years after gra
+> duation
+. foreach i in 9 10 11 {
+  2.         gen kids_`i'_afterSchool = 0
+  3.         gen marr_`i'_afterSchool = 0
+  4.         replace kids_`i'_afterSchool = 1 if (gil_yld1_yy<=2000+`i' & year=
+> =2000) | (gil_yld1_yy<=2001+`i' & year==2001)
+  5.         replace marr_`i'_afterSchool = 1 if (nis1_tar_yy<=2000+`i' & year=
+> =2000) | (nis1_tar_yy<=2001+`i' & year==2001)
+  6.         }
+(8,568 real changes made)
+(12,262 real changes made)
+(9,720 real changes made)
+(13,053 real changes made)
+(10,028 real changes made)
+(13,168 real changes made)
+
+. 
+. *alternative bandwidth
+. ***Bandwidth 37-54***
+. di "Bandwidth 37-54"
+Bandwidth 37-54
+
+. gen RD_new=1 if  tmp_b>0.37 & tmp_b<0.4
+(23,075 missing values generated)
+
+. replace RD_new =1 if  tmp_b>0.52 & tmp<0.54
+(1,155 real changes made)
+
+. tab RD_new treatment
+
+           |       treatment
+    RD_new |         0          1 |     Total
+-----------+----------------------+----------
+         1 |     1,155      2,024 |     3,179 
+-----------+----------------------+----------
+     Total |     1,155      2,024 |     3,179 
+
+
+. gen RD_alternative1 = RD
+
+. replace RD_alternative1=1 if RD_new==1
+(3,179 real changes made)
+
+. ***Bandwidth 38-54***
+. di "Bandwidth 38-53"
+Bandwidth 38-53
+
+. drop RD_new
+
+. gen RD_new=1 if  tmp_b>0.38 & tmp_b<0.4
+(24,765 missing values generated)
+
+. replace RD_new =1 if  tmp_b>0.52 & tmp<0.53
+(1,155 real changes made)
+
+. tab RD_new treatment
+
+           |       treatment
+    RD_new |         0          1 |     Total
+-----------+----------------------+----------
+         1 |     1,155        334 |     1,489 
+-----------+----------------------+----------
+     Total |     1,155        334 |     1,489 
+
+
+. gen RD_alternative2 = RD
+
+. replace RD_alternative2=1 if RD_new==1
+(1,489 real changes made)
+
+. 
+. keep if (RD==1) |(NE==1) |(RD_alternative2==1) |(RD_alternative1==1)
+(11,661 observations deleted)
+
+. 
+. 
+. keep NE RD RD_alternative1 RD_alternative2 year  /// 
+> m_ahim educav educem ole boy asiafr euram school_code school_codeYear /// 
+> yeladim kids age_at_first_birth_years age_at_marriage_years married /// 
+> att_lgcr att_lgsc awr_lgcr e_awr_lgcr hoodWeight /// 
+> sum_wage_9_afterSchoola sum_wage_10_afterSchoola sum_wage_11_afterSchoola ///
+>  
+> months_9_afterSchoola months_10_afterSchoola months_11_afterSchoola /// 
+> work_9_afterSchoola work_10_afterSchoola work_11_afterSchoola /// 
+> avt_9_afterSchool avt_10_afterSchool avt_11_afterSchool /// 
+> avt_tot_9_afterSchool avt_tot_10_afterSchool avt_tot_11_afterSchool /// 
+> pctle_wage_9_afterSchool pctle_wage_10_afterSchool pctle_wage_11_afterSchool 
+> ///
+> A_10_afterSchool A_11_afterSchool A_12_afterSchool /// 
+> uni_10_afterSchool uni_11_afterSchool uni_12_afterSchool /// 
+> B_10_afterSchool B_11_afterSchool B_12_afterSchool /// 
+> col_10_afterSchool col_11_afterSchool col_12_afterSchool /// 
+> E_10_afterSchool E_11_afterSchool E_12_afterSchool /// 
+> educ_10_afterSchool educ_11_afterSchool educ_12_afterSchool /// 
+> kids_9_afterSchool kids_10_afterSchool kids_11_afterSchool /// 
+> marr_9_afterSchool marr_10_afterSchool marr_11_afterSchool /// 
+> before after treatment control afterXtreatment q3 q4 schtype /// 
+> av_avwage00_02 em_avwage00_02 house_avwage00_02 house_avwage00_02H house_avwa
+> ge00_02L 
+
+. 
+. *in NE sample, in main RD sample, in alternative RD sample 1, in alternative 
+> RD sample 2, year at 12th grade
+. *number of siblings, father's y of education, mother's y of education, immigr
+> ant indicator, name, asia-africa origin, european-american origin, school cod
+> e, school code for different for the two years
+. *number of kids, kids indicator, name, name
+. *attempted bagrut credits, attempted bagrut score, awarded bagrut credits, aw
+> arded bagrut credits in english, student weight (see article)
+. *total yearly earnings 9,10,11 years after graduation
+. *months worked 9,10,11 years after graduation
+. *has worked indicator 9,10,11 years after graduation
+. *has received unemployment insurance indicator 9,10,11 years after graduation
+. *amount of received unemployment insurance 9,10,11 years after graduation
+. *percentile rank 9,10,11 years after graduation
+. *ever attended university 10,11,12 years after graduation
+. *years attended university 10,11,12 years after graduation
+. *ever attended college 10,11,12 years after graduation
+. *years attended college 10,11,12 years after graduation
+. *ever attended post secondary 10,11,12 years after graduation
+. *years attended post secondary 10,11,12 years after graduation
+. *had kids 9,10,11 years after graduation
+. *married 9,10,11 years after graduation
+. *before treatment indicator, after treatment indicator, control indicator, tr
+> eatment indicator, after and treatment indicator, in 3 quartiles, in all quar
+> tiles (1 for all), school type
+. *father's average earnings 2000-2002, mother's average earnings 2000-2002, ho
+> usehold average earnings 2000-2002, in top 50% household earnings indicator, 
+> in bottom 50% household earnings indicator
+. 
+. 
+. save data\PublicationDataSet.dta, replace 
+file data\PublicationDataSet.dta saved
+
+. 
+. cap log close

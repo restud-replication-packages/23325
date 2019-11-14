@@ -1,0 +1,1392 @@
+---------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\Users\peleg\OneDrive\Documents\Victor\Other\Teacher Bonuses\For publication\Reproduction\logs\B
+> oot_stacked_23Oct19.log
+  log type:  text
+ opened on:  23 Oct 2019, 01:51:22
+
+.         set more off
+
+.         
+.         
+. use data\PublicationDataSet, clear
+
+. 
+. 
+. *generate the stacked variables
+. * 9 years after graduation
+. gen pctle_wage_stack_adjusted = pctle_wage_9_afterSchool
+
+. gen sum_wage_stack_adjusted = sum_wage_9_afterSchoola
+
+. gen sum_month_stack_adjusted = months_9_afterSchool
+
+. gen sum_work_stack_adjusted = work_9_afterSchool
+
+. gen avt_stack_adjusted = avt_9_afterSchool
+
+. gen avt_total_stack_adjusted = avt_tot_9_afterSchool
+
+. 
+. 
+. gen panel = 2010
+
+. tempfile temp
+
+. save tempA , replace
+file tempA.dta saved
+
+. *add 10 years after graduation - this has to be staggered by year
+. use data\PublicationDataSet, clear
+
+. 
+. *add    
+. append using tempA
+
+. replace panel = 2011 if panel==.
+(13,438 real changes made)
+
+. replace pctle_wage_stack_adjusted = pctle_wage_10_afterSchool if panel==2011
+(13,438 real changes made)
+
+. replace sum_wage_stack_adjusted = sum_wage_10_afterSchoola if panel==2011
+(13,438 real changes made)
+
+. replace sum_month_stack_adjusted = months_10_afterSchool  if panel==2011
+(13,438 real changes made)
+
+. replace sum_work_stack_adjusted = work_10_afterSchool if panel==2011
+(13,438 real changes made)
+
+. replace avt_stack_adjusted = avt_10_afterSchool  if panel==2011
+(13,438 real changes made)
+
+. replace avt_total_stack_adjusted = avt_tot_10_afterSchool  if panel==2011
+(13,438 real changes made)
+
+. 
+. tempfile temp
+
+. save tempB, replace
+file tempB.dta saved
+
+. *add 11 years after graduation - this has to be staggered by year
+. use data\PublicationDataSet, clear
+
+. 
+. append using tempB
+
+. replace panel = 2012 if panel==.
+(13,438 real changes made)
+
+. replace pctle_wage_stack_adjusted = pctle_wage_11_afterSchool if panel==2012
+(13,438 real changes made)
+
+. replace sum_wage_stack_adjusted = sum_wage_11_afterSchoola if panel==2012
+(13,438 real changes made)
+
+. replace sum_month_stack_adjusted = months_11_afterSchool  if panel==2012
+(13,438 real changes made)
+
+. replace sum_work_stack_adjusted = work_11_afterSchool if panel==2012
+(13,438 real changes made)
+
+. replace avt_stack_adjusted = avt_11_afterSchool  if panel==2012
+(13,438 real changes made)
+
+. replace avt_total_stack_adjusted = avt_tot_11_afterSchool  if panel==2012
+(13,438 real changes made)
+
+. 
+. 
+. ****STACKED REGRESSIONS***
+. 
+. 
+. foreach sample in NE RD{
+  2.         postfile values str50 rowKey estimated_effect Clustered_se Boot_se boot_t_statistic boot_pval boot
+> _conf_l boot_conf_h N_obvs using "results\automatic\\all", replace            
+  3.         preserve
+  4.         local i = `i' + 1
+  5.                                                 
+.         foreach group in  q4 {
+  6.         
+.                 
+.                         keep if `sample' == 1 & `group' == 1  
+  7. 
+. 
+. ********************************************************
+. ***                sample : `sample'          group: `group'               **           
+. *********************************************************                       
+.                         
+.                         
+.                         
+.         
+. ********************************************************
+. ***                post secondary education outcomes                **          
+. *********************************************************               
+. 
+.         
+.         
+. ********************************************************
+. ***                labor outcomes                **             
+. *********************************************************               
+.         
+.         
+.         
+.         
+. xi: reg sum_wage_stack_adjusted afterXtreatment  att_lgcr att_lgsc awr_lgcr e_awr_lgcr asiafr ole boy educav 
+> educem m_ahim i.year i.school_code  [fweight=hoodWeight] , vce( cluster school_code)
+  8.                                         
+.                                 scalar df= e(N)-e(df_m)-1       
+  9.         
+.                                 local B0A_12_afterSchool = _b[_cons]
+ 10.                                 local B3A_12_afterSchool = _b[afterXtreatment]
+ 11.                                 local SE3A_12_afterSchool = _se[afterXtreatment]
+ 12. 
+.                                 
+.                                 
+. boottest  afterXtreatment, seed(1234)   level(90) boottype(wild) reps(1000) cluster(school_code)
+ 13. 
+. scalar pv= r(p)
+ 14. 
+. if pv==0 {
+ 15. scalar pv=0.00001
+ 16. }
+ 17. 
+. *****SE cluster****
+. di _se[afterXtreatment]
+ 18. 
+. *****SE boot*******
+. di invttail(df,pv/2)
+ 19. di abs(_b[afterXtreatment]/invttail(df,pv/2))
+ 20. 
+.                                 local B7 = _b[afterXtreatment]
+ 21.                                 local C7 = _se[afterXtreatment]
+ 22. local P7 =  r(p)
+ 23. local N7 = e(N)
+ 24. *graph save wages_11_afterSchoolRD90.jpg
+. 
+. 
+.  matrix xx= r(CI)
+ 25. 
+.  local cl1= xx[1,1]
+ 26.  
+.  local ch1= xx[1,2]
+ 27.  
+.  local tt1 = invttail(df,pv/2)
+ 28.  
+.  local pp1 = abs(_b[afterXtreatment]/invttail(df,pv/2))
+ 29.         
+. 
+. xi: reg sum_work_stack_adjusted afterXtreatment  att_lgcr att_lgsc awr_lgcr e_awr_lgcr asiafr ole boy educav 
+> educem m_ahim i.year i.school_code  [fweight=hoodWeight] , vce( cluster school_code)
+ 30.                                         
+.                                 scalar df= e(N)-e(df_m)-1       
+ 31.         
+.                                 local B0A_12_afterSchool = _b[_cons]
+ 32.                                 local B3A_12_afterSchool = _b[afterXtreatment]
+ 33.                                 local SE3A_12_afterSchool = _se[afterXtreatment]
+ 34. 
+.                                 
+.                                 
+. boottest  afterXtreatment, seed(1234)   level(90) boottype(wild) reps(1000) cluster(school_code)
+ 35. 
+. scalar pv= r(p)
+ 36. 
+. if pv==0 {
+ 37. scalar pv=0.00001
+ 38. }
+ 39. 
+. *****SE cluster****
+. di _se[afterXtreatment]
+ 40. 
+. *****SE boot*******
+. di invttail(df,pv/2)
+ 41. di abs(_b[afterXtreatment]/invttail(df,pv/2))
+ 42. 
+.                                 local B8 = _b[afterXtreatment]
+ 43.                                 local C8 = _se[afterXtreatment]
+ 44. local P8 =  r(p)
+ 45. local N8 = e(N)
+ 46. *graph save work_11_afterSchoolRD90.jpg
+. 
+. 
+.  matrix xx= r(CI)
+ 47. 
+.  local cl2= xx[1,1]
+ 48.  
+.  local ch2= xx[1,2]
+ 49.  
+.  local tt2 = invttail(df,pv/2)
+ 50.  
+.  local pp2 = abs(_b[afterXtreatment]/invttail(df,pv/2))
+ 51.         
+. 
+.                         
+.                         xi: reg pctle_wage_stack_adjusted afterXtreatment  att_lgcr att_lgsc awr_lgcr e_awr_l
+> gcr asiafr ole boy educav educem m_ahim i.year i.school_code [fweight=hoodWeight] , vce( cluster school_code)
+ 52. 
+.                 scalar df= e(N)-e(df_m)-1       
+ 53. 
+. 
+. boottest  afterXtreatment, seed(1234)   level(90) boottype(wild) reps(1000) cluster(school_code)
+ 54. 
+. scalar pv= r(p)
+ 55. 
+. if pv==0 {
+ 56. scalar pv=0.00001
+ 57. }
+ 58. 
+. *****SE cluster****
+. di _se[afterXtreatment]
+ 59. 
+. *****SE boot*******
+. di invttail(df,pv/2)
+ 60. di abs(_b[afterXtreatment]/invttail(df,pv/2))
+ 61. 
+.                                 local B9 = _b[afterXtreatment]
+ 62.                                 local C9 = _se[afterXtreatment]
+ 63. local P9 =  r(p)
+ 64. local N9 = e(N)
+ 65. *graph save psum_wage_2013aRD90.jpg
+. 
+. 
+.  matrix xx= r(CI)
+ 66. 
+.  local cl3= xx[1,1]
+ 67.  
+.  local ch3= xx[1,2]
+ 68.  
+.  local tt3 = invttail(df,pv/2)
+ 69.  
+.  local pp3 = abs(_b[afterXtreatment]/invttail(df,pv/2))
+ 70.  
+.  
+.         
+.         
+. 
+.                                 xi: reg avt_stack_adjusted afterXtreatment  att_lgcr att_lgsc awr_lgcr e_awr_
+> lgcr asiafr ole boy educav educem m_ahim i.year i.school_code [fweight=hoodWeight] , vce( cluster school_code
+> )
+ 71.                 scalar df= e(N)-e(df_m)-1       
+ 72. 
+. boottest  afterXtreatment, seed(1234)   level(90) boottype(wild) reps(1000) cluster(school_code)
+ 73. 
+. scalar pv= r(p)
+ 74. 
+. if pv==0 {
+ 75. scalar pv=0.00001
+ 76. }
+ 77. 
+. *****SE cluster****
+. di _se[afterXtreatment]
+ 78. 
+. *****SE boot*******
+. di invttail(df,pv/2)
+ 79. di abs(_b[afterXtreatment]/invttail(df,pv/2))
+ 80. 
+.                                 local B10 = _b[afterXtreatment]
+ 81.                                 local C10 = _se[afterXtreatment]
+ 82. local P10 =  r(p)
+ 83. local N10 = e(N)
+ 84. *graph save avt_11_afterSchoolRD90.jpg
+. 
+. 
+.  matrix xx= r(CI)
+ 85. 
+.  local cl4= xx[1,1]
+ 86.  
+.  local ch4= xx[1,2]
+ 87.  
+.  local tt4 = invttail(df,pv/2)
+ 88.  
+.  local pp4 = abs(_b[afterXtreatment]/invttail(df,pv/2)) 
+ 89.         
+.         
+.         
+. 
+.         
+.         xi: reg avt_total_stack_adjusted afterXtreatment  att_lgcr att_lgsc awr_lgcr e_awr_lgcr asiafr ole bo
+> y educav educem m_ahim i.year i.school_code [fweight=hoodWeight] , vce( cluster school_code)
+ 90.                 scalar df= e(N)-e(df_m)-1       
+ 91. 
+. 
+. boottest  afterXtreatment, seed(1234)   level(90) boottype(wild) reps(1000) cluster(school_code)
+ 92. 
+. scalar pv= r(p)
+ 93. 
+. if pv==0 {
+ 94. scalar pv=0.00001
+ 95. }
+ 96. 
+. *****SE cluster****
+. di _se[afterXtreatment]
+ 97. 
+. *****SE boot*******
+. di invttail(df,pv/2)
+ 98. di abs(_b[afterXtreatment]/invttail(df,pv/2))
+ 99. 
+.                                 local B11 = _b[afterXtreatment]
+100.                                 local C11 = _se[afterXtreatment]
+101. local P11 =  r(p)
+102. local N11 = e(N)
+103. *graph save avt_tot_11_afterSchoolRD90.jpg
+. 
+. 
+.  matrix xx= r(CI)
+104. 
+.  local cl5= xx[1,1]
+105.  
+.  local ch5= xx[1,2]
+106.  
+.  local tt5 = invttail(df,pv/2)
+107.  
+.  local pp5 = abs(_b[afterXtreatment]/invttail(df,pv/2)) 
+108.         
+.                 
+.         
+. 
+. xi: reg sum_month_stack_adjusted afterXtreatment  att_lgcr att_lgsc awr_lgcr e_awr_lgcr asiafr ole boy educav
+>  educem m_ahim i.year i.school_code [fweight=hoodWeight] , vce( cluster school_code)
+109.                         scalar df= e(N)-e(df_m)-1       
+110. 
+. 
+. boottest  afterXtreatment, seed(1234)   level(90) boottype(wild) reps(1000) cluster(school_code)
+111. 
+. scalar pv= r(p)
+112. 
+. if pv==0 {
+113. scalar pv=0.00001
+114. }
+115. 
+. *****SE cluster****
+. di _se[afterXtreatment]
+116. 
+. *****SE boot*******
+. di invttail(df,pv/2)
+117. di abs(_b[afterXtreatment]/invttail(df,pv/2))
+118. 
+.                                 local B12 = _b[afterXtreatment]
+119.                                 local C12 = _se[afterXtreatment]
+120. local P12 =  r(p)
+121. local N12 = e(N)
+122. *graph save months_11_afterSchoolRD90.jpg
+. 
+. 
+.  matrix xx= r(CI)
+123. 
+.  local cl6= xx[1,1]
+124.  
+.  local ch6= xx[1,2]
+125.  
+.  local tt6 = invttail(df,pv/2)
+126.  
+.  local pp6 = abs(_b[afterXtreatment]/invttail(df,pv/2)) 
+127.  
+.  
+.  
+.  
+.  
+. 
+.                                 di "`B1'"
+128.                                 post values ("B wages stacked")                 (`B7')  (`C7')  (`pp1')   
+>       (`tt1')         (`P7')  (`cl1')         (`ch1')         (`N7')
+129.                                 post values ("B work stacked")                  (`B8')  (`C8')  (`pp2')   
+>       (`tt2')         (`P8')  (`cl2')         (`ch2')         (`N8')  
+130.                                 post values ("B pwages stacked")                (`B9')  (`C9')  (`pp3')   
+>       (`tt3')         (`P9')  (`cl3')         (`ch3')         (`N9')
+131.                                 post values ("B avt stacked")                   (`B10') (`C10') (`pp4')   
+>       (`tt4')         (`P10') (`cl4')         (`ch4')         (`N10')
+132.                                 post values ("B avt_tot stacked")               (`B11') (`C11') (`pp5')   
+>       (`tt5')         (`P11') (`cl5')         (`ch5')         (`N11')   
+133.                                 post values ("B months stacked")                (`B12') (`C12') (`pp6')   
+>       (`tt6')         (`P12') (`cl6')         (`ch6')         (`N12')
+134.                         
+. 
+.                 }
+135.                 
+.                 postclose values
+136.                 
+.                                 use "results\automatic\\all", clear
+137. 
+.                                 outsheet using "results\automatic\\wildboots_1000reps_stacked_`sample'.csv", 
+> replace comma
+138. 
+.                                 erase "results\automatic\\all.dta"
+139.                 restore
+140.                 }
+(note: file results\automatic\\all.dta not found)
+(10,083 observations deleted)
+i.year            _Iyear_2000-2001    (naturally coded; _Iyear_2000 omitted)
+i.school_code     _Ischool_co_1-48    (naturally coded; _Ischool_co_1 omitted)
+
+Linear regression                               Number of obs     =     47,709
+                                                F(11, 35)         =          .
+                                                Prob > F          =          .
+                                                R-squared         =     0.0590
+                                                Root MSE          =      48492
+
+                              (Std. Err. adjusted for 36 clusters in school_code)
+---------------------------------------------------------------------------------
+                |               Robust
+sum_wage_stac~d |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+----------------+----------------------------------------------------------------
+afterXtreatment |   4677.943   2124.815     2.20   0.034       364.34    8991.546
+       att_lgcr |  -285.9419   484.7875    -0.59   0.559    -1270.113     698.229
+       att_lgsc |   106.1364   52.62162     2.02   0.051    -.6911948    212.9639
+       awr_lgcr |   1863.656   515.3203     3.62   0.001     817.5003    2909.812
+     e_awr_lgcr |  -423.8561   1537.218    -0.28   0.784    -3544.574    2696.862
+         asiafr |   2738.043   1276.052     2.15   0.039     147.5189    5328.566
+            ole |   185.1857   4721.695     0.04   0.969    -9400.366    9770.737
+            boy |   15976.78    1687.45     9.47   0.000     12551.08    19402.49
+         educav |    206.345   177.7034     1.16   0.253    -154.4121    567.1021
+         educem |   141.7285   189.4207     0.75   0.459    -242.8159    526.2729
+         m_ahim |   -704.655   571.8112    -1.23   0.226    -1865.493    456.1834
+    _Iyear_2001 |  -1862.898   1393.817    -1.34   0.190    -4692.497    966.7012
+  _Ischool_co_2 |  -1540.844   1998.888    -0.77   0.446    -5598.802    2517.115
+  _Ischool_co_4 |  -8006.378   1899.369    -4.22   0.000     -11862.3   -4150.453
+  _Ischool_co_8 |   7081.896   1189.359     5.95   0.000      4667.37    9496.423
+  _Ischool_co_9 |  -3145.466    2151.06    -1.46   0.153    -7512.351    1221.419
+ _Ischool_co_10 |  -1740.268   424.1015    -4.10   0.000    -2601.239   -879.2958
+ _Ischool_co_12 |  -9659.835   1807.701    -5.34   0.000    -13329.66   -5990.006
+ _Ischool_co_15 |   1497.243   1788.095     0.84   0.408    -2132.783    5127.268
+ _Ischool_co_16 |  -1512.991    739.275    -2.05   0.048    -3013.799   -12.18319
+ _Ischool_co_17 |  -5645.982   1290.397    -4.38   0.000    -8265.626   -3026.337
+ _Ischool_co_18 |   584.9624   3094.537     0.19   0.851    -5697.282    6867.207
+ _Ischool_co_19 |   7900.964   1200.856     6.58   0.000     5463.097    10338.83
+ _Ischool_co_20 |  -1736.736   1839.132    -0.94   0.351    -5470.372      1996.9
+ _Ischool_co_21 |  -13454.41   1943.191    -6.92   0.000    -17399.29    -9509.52
+ _Ischool_co_22 |   320.0421    612.052     0.52   0.604    -922.4896    1562.574
+ _Ischool_co_23 |   5449.198   1560.356     3.49   0.001     2281.507    8616.889
+ _Ischool_co_24 |   1576.235   1332.949     1.18   0.245    -1129.794    4282.265
+ _Ischool_co_25 |   2595.859   1164.727     2.23   0.032     231.3376    4960.381
+ _Ischool_co_26 |   5179.327   1809.616     2.86   0.007     1505.612    8853.042
+ _Ischool_co_27 |  -4373.098   2356.254    -1.86   0.072    -9156.548    410.3532
+ _Ischool_co_28 |   4978.086   1195.633     4.16   0.000     2550.822     7405.35
+ _Ischool_co_29 |   175.3991   1074.878     0.16   0.871     -2006.72    2357.518
+ _Ischool_co_30 |   466.9424   1464.996     0.32   0.752    -2507.158    3441.043
+ _Ischool_co_32 |  -5413.876   2476.302    -2.19   0.036    -10441.04   -386.7158
+ _Ischool_co_35 |  -12631.27   1210.013   -10.44   0.000    -15087.72   -10174.81
+ _Ischool_co_36 |  -4953.219   1636.283    -3.03   0.005    -8275.049   -1631.389
+ _Ischool_co_37 |  -1332.836   1013.685    -1.31   0.197    -3390.726     725.053
+ _Ischool_co_38 |  -11965.36   1633.329    -7.33   0.000     -15281.2   -8649.529
+ _Ischool_co_39 |  -9278.363   2879.613    -3.22   0.003    -15124.29   -3432.437
+ _Ischool_co_40 |   4542.205   1905.484     2.38   0.023     673.8659    8410.543
+ _Ischool_co_41 |   2017.106   1282.273     1.57   0.125    -586.0463    4620.258
+ _Ischool_co_42 |   4070.603   1334.728     3.05   0.004     1360.962    6780.245
+ _Ischool_co_44 |   3842.824   2172.605     1.77   0.086    -567.7991    8253.446
+ _Ischool_co_46 |   178.7017    1439.92     0.12   0.902    -2744.491    3101.895
+ _Ischool_co_47 |  -5247.623   672.5873    -7.80   0.000    -6613.048   -3882.198
+ _Ischool_co_48 |  -24062.18   2421.054    -9.94   0.000    -28977.19   -19147.18
+          _cons |   34435.18   4245.028     8.11   0.000     25817.31    43053.04
+---------------------------------------------------------------------------------
+
+Overriding estimator's cluster/robust settings with cluster(school_code)
+
+Note: The bootstrap usually performs best when the confidence level (here, 90%)
+      times the number of replications plus 1 (1000+1=1001) is an integer.
+..........................
+
+Wild bootstrap-t, null imposed, 1000 replications, Wald test, clustering by school_code, bootstrap clustering b
+> y school_code, Rademacher weights:
+  afterXtreatment
+
+                                       t(35) =     2.2016
+                                    Prob>|t| =     0.0390
+
+90% confidence set for null hypothesis expression: [1038, 8125]
+2124.8146
+2.0642438
+2266.1775
+i.year            _Iyear_2000-2001    (naturally coded; _Iyear_2000 omitted)
+i.school_code     _Ischool_co_1-48    (naturally coded; _Ischool_co_1 omitted)
+
+Linear regression                               Number of obs     =     47,709
+                                                F(11, 35)         =          .
+                                                Prob > F          =          .
+                                                R-squared         =     0.0224
+                                                Root MSE          =     .34931
+
+                              (Std. Err. adjusted for 36 clusters in school_code)
+---------------------------------------------------------------------------------
+                |               Robust
+sum_work_stac~d |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+----------------+----------------------------------------------------------------
+afterXtreatment |   .0123805   .0119876     1.03   0.309    -.0119555    .0367165
+       att_lgcr |   .0033965   .0022326     1.52   0.137    -.0011359    .0079289
+       att_lgsc |   .0001404     .00029     0.48   0.631    -.0004483    .0007291
+       awr_lgcr |   -.001902   .0033644    -0.57   0.575     -.008732     .004928
+     e_awr_lgcr |  -.0039134   .0054823    -0.71   0.480    -.0150431    .0072162
+         asiafr |   .0096665   .0063601     1.52   0.138    -.0032453    .0225782
+            ole |  -.0819488   .0320247    -2.56   0.015    -.1469624   -.0169351
+            boy |  -.0067655   .0256931    -0.26   0.794    -.0589253    .0453944
+         educav |  -.0016958   .0012505    -1.36   0.184    -.0042344    .0008428
+         educem |    .000558   .0012805     0.44   0.666    -.0020415    .0031574
+         m_ahim |  -.0036704    .002844    -1.29   0.205    -.0094441    .0021034
+    _Iyear_2001 |   .0039275   .0049428     0.79   0.432    -.0061069    .0139618
+  _Ischool_co_2 |  -.0346297    .017902    -1.93   0.061    -.0709727    .0017134
+  _Ischool_co_4 |  -.0978909   .0100117    -9.78   0.000    -.1182158    -.077566
+  _Ischool_co_8 |   .0223554   .0073986     3.02   0.005     .0073356    .0373753
+  _Ischool_co_9 |   .0326016   .0083195     3.92   0.000     .0157122    .0494911
+ _Ischool_co_10 |   .0251776   .0030575     8.23   0.000     .0189706    .0313846
+ _Ischool_co_12 |  -.0075397   .0065352    -1.15   0.256    -.0208069    .0057274
+ _Ischool_co_15 |   .0353041   .0145426     2.43   0.020     .0057811    .0648272
+ _Ischool_co_16 |   .0170744   .0052998     3.22   0.003     .0063152    .0278337
+ _Ischool_co_17 |  -.0061059   .0137254    -0.44   0.659    -.0339698    .0217581
+ _Ischool_co_18 |   .0417958   .0152592     2.74   0.010     .0108181    .0727736
+ _Ischool_co_19 |   .0848069   .0066951    12.67   0.000     .0712152    .0983987
+ _Ischool_co_20 |   .0491177   .0080479     6.10   0.000     .0327796    .0654557
+ _Ischool_co_21 |  -.0805882   .0149367    -5.40   0.000    -.1109113   -.0502651
+ _Ischool_co_22 |   .0333668   .0018791    17.76   0.000     .0295521    .0371815
+ _Ischool_co_23 |   .0301042   .0141531     2.13   0.041     .0013719    .0588365
+ _Ischool_co_24 |   .0192498   .0076193     2.53   0.016     .0037818    .0347177
+ _Ischool_co_25 |   .0407899   .0066882     6.10   0.000     .0272122    .0543676
+ _Ischool_co_26 |   .0573243   .0111134     5.16   0.000     .0347628    .0798857
+ _Ischool_co_27 |   .0454955   .0144192     3.16   0.003     .0162229     .074768
+ _Ischool_co_28 |   .0121802   .0070018     1.74   0.091    -.0020342    .0263946
+ _Ischool_co_29 |  -.0190007   .0062194    -3.06   0.004    -.0316267   -.0063747
+ _Ischool_co_30 |    .049495   .0107208     4.62   0.000     .0277306    .0712595
+ _Ischool_co_32 |   .0135029   .0187522     0.72   0.476     -.024566    .0515718
+ _Ischool_co_35 |   .0369925   .0157563     2.35   0.025     .0050055    .0689795
+ _Ischool_co_36 |   .0268933   .0085852     3.13   0.003     .0094645    .0443221
+ _Ischool_co_37 |   .0018512   .0040426     0.46   0.650    -.0063558    .0100581
+ _Ischool_co_38 |  -.1013671   .0149375    -6.79   0.000    -.1316918   -.0710424
+ _Ischool_co_39 |  -.1195409   .0124589    -9.59   0.000    -.1448338    -.094248
+ _Ischool_co_40 |   .0397021   .0106662     3.72   0.001     .0180486    .0613557
+ _Ischool_co_41 |   .0297491   .0071964     4.13   0.000     .0151397    .0443585
+ _Ischool_co_42 |   .0159104   .0074153     2.15   0.039     .0008565    .0309643
+ _Ischool_co_44 |   .0640706   .0123773     5.18   0.000     .0389434    .0891978
+ _Ischool_co_46 |    .017115   .0067868     2.52   0.016     .0033371    .0308929
+ _Ischool_co_47 |   .0096517   .0036599     2.64   0.012     .0022217    .0170817
+ _Ischool_co_48 |  -.1633989   .0104377   -15.65   0.000    -.1845886   -.1422092
+          _cons |   .8441314   .0289262    29.18   0.000      .785408    .9028548
+---------------------------------------------------------------------------------
+
+Overriding estimator's cluster/robust settings with cluster(school_code)
+
+Note: The bootstrap usually performs best when the confidence level (here, 90%)
+      times the number of replications plus 1 (1000+1=1001) is an integer.
+..........................
+
+Wild bootstrap-t, null imposed, 1000 replications, Wald test, clustering by school_code, bootstrap clustering b
+> y school_code, Rademacher weights:
+  afterXtreatment
+
+                                       t(35) =     1.0328
+                                    Prob>|t| =     0.3400
+
+90% confidence set for null hypothesis expression: [-.00869, .03259]
+.01198756
+.95417481
+.01297507
+i.year            _Iyear_2000-2001    (naturally coded; _Iyear_2000 omitted)
+i.school_code     _Ischool_co_1-48    (naturally coded; _Ischool_co_1 omitted)
+
+Linear regression                               Number of obs     =     47,709
+                                                F(11, 35)         =          .
+                                                Prob > F          =          .
+                                                R-squared         =     0.0447
+                                                Root MSE          =     29.231
+
+                              (Std. Err. adjusted for 36 clusters in school_code)
+---------------------------------------------------------------------------------
+                |               Robust
+pctle_wage_st~d |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+----------------+----------------------------------------------------------------
+afterXtreatment |   2.014919   1.114483     1.81   0.079     -.247602    4.277439
+       att_lgcr |   -.064091   .2635175    -0.24   0.809      -.59906    .4708781
+       att_lgsc |   .0618778   .0283255     2.18   0.036      .004374    .1193816
+       awr_lgcr |    .691037   .3274456     2.11   0.042      .026287    1.355787
+     e_awr_lgcr |   -.810584   .5999287    -1.35   0.185    -2.028504     .407336
+         asiafr |   2.150267    .754783     2.85   0.007     .6179763    3.682558
+            ole |  -1.774392   3.123216    -0.57   0.574    -8.114858    4.566073
+            boy |   7.236384   1.433519     5.05   0.000     4.326186    10.14658
+         educav |  -.0226982   .1096594    -0.21   0.837    -.2453185    .1999221
+         educem |    .097593   .1065228     0.92   0.366    -.1186599    .3138459
+         m_ahim |  -.4229882   .3042775    -1.39   0.173    -1.040704    .1947279
+    _Iyear_2001 |  -1.049469   .8698732    -1.21   0.236    -2.815405     .716468
+  _Ischool_co_2 |   -.171299   1.317453    -0.13   0.897     -2.84587    2.503272
+  _Ischool_co_4 |  -5.492702   1.043478    -5.26   0.000    -7.611075   -3.374329
+  _Ischool_co_8 |   3.514213    .730383     4.81   0.000     2.031457    4.996969
+  _Ischool_co_9 |   .0860496   1.157114     0.07   0.941    -2.263017    2.435116
+ _Ischool_co_10 |   .6460579   .2569988     2.51   0.017     .1243225    1.167793
+ _Ischool_co_12 |  -4.564793   .9564316    -4.77   0.000    -6.506452   -2.623134
+ _Ischool_co_15 |   2.347946   1.029803     2.28   0.029     .2573356    4.438556
+ _Ischool_co_16 |   .8817355   .4482844     1.97   0.057    -.0283302    1.791801
+ _Ischool_co_17 |   -3.44328   .9180011    -3.75   0.001    -5.306921   -1.579639
+ _Ischool_co_18 |   2.321971   1.773592     1.31   0.199    -1.278612    5.922553
+ _Ischool_co_19 |    7.82103   .5811274    13.46   0.000     6.641279    9.000782
+ _Ischool_co_20 |   1.327856   .9671466     1.37   0.178    -.6355557    3.291268
+ _Ischool_co_21 |   -8.68691   1.065623    -8.15   0.000    -10.85024   -6.523579
+ _Ischool_co_22 |   2.028997   .2543177     7.98   0.000     1.512704    2.545289
+ _Ischool_co_23 |    4.66905   .9759741     4.78   0.000     2.687718    6.650383
+ _Ischool_co_24 |   1.148893   .6869201     1.67   0.103     -.245629    2.543415
+ _Ischool_co_25 |   2.615364   .5838823     4.48   0.000      1.43002    3.800708
+ _Ischool_co_26 |   5.515238   .9672328     5.70   0.000     3.551651    7.478825
+ _Ischool_co_27 |   .3541961   1.362519     0.26   0.796    -2.411865    3.120257
+ _Ischool_co_28 |   2.644878   .6483501     4.08   0.000     1.328657    3.961099
+ _Ischool_co_29 |  -.0332815   .6224785    -0.05   0.958     -1.29698    1.230417
+ _Ischool_co_30 |   2.368055   .8338516     2.84   0.007      .675246    4.060863
+ _Ischool_co_32 |   .2547043   1.537471     0.17   0.869    -2.866528    3.375937
+ _Ischool_co_35 |  -5.393018      1.021    -5.28   0.000    -7.465757   -3.320278
+ _Ischool_co_36 |  -.1087109   .7770419    -0.14   0.890     -1.68619    1.468768
+ _Ischool_co_37 |    .246752   .5471699     0.45   0.655    -.8640618    1.357566
+ _Ischool_co_38 |  -7.598668   1.036893    -7.33   0.000    -9.703674   -5.493663
+ _Ischool_co_39 |  -7.228554   1.498024    -4.83   0.000    -10.26971   -4.187403
+ _Ischool_co_40 |   3.914583    1.04411     3.75   0.001     1.794927    6.034238
+ _Ischool_co_41 |   1.297914   .6031075     2.15   0.038     .0735405    2.522287
+ _Ischool_co_42 |   1.795421   .6325142     2.84   0.007     .5113484    3.079493
+ _Ischool_co_44 |   3.479198   1.091394     3.19   0.003      1.26355    5.694846
+ _Ischool_co_46 |   .6185031   .6812135     0.91   0.370    -.7644339     2.00144
+ _Ischool_co_47 |  -1.912039    .371449    -5.15   0.000    -2.666121   -1.157958
+ _Ischool_co_48 |  -16.78357    1.27794   -13.13   0.000    -19.37793   -14.18922
+          _cons |   39.75852   2.303193    17.26   0.000     35.08279    44.43425
+---------------------------------------------------------------------------------
+
+Overriding estimator's cluster/robust settings with cluster(school_code)
+
+Note: The bootstrap usually performs best when the confidence level (here, 90%)
+      times the number of replications plus 1 (1000+1=1001) is an integer.
+..........................
+
+Wild bootstrap-t, null imposed, 1000 replications, Wald test, clustering by school_code, bootstrap clustering b
+> y school_code, Rademacher weights:
+  afterXtreatment
+
+                                       t(35) =     1.8079
+                                    Prob>|t| =     0.0880
+
+90% confidence set for null hypothesis expression: [.07357, 4.095]
+1.1144829
+1.7060784
+1.1810235
+i.year            _Iyear_2000-2001    (naturally coded; _Iyear_2000 omitted)
+i.school_code     _Ischool_co_1-48    (naturally coded; _Ischool_co_1 omitted)
+
+Linear regression                               Number of obs     =     47,709
+                                                F(11, 35)         =          .
+                                                Prob > F          =          .
+                                                R-squared         =     0.0093
+                                                Root MSE          =     .25769
+
+                              (Std. Err. adjusted for 36 clusters in school_code)
+---------------------------------------------------------------------------------
+                |               Robust
+avt_stack_adj~d |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+----------------+----------------------------------------------------------------
+afterXtreatment |  -.0018887   .0087673    -0.22   0.831    -.0196873      .01591
+       att_lgcr |    .001594   .0014705     1.08   0.286    -.0013914    .0045793
+       att_lgsc |  -.0000211   .0001081    -0.20   0.846    -.0002407    .0001984
+       awr_lgcr |  -.0025322   .0014067    -1.80   0.080     -.005388    .0003235
+     e_awr_lgcr |  -.0028895   .0015965    -1.81   0.079    -.0061306    .0003516
+         asiafr |   .0031555   .0037125     0.85   0.401    -.0043814    .0106924
+            ole |   .0043155   .0108694     0.40   0.694    -.0177505    .0263815
+            boy |  -.0309586   .0068244    -4.54   0.000    -.0448128   -.0171044
+         educav |  -.0016399   .0011016    -1.49   0.146    -.0038763    .0005965
+         educem |   .0005198    .000576     0.90   0.373    -.0006495    .0016892
+         m_ahim |   .0017342    .001186     1.46   0.153    -.0006735    .0041419
+    _Iyear_2001 |  -.0002578   .0069503    -0.04   0.971    -.0143677    .0138521
+  _Ischool_co_2 |   .0107994   .0033644     3.21   0.003     .0039693    .0176296
+  _Ischool_co_4 |   -.047481   .0039999   -11.87   0.000    -.0556011   -.0393608
+  _Ischool_co_8 |  -.0140945     .00543    -2.60   0.014     -.025118    -.003071
+  _Ischool_co_9 |   .0080289   .0031664     2.54   0.016     .0016008     .014457
+ _Ischool_co_10 |   .0038121   .0012327     3.09   0.004     .0013096    .0063145
+ _Ischool_co_12 |  -.0077211   .0029573    -2.61   0.013    -.0137247   -.0017174
+ _Ischool_co_15 |  -.0082086   .0050176    -1.64   0.111    -.0183948    .0019776
+ _Ischool_co_16 |    .024301   .0029157     8.33   0.000     .0183817    .0302203
+ _Ischool_co_17 |  -.0121575    .006165    -1.97   0.057    -.0246731    .0003581
+ _Ischool_co_18 |   .0198515   .0069494     2.86   0.007     .0057434    .0339597
+ _Ischool_co_19 |   .0029229   .0038952     0.75   0.458    -.0049849    .0108306
+ _Ischool_co_20 |   .0188411    .002623     7.18   0.000     .0135161     .024166
+ _Ischool_co_21 |  -.0047524   .0047755    -1.00   0.326    -.0144473    .0049425
+ _Ischool_co_22 |   .0190883   .0009487    20.12   0.000     .0171624    .0210143
+ _Ischool_co_23 |   .0066747   .0063311     1.05   0.299    -.0061781    .0195275
+ _Ischool_co_24 |   .0181182    .003916     4.63   0.000     .0101683    .0260681
+ _Ischool_co_25 |  -.0190142     .00445    -4.27   0.000    -.0280482   -.0099802
+ _Ischool_co_26 |  -.0089687   .0041936    -2.14   0.040     -.017482   -.0004553
+ _Ischool_co_27 |   .0116411   .0067089     1.74   0.092    -.0019787     .025261
+ _Ischool_co_28 |   .0086685   .0039509     2.19   0.035     .0006477    .0166892
+ _Ischool_co_29 |   .0040755   .0021807     1.87   0.070    -.0003515    .0085025
+ _Ischool_co_30 |  -.0272301   .0047845    -5.69   0.000    -.0369432    -.017517
+ _Ischool_co_32 |   .0494155   .0041954    11.78   0.000     .0408983    .0579327
+ _Ischool_co_35 |   .0083799   .0045683     1.83   0.075    -.0008944    .0176541
+ _Ischool_co_36 |   .0061257   .0037494     1.63   0.111     -.001486    .0137373
+ _Ischool_co_37 |   .0239267   .0013803    17.33   0.000     .0211246    .0267288
+ _Ischool_co_38 |  -.0015033   .0059713    -0.25   0.803    -.0136256     .010619
+ _Ischool_co_39 |  -.0605774   .0042067   -14.40   0.000    -.0691175   -.0520374
+ _Ischool_co_40 |   .0072057   .0032477     2.22   0.033     .0006125    .0137989
+ _Ischool_co_41 |  -.0092087   .0042065    -2.19   0.035    -.0177483   -.0006692
+ _Ischool_co_42 |   .0127836   .0032533     3.93   0.000      .006179    .0193881
+ _Ischool_co_44 |  -.0117851   .0053664    -2.20   0.035    -.0226795   -.0008908
+ _Ischool_co_46 |   .0290891   .0043238     6.73   0.000     .0203114    .0378669
+ _Ischool_co_47 |  -.0022524    .001495    -1.51   0.141    -.0052874    .0007827
+ _Ischool_co_48 |  -.0197122   .0034373    -5.73   0.000    -.0266903    -.012734
+          _cons |    .094433   .0123301     7.66   0.000     .0694015    .1194645
+---------------------------------------------------------------------------------
+
+Overriding estimator's cluster/robust settings with cluster(school_code)
+
+Note: The bootstrap usually performs best when the confidence level (here, 90%)
+      times the number of replications plus 1 (1000+1=1001) is an integer.
+..........................
+
+Wild bootstrap-t, null imposed, 1000 replications, Wald test, clustering by school_code, bootstrap clustering b
+> y school_code, Rademacher weights:
+  afterXtreatment
+
+                                       t(35) =    -0.2154
+                                    Prob>|t| =     0.8390
+
+90% confidence set for null hypothesis expression: [-.019, .01356]
+.00876733
+.20317387
+.00929589
+i.year            _Iyear_2000-2001    (naturally coded; _Iyear_2000 omitted)
+i.school_code     _Ischool_co_1-48    (naturally coded; _Ischool_co_1 omitted)
+
+Linear regression                               Number of obs     =     47,709
+                                                F(11, 35)         =          .
+                                                Prob > F          =          .
+                                                R-squared         =     0.0051
+                                                Root MSE          =     2737.9
+
+                              (Std. Err. adjusted for 36 clusters in school_code)
+---------------------------------------------------------------------------------
+                |               Robust
+avt_total_sta~d |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+----------------+----------------------------------------------------------------
+afterXtreatment |    27.8746   85.19906     0.33   0.745    -145.0887    200.8379
+       att_lgcr |   7.595797   17.16408     0.44   0.661    -27.24913    42.44072
+       att_lgsc |   .0404551   .9548664     0.04   0.966    -1.898027    1.978937
+       awr_lgcr |  -9.366062   13.22554    -0.71   0.484    -36.21533    17.48321
+     e_awr_lgcr |  -14.97337   19.04136    -0.79   0.437    -53.62938    23.68264
+         asiafr |   30.02756   45.87346     0.65   0.517     -63.1005    123.1556
+            ole |   20.20987   100.7172     0.20   0.842    -184.2569    224.6766
+            boy |   -201.687   67.24851    -3.00   0.005    -338.2087   -65.16525
+         educav |  -12.81614   9.052154    -1.42   0.166    -31.19299    5.560705
+         educem |   1.490843   7.033133     0.21   0.833    -12.78718    15.76886
+         m_ahim |   21.69177   14.36388     1.51   0.140     -7.46846      50.852
+    _Iyear_2001 |  -.6843835   70.77868    -0.01   0.992    -144.3727     143.004
+  _Ischool_co_2 |   113.6465   38.91372     2.92   0.006     34.64743    192.6455
+  _Ischool_co_4 |  -483.7466   29.53189   -16.38   0.000    -543.6995   -423.7937
+  _Ischool_co_8 |  -136.2388   53.04268    -2.57   0.015    -243.9212   -28.55644
+  _Ischool_co_9 |  -8.118362   43.14736    -0.19   0.852    -95.71217    79.47544
+ _Ischool_co_10 |   89.51761   14.18741     6.31   0.000     60.71564    118.3196
+ _Ischool_co_12 |  -167.2784   38.68642    -4.32   0.000     -245.816   -88.74079
+ _Ischool_co_15 |  -124.9874   60.18104    -2.08   0.045    -247.1614   -2.813388
+ _Ischool_co_16 |   151.2271   21.70442     6.97   0.000     107.1648    195.2894
+ _Ischool_co_17 |     -147.8   57.19642    -2.58   0.014    -263.9149   -31.68507
+ _Ischool_co_18 |   252.7922   72.58558     3.48   0.001     105.4357    400.1488
+ _Ischool_co_19 |   -.598979   35.68898    -0.02   0.987    -73.05146     71.8535
+ _Ischool_co_20 |   35.90564   29.00312     1.24   0.224    -22.97382    94.78511
+ _Ischool_co_21 |  -53.83368   60.44361    -0.89   0.379    -176.5407    68.87337
+ _Ischool_co_22 |   174.6771   11.41907    15.30   0.000     151.4952    197.8591
+ _Ischool_co_23 |  -67.45061   55.46825    -1.22   0.232    -180.0571    45.15593
+ _Ischool_co_24 |   55.46993   40.30931     1.38   0.178    -26.36232    137.3022
+ _Ischool_co_25 |  -150.0308   40.58737    -3.70   0.001    -232.4275   -67.63403
+ _Ischool_co_26 |  -150.6705   53.17373    -2.83   0.008    -258.6189   -42.72206
+ _Ischool_co_27 |  -2.602405   83.16975    -0.03   0.975     -171.446    166.2412
+ _Ischool_co_28 |   46.87093   36.74986     1.28   0.211    -27.73526    121.4771
+ _Ischool_co_29 |   19.60634   27.27435     0.72   0.477    -35.76353    74.97621
+ _Ischool_co_30 |  -244.3884   55.19101    -4.43   0.000    -356.4321   -132.3447
+ _Ischool_co_32 |   398.2163   46.42907     8.58   0.000     303.9603    492.4723
+ _Ischool_co_35 |  -40.82804   36.67421    -1.11   0.273    -115.2807    33.62457
+ _Ischool_co_36 |   91.05507   43.53344     2.09   0.044     2.677498    179.4327
+ _Ischool_co_37 |   214.8653   22.84233     9.41   0.000     168.4929    261.2377
+ _Ischool_co_38 |   -37.5164   52.50152    -0.71   0.480    -144.1001    69.06734
+ _Ischool_co_39 |  -593.6313    39.1307   -15.17   0.000    -673.0709   -514.1918
+ _Ischool_co_40 |  -19.59806    27.2495    -0.72   0.477    -74.91749    35.72137
+ _Ischool_co_41 |  -56.31553   42.45634    -1.33   0.193    -142.5065    29.87542
+ _Ischool_co_42 |   70.03504   32.64195     2.15   0.039      3.76837    136.3017
+ _Ischool_co_44 |  -84.13736   48.21399    -1.75   0.090     -182.017    13.74225
+ _Ischool_co_46 |   231.6325   40.91433     5.66   0.000      148.572     314.693
+ _Ischool_co_47 |  -97.59181   19.29892    -5.06   0.000    -136.7707   -58.41292
+ _Ischool_co_48 |  -121.6113    42.4993    -2.86   0.007    -207.8895   -35.33314
+          _cons |    774.049   116.1496     6.66   0.000     538.2528    1009.845
+---------------------------------------------------------------------------------
+
+Overriding estimator's cluster/robust settings with cluster(school_code)
+
+Note: The bootstrap usually performs best when the confidence level (here, 90%)
+      times the number of replications plus 1 (1000+1=1001) is an integer.
+..........................
+
+Wild bootstrap-t, null imposed, 1000 replications, Wald test, clustering by school_code, bootstrap clustering b
+> y school_code, Rademacher weights:
+  afterXtreatment
+
+                                       t(35) =     0.3272
+                                    Prob>|t| =     0.7670
+
+90% confidence set for null hypothesis expression: [-149.8, 180.5]
+85.199058
+.29630298
+94.07466
+i.year            _Iyear_2000-2001    (naturally coded; _Iyear_2000 omitted)
+i.school_code     _Ischool_co_1-48    (naturally coded; _Ischool_co_1 omitted)
+
+Linear regression                               Number of obs     =     47,709
+                                                F(11, 35)         =          .
+                                                Prob > F          =          .
+                                                R-squared         =     0.0248
+                                                Root MSE          =     4.4161
+
+                              (Std. Err. adjusted for 36 clusters in school_code)
+---------------------------------------------------------------------------------
+                |               Robust
+sum_month_sta~d |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+----------------+----------------------------------------------------------------
+afterXtreatment |   .2289069   .1426282     1.60   0.117    -.0606437    .5184575
+       att_lgcr |   .0222009   .0323833     0.69   0.498    -.0435407    .0879425
+       att_lgsc |   .0043808   .0034743     1.26   0.216    -.0026723     .011434
+       awr_lgcr |   .0020136   .0435286     0.05   0.963    -.0863541    .0903814
+     e_awr_lgcr |  -.0393781   .0849124    -0.46   0.646    -.2117595    .1330032
+         asiafr |   .2542623   .0964813     2.64   0.012     .0583948    .4501297
+            ole |  -.9273878   .3906735    -2.37   0.023    -1.720497   -.1342784
+            boy |    .173671   .2980177     0.58   0.564    -.4313371    .7786791
+         educav |  -.0172623    .015664    -1.10   0.278     -.049062    .0145373
+         educem |   .0077078   .0153005     0.50   0.618    -.0233538    .0387694
+         m_ahim |  -.0658709   .0433988    -1.52   0.138    -.1539752    .0222333
+    _Iyear_2001 |  -.0364833     .07991    -0.46   0.651    -.1987093    .1257426
+  _Ischool_co_2 |  -.1141375   .2202378    -0.52   0.608    -.5612439    .3329689
+  _Ischool_co_4 |  -.8613914   .1508634    -5.71   0.000     -1.16766   -.5551225
+  _Ischool_co_8 |   .3483953   .0917773     3.80   0.001     .1620775     .534713
+  _Ischool_co_9 |    .528411   .1272723     4.15   0.000     .2700344    .7867875
+ _Ischool_co_10 |   .2889014    .042297     6.83   0.000      .203034    .3747688
+ _Ischool_co_12 |  -.0878101   .0974893    -0.90   0.374    -.2857239    .1101038
+ _Ischool_co_15 |   .3222227   .1702864     1.89   0.067    -.0234769    .6679224
+ _Ischool_co_16 |   .3051547   .0787114     3.88   0.000      .145362    .4649474
+ _Ischool_co_17 |  -.3340772   .1663727    -2.01   0.052    -.6718317    .0036773
+ _Ischool_co_18 |   .5398199   .1940033     2.78   0.009     .1459723    .9336675
+ _Ischool_co_19 |   1.256868    .088616    14.18   0.000     1.076969    1.436768
+ _Ischool_co_20 |   .7498906   .1127829     6.65   0.000     .5209291    .9788521
+ _Ischool_co_21 |   -.857937   .1744164    -4.92   0.000    -1.212021   -.5038528
+ _Ischool_co_22 |   .3558894   .0341398    10.42   0.000     .2865819    .4251969
+ _Ischool_co_23 |   .6076938   .1745505     3.48   0.001     .2533375      .96205
+ _Ischool_co_24 |   .3256393   .0865174     3.76   0.001     .1499997     .501279
+ _Ischool_co_25 |   .4671162   .0855388     5.46   0.000     .2934632    .6407693
+ _Ischool_co_26 |   .9015065   .1468607     6.14   0.000     .6033634     1.19965
+ _Ischool_co_27 |   .4733384   .1677105     2.82   0.008      .132868    .8138087
+ _Ischool_co_28 |   .4121728   .0861405     4.78   0.000     .2372983    .5870473
+ _Ischool_co_29 |  -.0061625   .0861404    -0.07   0.943    -.1810368    .1687119
+ _Ischool_co_30 |   1.335439   .1221032    10.94   0.000     1.087556    1.583321
+ _Ischool_co_32 |   .3908166   .2346744     1.67   0.105    -.0855977    .8672309
+ _Ischool_co_35 |   .0827644   .1957235     0.42   0.675    -.3145755    .4801043
+ _Ischool_co_36 |   .5858593   .0968725     6.05   0.000     .3891976    .7825209
+ _Ischool_co_37 |   .1328779   .0606144     2.19   0.035     .0098241    .2559318
+ _Ischool_co_38 |  -1.183876   .1871673    -6.33   0.000    -1.563846   -.8039063
+ _Ischool_co_39 |  -1.155845    .191779    -6.03   0.000    -1.545177   -.7665132
+ _Ischool_co_40 |   .6268026    .152653     4.11   0.000     .3169005    .9367046
+ _Ischool_co_41 |    .246934   .0873357     2.83   0.008     .0696331     .424235
+ _Ischool_co_42 |   .3210647   .0847126     3.79   0.001     .1490889    .4930405
+ _Ischool_co_44 |   .8809331   .1605297     5.49   0.000     .5550404    1.206826
+ _Ischool_co_46 |   .3059054   .0917517     3.33   0.002     .1196396    .4921712
+ _Ischool_co_47 |   .2919709   .0536311     5.44   0.000      .183094    .4008478
+ _Ischool_co_48 |  -2.478939   .1585038   -15.64   0.000    -2.800719    -2.15716
+          _cons |   8.477122   .3290666    25.76   0.000     7.809081    9.145163
+---------------------------------------------------------------------------------
+
+Overriding estimator's cluster/robust settings with cluster(school_code)
+
+Note: The bootstrap usually performs best when the confidence level (here, 90%)
+      times the number of replications plus 1 (1000+1=1001) is an integer.
+..........................
+
+Wild bootstrap-t, null imposed, 1000 replications, Wald test, clustering by school_code, bootstrap clustering b
+> y school_code, Rademacher weights:
+  afterXtreatment
+
+                                       t(35) =     1.6049
+                                    Prob>|t| =     0.1320
+
+90% confidence set for null hypothesis expression: [-.014, .4807]
+.14262819
+1.5062875
+.1519676
+
+(note: file results\automatic\\all.dta not found)
+(15,624 observations deleted)
+i.year            _Iyear_2000-2001    (naturally coded; _Iyear_2000 omitted)
+i.school_code     _Ischool_co_1-47    (naturally coded; _Ischool_co_1 omitted)
+note: _Ischool_co_3 omitted because of collinearity
+note: _Ischool_co_6 omitted because of collinearity
+note: _Ischool_co_7 omitted because of collinearity
+note: _Ischool_co_11 omitted because of collinearity
+note: _Ischool_co_13 omitted because of collinearity
+note: _Ischool_co_45 omitted because of collinearity
+
+Linear regression                               Number of obs     =     34,683
+                                                F(11, 20)         =          .
+                                                Prob > F          =          .
+                                                R-squared         =     0.0559
+                                                Root MSE          =      48595
+
+                              (Std. Err. adjusted for 21 clusters in school_code)
+---------------------------------------------------------------------------------
+                |               Robust
+sum_wage_stac~d |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+----------------+----------------------------------------------------------------
+afterXtreatment |   4861.667   2575.376     1.89   0.074    -510.4738    10233.81
+       att_lgcr |  -321.2901   655.7038    -0.49   0.629    -1689.064    1046.484
+       att_lgsc |   119.9393   61.97713     1.94   0.067    -9.342689    249.2214
+       awr_lgcr |    1861.46   737.2583     2.52   0.020     323.5658    3399.354
+     e_awr_lgcr |  -608.0777   2463.392    -0.25   0.808    -5746.622    4530.467
+         asiafr |   3503.165   1369.715     2.56   0.019     645.9892    6360.342
+            ole |   1925.329   7082.138     0.27   0.789    -12847.75    16698.41
+            boy |   17113.36   1763.625     9.70   0.000     13434.51    20792.22
+         educav |   319.3093   218.1339     1.46   0.159      -135.71    774.3286
+         educem |   159.5587   253.7606     0.63   0.537    -369.7768    688.8941
+         m_ahim |  -757.1658   814.1018    -0.93   0.363    -2455.352    941.0208
+    _Iyear_2001 |  -2072.045    1415.45    -1.46   0.159    -5024.621    880.5313
+  _Ischool_co_3 |          0  (omitted)
+  _Ischool_co_4 |  -7253.406   2508.288    -2.89   0.009     -12485.6   -2021.209
+  _Ischool_co_6 |          0  (omitted)
+  _Ischool_co_7 |          0  (omitted)
+  _Ischool_co_9 |  -2484.406   2980.358    -0.83   0.414    -8701.323    3732.511
+ _Ischool_co_11 |          0  (omitted)
+ _Ischool_co_13 |          0  (omitted)
+ _Ischool_co_16 |  -1511.318     901.57    -1.68   0.109     -3391.96    369.3239
+ _Ischool_co_19 |   8278.173   1491.434     5.55   0.000     5167.095    11389.25
+ _Ischool_co_20 |  -1077.663   2543.268    -0.42   0.676    -6382.826    4227.501
+ _Ischool_co_22 |   362.2519   964.3237     0.38   0.711    -1649.292    2373.796
+ _Ischool_co_23 |   5003.028   1678.686     2.98   0.007     1501.351    8504.705
+ _Ischool_co_24 |   1778.943   1774.493     1.00   0.328    -1922.585    5480.471
+ _Ischool_co_28 |   5210.553   1491.998     3.49   0.002     2098.299    8322.807
+ _Ischool_co_29 |   284.8653    1397.32     0.20   0.841    -2629.893    3199.623
+ _Ischool_co_30 |   252.2515   2049.732     0.12   0.903    -4023.416    4527.919
+ _Ischool_co_35 |  -13428.75   1388.209    -9.67   0.000    -16324.51      -10533
+ _Ischool_co_36 |  -4442.305   2014.232    -2.21   0.039     -8643.92   -240.6909
+ _Ischool_co_37 |   -1071.39   1290.573    -0.83   0.416    -3763.478    1620.697
+ _Ischool_co_38 |  -12449.21    1781.91    -6.99   0.000    -16166.21   -8732.212
+ _Ischool_co_39 |  -8233.677   3897.793    -2.11   0.047    -16364.33   -103.0245
+ _Ischool_co_41 |   2318.296   1542.776     1.50   0.149     -899.879     5536.47
+ _Ischool_co_42 |   4317.194   1793.302     2.41   0.026     576.4316    8057.957
+ _Ischool_co_44 |   5488.958   2878.586     1.91   0.071    -515.6668    11493.58
+ _Ischool_co_45 |          0  (omitted)
+ _Ischool_co_47 |  -5292.228   955.5103    -5.54   0.000    -7285.388   -3299.068
+          _cons |   31503.98   5222.275     6.03   0.000      20610.5    42397.45
+---------------------------------------------------------------------------------
+
+Overriding estimator's cluster/robust settings with cluster(school_code)
+
+Note: The bootstrap usually performs best when the confidence level (here, 90%)
+      times the number of replications plus 1 (1000+1=1001) is an integer.
+..........................
+
+Wild bootstrap-t, null imposed, 1000 replications, Wald test, clustering by school_code, bootstrap clustering b
+> y school_code, Rademacher weights:
+  afterXtreatment
+
+                                       t(20) =     1.8876
+                                    Prob>|t| =     0.0730
+
+90% confidence set for null hypothesis expression: [470.8, 9721]
+2575.3762
+1.7928852
+2711.6443
+i.year            _Iyear_2000-2001    (naturally coded; _Iyear_2000 omitted)
+i.school_code     _Ischool_co_1-47    (naturally coded; _Ischool_co_1 omitted)
+note: _Ischool_co_3 omitted because of collinearity
+note: _Ischool_co_6 omitted because of collinearity
+note: _Ischool_co_7 omitted because of collinearity
+note: _Ischool_co_11 omitted because of collinearity
+note: _Ischool_co_13 omitted because of collinearity
+note: _Ischool_co_45 omitted because of collinearity
+
+Linear regression                               Number of obs     =     34,683
+                                                F(11, 20)         =          .
+                                                Prob > F          =          .
+                                                R-squared         =     0.0188
+                                                Root MSE          =     .34738
+
+                              (Std. Err. adjusted for 21 clusters in school_code)
+---------------------------------------------------------------------------------
+                |               Robust
+sum_work_stac~d |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+----------------+----------------------------------------------------------------
+afterXtreatment |   .0119774   .0094247     1.27   0.218    -.0076821     .031637
+       att_lgcr |   .0049509   .0026082     1.90   0.072    -.0004898    .0103916
+       att_lgsc |    .000223   .0003679     0.61   0.551    -.0005444    .0009904
+       awr_lgcr |  -.0052073     .00377    -1.38   0.182    -.0130714    .0026568
+     e_awr_lgcr |  -.0013189   .0065986    -0.20   0.844    -.0150834    .0124456
+         asiafr |   .0088113   .0059339     1.48   0.153    -.0035666    .0211893
+            ole |  -.0515526   .0481493    -1.07   0.297    -.1519904    .0488851
+            boy |  -.0064123   .0289691    -0.22   0.827    -.0668409    .0540163
+         educav |  -.0007975   .0015624    -0.51   0.615    -.0040565    .0024615
+         educem |   .0000572   .0017099     0.03   0.974    -.0035096     .003624
+         m_ahim |  -.0037918   .0034323    -1.10   0.282    -.0109514    .0033678
+    _Iyear_2001 |   .0042675   .0053097     0.80   0.431    -.0068083    .0153434
+  _Ischool_co_3 |          0  (omitted)
+  _Ischool_co_4 |  -.0986159   .0125615    -7.85   0.000    -.1248187   -.0724131
+  _Ischool_co_6 |          0  (omitted)
+  _Ischool_co_7 |          0  (omitted)
+  _Ischool_co_9 |   .0355822   .0110732     3.21   0.004      .012484    .0586805
+ _Ischool_co_11 |          0  (omitted)
+ _Ischool_co_13 |          0  (omitted)
+ _Ischool_co_16 |   .0151645   .0069623     2.18   0.042     .0006414    .0296876
+ _Ischool_co_19 |   .0856351   .0066579    12.86   0.000      .071747    .0995233
+ _Ischool_co_20 |   .0489043   .0096289     5.08   0.000     .0288187    .0689899
+ _Ischool_co_22 |   .0335458   .0024114    13.91   0.000     .0285157     .038576
+ _Ischool_co_23 |   .0316283   .0156134     2.03   0.056    -.0009406    .0641972
+ _Ischool_co_24 |   .0207137   .0057382     3.61   0.002     .0087439    .0326834
+ _Ischool_co_28 |   .0120247   .0065554     1.83   0.082    -.0016497     .025699
+ _Ischool_co_29 |  -.0166592   .0070754    -2.35   0.029    -.0314183   -.0019001
+ _Ischool_co_30 |   .0415554   .0145805     2.85   0.010      .011141    .0719698
+ _Ischool_co_35 |   .0398385   .0178065     2.24   0.037     .0026948    .0769822
+ _Ischool_co_36 |   .0318282   .0068864     4.62   0.000     .0174635     .046193
+ _Ischool_co_37 |   .0033838   .0048886     0.69   0.497    -.0068137    .0135813
+ _Ischool_co_38 |  -.0977773   .0163029    -6.00   0.000    -.1317845   -.0637701
+ _Ischool_co_39 |  -.1177904   .0152635    -7.72   0.000    -.1496295   -.0859513
+ _Ischool_co_41 |   .0301228   .0061439     4.90   0.000     .0173067    .0429388
+ _Ischool_co_42 |   .0186236    .005731     3.25   0.004     .0066689    .0305783
+ _Ischool_co_44 |   .0640799   .0151246     4.24   0.000     .0325305    .0956293
+ _Ischool_co_45 |          0  (omitted)
+ _Ischool_co_47 |   .0088226   .0041215     2.14   0.045     .0002253    .0174199
+          _cons |   .8391721   .0344536    24.36   0.000     .7673031    .9110411
+---------------------------------------------------------------------------------
+
+Overriding estimator's cluster/robust settings with cluster(school_code)
+
+Note: The bootstrap usually performs best when the confidence level (here, 90%)
+      times the number of replications plus 1 (1000+1=1001) is an integer.
+..........................
+
+Wild bootstrap-t, null imposed, 1000 replications, Wald test, clustering by school_code, bootstrap clustering b
+> y school_code, Rademacher weights:
+  afterXtreatment
+
+                                       t(20) =     1.2707
+                                    Prob>|t| =     0.2040
+
+90% confidence set for null hypothesis expression: [-.003974, .02912]
+.00942469
+1.2702616
+.00942909
+i.year            _Iyear_2000-2001    (naturally coded; _Iyear_2000 omitted)
+i.school_code     _Ischool_co_1-47    (naturally coded; _Ischool_co_1 omitted)
+note: _Ischool_co_3 omitted because of collinearity
+note: _Ischool_co_6 omitted because of collinearity
+note: _Ischool_co_7 omitted because of collinearity
+note: _Ischool_co_11 omitted because of collinearity
+note: _Ischool_co_13 omitted because of collinearity
+note: _Ischool_co_45 omitted because of collinearity
+
+Linear regression                               Number of obs     =     34,683
+                                                F(11, 20)         =          .
+                                                Prob > F          =          .
+                                                R-squared         =     0.0376
+                                                Root MSE          =     29.211
+
+                              (Std. Err. adjusted for 21 clusters in school_code)
+---------------------------------------------------------------------------------
+                |               Robust
+pctle_wage_st~d |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+----------------+----------------------------------------------------------------
+afterXtreatment |   1.970699   1.256313     1.57   0.132    -.6499248    4.591323
+       att_lgcr |   .0181154      .3421     0.05   0.958    -.6954927    .7317235
+       att_lgsc |   .0698592   .0336089     2.08   0.051    -.0002477    .1399662
+       awr_lgcr |   .5224928    .433922     1.20   0.243    -.3826527    1.427638
+     e_awr_lgcr |  -.5975532   .8810413    -0.68   0.505    -2.435373    1.240267
+         asiafr |   2.527008   .8176484     3.09   0.006     .8214233    4.232593
+            ole |   .0487224   4.500068     0.01   0.991    -9.338255      9.4357
+            boy |   7.823612    1.47164     5.32   0.000     4.753824     10.8934
+         educav |   .0394542   .1326639     0.30   0.769    -.2372778    .3161863
+         educem |   .1085305   .1425403     0.76   0.455    -.1888033    .4058643
+         m_ahim |  -.4557187   .4042613    -1.13   0.273    -1.298993    .3875556
+    _Iyear_2001 |  -1.124088   .9715884    -1.16   0.261    -3.150786    .9026098
+  _Ischool_co_3 |          0  (omitted)
+  _Ischool_co_4 |  -5.088654   1.348353    -3.77   0.001    -7.901268   -2.276039
+  _Ischool_co_6 |          0  (omitted)
+  _Ischool_co_7 |          0  (omitted)
+  _Ischool_co_9 |   .4998137   1.616476     0.31   0.760    -2.872095    3.871723
+ _Ischool_co_11 |          0  (omitted)
+ _Ischool_co_13 |          0  (omitted)
+ _Ischool_co_16 |   .7507079   .5132353     1.46   0.159    -.3198822    1.821298
+ _Ischool_co_19 |   7.978851   .6330979    12.60   0.000     6.658232     9.29947
+ _Ischool_co_20 |   1.530591   1.341014     1.14   0.267    -1.266715    4.327897
+ _Ischool_co_22 |   2.003251    .372698     5.37   0.000     1.225817    2.780685
+ _Ischool_co_23 |   4.408385   .9169294     4.81   0.000     2.495704    6.321066
+ _Ischool_co_24 |   1.236593   .8373661     1.48   0.155    -.5101218    2.983308
+ _Ischool_co_28 |   2.644659   .7783164     3.40   0.003      1.02112    4.268199
+ _Ischool_co_29 |   .0703274   .7844071     0.09   0.929    -1.565917    1.706572
+ _Ischool_co_30 |   2.012524   1.079844     1.86   0.077    -.2399922     4.26504
+ _Ischool_co_35 |  -5.634661    1.15383    -4.88   0.000    -8.041509   -3.227813
+ _Ischool_co_36 |   .2744945   .8480665     0.32   0.750    -1.494541     2.04353
+ _Ischool_co_37 |   .4303108    .692671     0.62   0.541    -1.014576    1.875197
+ _Ischool_co_38 |  -7.769775   1.016781    -7.64   0.000    -9.890743   -5.648808
+ _Ischool_co_39 |  -6.636039   1.973524    -3.36   0.003    -10.75274    -2.51934
+ _Ischool_co_41 |   1.426369   .6320683     2.26   0.035     .1078973     2.74484
+ _Ischool_co_42 |   1.957918   .7582265     2.58   0.018     .3762855    3.539551
+ _Ischool_co_44 |   4.187913   1.431521     2.93   0.008     1.201812    7.174015
+ _Ischool_co_45 |          0  (omitted)
+ _Ischool_co_47 |  -1.937565   .4837462    -4.01   0.001    -2.946642   -.9284883
+          _cons |   38.31384    2.81324    13.62   0.000     32.44553    44.18216
+---------------------------------------------------------------------------------
+
+Overriding estimator's cluster/robust settings with cluster(school_code)
+
+Note: The bootstrap usually performs best when the confidence level (here, 90%)
+      times the number of replications plus 1 (1000+1=1001) is an integer.
+..........................
+
+Wild bootstrap-t, null imposed, 1000 replications, Wald test, clustering by school_code, bootstrap clustering b
+> y school_code, Rademacher weights:
+  afterXtreatment
+
+                                       t(20) =     1.5685
+                                    Prob>|t| =     0.1110
+
+90% confidence set for null hypothesis expression: [-.03054, 4.653]
+1.2563134
+1.5937552
+1.2365131
+i.year            _Iyear_2000-2001    (naturally coded; _Iyear_2000 omitted)
+i.school_code     _Ischool_co_1-47    (naturally coded; _Ischool_co_1 omitted)
+note: _Ischool_co_3 omitted because of collinearity
+note: _Ischool_co_6 omitted because of collinearity
+note: _Ischool_co_7 omitted because of collinearity
+note: _Ischool_co_11 omitted because of collinearity
+note: _Ischool_co_13 omitted because of collinearity
+note: _Ischool_co_45 omitted because of collinearity
+
+Linear regression                               Number of obs     =     34,683
+                                                F(11, 20)         =          .
+                                                Prob > F          =          .
+                                                R-squared         =     0.0100
+                                                Root MSE          =     .25778
+
+                              (Std. Err. adjusted for 21 clusters in school_code)
+---------------------------------------------------------------------------------
+                |               Robust
+avt_stack_adj~d |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+----------------+----------------------------------------------------------------
+afterXtreatment |  -.0052004   .0107328    -0.48   0.633    -.0275886    .0171878
+       att_lgcr |   .0024844   .0015907     1.56   0.134    -.0008338    .0058025
+       att_lgsc |   2.02e-06   .0001099     0.02   0.986    -.0002273    .0002313
+       awr_lgcr |  -.0029456   .0015875    -1.86   0.078    -.0062571    .0003659
+     e_awr_lgcr |  -.0033637   .0021862    -1.54   0.140     -.007924    .0011966
+         asiafr |   .0031673   .0040821     0.78   0.447    -.0053478    .0116824
+            ole |   .0091498   .0148045     0.62   0.544    -.0217318    .0400314
+            boy |  -.0328816   .0077364    -4.25   0.000    -.0490194   -.0167438
+         educav |  -.0017881    .001439    -1.24   0.228    -.0047898    .0012136
+         educem |   .0003434    .000659     0.52   0.608    -.0010312    .0017179
+         m_ahim |   .0012609   .0017809     0.71   0.487     -.002454    .0049758
+    _Iyear_2001 |   -.003129    .009599    -0.33   0.748     -.023152    .0168941
+  _Ischool_co_3 |          0  (omitted)
+  _Ischool_co_4 |  -.0455631   .0050742    -8.98   0.000    -.0561476   -.0349786
+  _Ischool_co_6 |          0  (omitted)
+  _Ischool_co_7 |          0  (omitted)
+  _Ischool_co_9 |    .006814    .004249     1.60   0.124    -.0020493    .0156773
+ _Ischool_co_11 |          0  (omitted)
+ _Ischool_co_13 |          0  (omitted)
+ _Ischool_co_16 |   .0240564   .0033851     7.11   0.000     .0169953    .0311176
+ _Ischool_co_19 |   .0014228   .0045522     0.31   0.758    -.0080729    .0109185
+ _Ischool_co_20 |   .0182264   .0034982     5.21   0.000     .0109293    .0255234
+ _Ischool_co_22 |   .0198755   .0011236    17.69   0.000     .0175317    .0222192
+ _Ischool_co_23 |   .0049535   .0080258     0.62   0.544     -.011788    .0216949
+ _Ischool_co_24 |   .0154354   .0044543     3.47   0.002     .0061439    .0247269
+ _Ischool_co_28 |   .0064033    .004648     1.38   0.184    -.0032923    .0160989
+ _Ischool_co_29 |   .0026069   .0025589     1.02   0.320    -.0027308    .0079447
+ _Ischool_co_30 |  -.0303129   .0058355    -5.19   0.000    -.0424855   -.0181402
+ _Ischool_co_35 |   .0092296   .0055237     1.67   0.110    -.0022927    .0207518
+ _Ischool_co_36 |   .0017647   .0038356     0.46   0.650    -.0062363    .0097656
+ _Ischool_co_37 |   .0237098   .0016239    14.60   0.000     .0203225    .0270972
+ _Ischool_co_38 |  -.0033623   .0073754    -0.46   0.653    -.0187471    .0120225
+ _Ischool_co_39 |  -.0585063   .0056958   -10.27   0.000    -.0703875    -.046625
+ _Ischool_co_41 |  -.0111114   .0050315    -2.21   0.039     -.021607   -.0006158
+ _Ischool_co_42 |   .0096807   .0033199     2.92   0.009     .0027556    .0166058
+ _Ischool_co_44 |  -.0152543   .0052216    -2.92   0.008    -.0261465   -.0043622
+ _Ischool_co_45 |          0  (omitted)
+ _Ischool_co_47 |  -.0024218   .0017371    -1.39   0.179    -.0060454    .0012018
+          _cons |   .0989903   .0152807     6.48   0.000     .0671153    .1308653
+---------------------------------------------------------------------------------
+
+Overriding estimator's cluster/robust settings with cluster(school_code)
+
+Note: The bootstrap usually performs best when the confidence level (here, 90%)
+      times the number of replications plus 1 (1000+1=1001) is an integer.
+..........................
+
+Wild bootstrap-t, null imposed, 1000 replications, Wald test, clustering by school_code, bootstrap clustering b
+> y school_code, Rademacher weights:
+  afterXtreatment
+
+                                       t(20) =    -0.4845
+                                    Prob>|t| =     0.6690
+
+90% confidence set for null hypothesis expression: [-.03015, .01437]
+.01073277
+.4275245
+.012164
+i.year            _Iyear_2000-2001    (naturally coded; _Iyear_2000 omitted)
+i.school_code     _Ischool_co_1-47    (naturally coded; _Ischool_co_1 omitted)
+note: _Ischool_co_3 omitted because of collinearity
+note: _Ischool_co_6 omitted because of collinearity
+note: _Ischool_co_7 omitted because of collinearity
+note: _Ischool_co_11 omitted because of collinearity
+note: _Ischool_co_13 omitted because of collinearity
+note: _Ischool_co_45 omitted because of collinearity
+
+Linear regression                               Number of obs     =     34,683
+                                                F(11, 20)         =          .
+                                                Prob > F          =          .
+                                                R-squared         =     0.0060
+                                                Root MSE          =     2689.8
+
+                              (Std. Err. adjusted for 21 clusters in school_code)
+---------------------------------------------------------------------------------
+                |               Robust
+avt_total_sta~d |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+----------------+----------------------------------------------------------------
+afterXtreatment |  -13.90664   116.0501    -0.12   0.906    -255.9828    228.1695
+       att_lgcr |   16.78289   20.26718     0.83   0.417     -25.4937    59.05948
+       att_lgsc |   .1961193   1.054071     0.19   0.854    -2.002635    2.394873
+       awr_lgcr |  -15.92953   14.45922    -1.10   0.284    -46.09093    14.23186
+     e_awr_lgcr |  -27.59928   18.81224    -1.47   0.158    -66.84092    11.64237
+         asiafr |   40.40861     58.003     0.70   0.494    -80.58354    161.4008
+            ole |   161.4607   117.8712     1.37   0.186    -84.41437    407.3358
+            boy |  -238.5051    74.4381    -3.20   0.004    -393.7803   -83.22993
+         educav |  -13.64331   12.15414    -1.12   0.275    -38.99641     11.7098
+         educem |   1.966825   9.037981     0.22   0.830    -16.88607    20.81972
+         m_ahim |   22.77434   20.32679     1.12   0.276    -19.62662    65.17529
+    _Iyear_2001 |  -2.911955   101.2504    -0.03   0.977    -214.1166    208.2927
+  _Ischool_co_3 |          0  (omitted)
+  _Ischool_co_4 |  -471.1827   39.74945   -11.85   0.000    -554.0986   -388.2668
+  _Ischool_co_6 |          0  (omitted)
+  _Ischool_co_7 |          0  (omitted)
+  _Ischool_co_9 |  -21.48158   55.06456    -0.39   0.701    -136.3442    93.38108
+ _Ischool_co_11 |          0  (omitted)
+ _Ischool_co_13 |          0  (omitted)
+ _Ischool_co_16 |   147.6332   27.74658     5.32   0.000     89.75483    205.5115
+ _Ischool_co_19 |  -21.03741   47.02999    -0.45   0.659    -119.1403    77.06544
+ _Ischool_co_20 |   32.84279   38.32532     0.86   0.402    -47.10242     112.788
+ _Ischool_co_22 |   183.2794   14.01627    13.08   0.000      154.042    212.5168
+ _Ischool_co_23 |  -81.37368    69.3238    -1.17   0.254    -225.9806    63.23323
+ _Ischool_co_24 |   29.19101   54.48877     0.54   0.598    -84.47058    142.8526
+ _Ischool_co_28 |   20.68568   48.41083     0.43   0.674    -80.29753    121.6689
+ _Ischool_co_29 |   11.83284   35.66562     0.33   0.744    -62.56433    86.23001
+ _Ischool_co_30 |  -288.4637   72.22703    -3.99   0.001    -439.1266   -137.8007
+ _Ischool_co_35 |  -32.02574   40.54738    -0.79   0.439    -116.6061    52.55462
+ _Ischool_co_36 |   52.53913    51.7237     1.02   0.322    -55.35462    160.4329
+ _Ischool_co_37 |   208.4766   29.61015     7.04   0.000     146.7109    270.2423
+ _Ischool_co_38 |  -53.87325   63.68137    -0.85   0.408    -186.7103    78.96375
+ _Ischool_co_39 |  -583.0471   55.28389   -10.55   0.000    -698.3673    -467.727
+ _Ischool_co_41 |  -83.13765   56.45126    -1.47   0.156    -200.8929    34.61761
+ _Ischool_co_42 |   37.62808   39.85007     0.94   0.356     -45.4977    120.7539
+ _Ischool_co_44 |   -111.662   53.26474    -2.10   0.049    -222.7703   -.5536629
+ _Ischool_co_45 |          0  (omitted)
+ _Ischool_co_47 |  -105.0544   23.39877    -4.49   0.000    -153.8634   -56.24543
+          _cons |   785.0583    143.605     5.47   0.000     485.5036    1084.613
+---------------------------------------------------------------------------------
+
+Overriding estimator's cluster/robust settings with cluster(school_code)
+
+Note: The bootstrap usually performs best when the confidence level (here, 90%)
+      times the number of replications plus 1 (1000+1=1001) is an integer.
+..........................
+
+Wild bootstrap-t, null imposed, 1000 replications, Wald test, clustering by school_code, bootstrap clustering b
+> y school_code, Rademacher weights:
+  afterXtreatment
+
+                                       t(20) =    -0.1198
+                                    Prob>|t| =     0.9180
+
+90% confidence set for null hypothesis expression: [-276.7, 189.8]
+116.05005
+.10295409
+135.07608
+i.year            _Iyear_2000-2001    (naturally coded; _Iyear_2000 omitted)
+i.school_code     _Ischool_co_1-47    (naturally coded; _Ischool_co_1 omitted)
+note: _Ischool_co_3 omitted because of collinearity
+note: _Ischool_co_6 omitted because of collinearity
+note: _Ischool_co_7 omitted because of collinearity
+note: _Ischool_co_11 omitted because of collinearity
+note: _Ischool_co_13 omitted because of collinearity
+note: _Ischool_co_45 omitted because of collinearity
+
+Linear regression                               Number of obs     =     34,683
+                                                F(11, 20)         =          .
+                                                Prob > F          =          .
+                                                R-squared         =     0.0173
+                                                Root MSE          =     4.3971
+
+                              (Std. Err. adjusted for 21 clusters in school_code)
+---------------------------------------------------------------------------------
+                |               Robust
+sum_month_sta~d |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+----------------+----------------------------------------------------------------
+afterXtreatment |   .1937599   .1377441     1.41   0.175    -.0935694    .4810891
+       att_lgcr |   .0469814   .0420638     1.12   0.277    -.0407622     .134725
+       att_lgsc |   .0050988    .004154     1.23   0.234    -.0035664     .013764
+       awr_lgcr |  -.0349333   .0544896    -0.64   0.529    -.1485967      .07873
+     e_awr_lgcr |   .0204174   .0936731     0.22   0.830    -.1749812     .215816
+         asiafr |   .2734798   .1064689     2.57   0.018     .0513895      .49557
+            ole |  -.6550504   .5572771    -1.18   0.254     -1.81751    .5074093
+            boy |   .2136881   .3260067     0.66   0.520    -.4663499    .8937261
+         educav |  -.0115272   .0198366    -0.58   0.568    -.0529056    .0298512
+         educem |   .0087678   .0206799     0.42   0.676    -.0343698    .0519053
+         m_ahim |   -.060274   .0554133    -1.09   0.290    -.1758641    .0553162
+    _Iyear_2001 |  -.0244257   .0786518    -0.31   0.759    -.1884904     .139639
+  _Ischool_co_3 |          0  (omitted)
+  _Ischool_co_4 |  -.8406322   .1946986    -4.32   0.000    -1.246766    -.434498
+  _Ischool_co_6 |          0  (omitted)
+  _Ischool_co_7 |          0  (omitted)
+  _Ischool_co_9 |   .5478199    .179901     3.05   0.006      .172553    .9230868
+ _Ischool_co_11 |          0  (omitted)
+ _Ischool_co_13 |          0  (omitted)
+ _Ischool_co_16 |   .2753325   .0988496     2.79   0.011     .0691357    .4815292
+ _Ischool_co_19 |   1.255539   .0986922    12.72   0.000     1.049671    1.461408
+ _Ischool_co_20 |   .7371284   .1514236     4.87   0.000     .4212643    1.052993
+ _Ischool_co_22 |   .3479796   .0428677     8.12   0.000     .2585592       .4374
+ _Ischool_co_23 |   .5666902   .1873197     3.03   0.007     .1759481    .9574322
+ _Ischool_co_24 |   .3304298   .0822884     4.02   0.001     .1587792    .5020804
+ _Ischool_co_28 |   .3890409   .0947774     4.10   0.001     .1913386    .5867432
+ _Ischool_co_29 |   .0006628   .1091838     0.01   0.995    -.2270906    .2284162
+ _Ischool_co_30 |   1.270297   .1587029     8.00   0.000     .9392488    1.601346
+ _Ischool_co_35 |   .0695361    .222852     0.31   0.758     -.395325    .5343972
+ _Ischool_co_36 |   .6171489   .0874315     7.06   0.000       .43477    .7995277
+ _Ischool_co_37 |   .1401547   .0757626     1.85   0.079    -.0178833    .2981927
+ _Ischool_co_38 |  -1.205432   .2041453    -5.90   0.000    -1.631272   -.7795929
+ _Ischool_co_39 |  -1.126348   .2494511    -4.52   0.000    -1.646694   -.6060026
+ _Ischool_co_41 |   .2422066   .0837839     2.89   0.009     .0674364    .4169768
+ _Ischool_co_42 |   .3332765   .0805612     4.14   0.001     .1652288    .5013243
+ _Ischool_co_44 |   .9145152   .2076476     4.40   0.000     .4813698    1.347661
+ _Ischool_co_45 |          0  (omitted)
+ _Ischool_co_47 |    .286761   .0627795     4.57   0.000     .1558052    .4177167
+          _cons |   8.340639   .3953733    21.10   0.000     7.515905    9.165374
+---------------------------------------------------------------------------------
+
+Overriding estimator's cluster/robust settings with cluster(school_code)
+
+Note: The bootstrap usually performs best when the confidence level (here, 90%)
+      times the number of replications plus 1 (1000+1=1001) is an integer.
+..........................
+
+Wild bootstrap-t, null imposed, 1000 replications, Wald test, clustering by school_code, bootstrap clustering b
+> y school_code, Rademacher weights:
+  afterXtreatment
+
+                                       t(20) =     1.4065
+                                    Prob>|t| =     0.1790
+
+90% confidence set for null hypothesis expression: [-.04357, .454]
+.13774414
+1.3438676
+.14418076
+
+
+.                                 
+.                         
+.                         
+.                                 
+. 
+. 
+. 
+.         log close
+      name:  <unnamed>
+       log:  C:\Users\peleg\OneDrive\Documents\Victor\Other\Teacher Bonuses\For publication\Reproduction\logs\B
+> oot_stacked_23Oct19.log
+  log type:  text
+ closed on:  23 Oct 2019, 01:51:40
+---------------------------------------------------------------------------------------------------------------

@@ -1,0 +1,1558 @@
+-------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  W:\victor_lavi\Incoming\olim1\elior\Teachers Bonuses\logs\T6A_T10A
+> _2002__29Jul19.log
+  log type:  text
+ opened on:  29 Jul 2019, 12:36:29
+
+. 
+. use data\BL_SAMPLE_FULL_UPDATED_WithParents, clear
+
+. 
+. cap drop _f
+
+. 
+. append using "W:\victor_lavi\Incoming\olim1\elior\Teachers Bonuses\Palcebo_sa
+> mple_2002_May17_BL_Data.dta", force
+(note: variable zsex was str4 in the using data, but will be double now)
+(note: variable zstatus was str2 in the using data, but will be double now)
+(note: variable av_sex was str1 in the using data, but will be byte now)
+(note: variable av_status was str2 in the using data, but will be byte now)
+(note: variable em_sex was str1 in the using data, but will be byte now)
+(note: variable em_status was str2 in the using data, but will be byte now)
+(note: variable year was float, now double to accommodate using data's
+       values)
+(note: variable anaf2001 was int, now double to accommodate using data's
+       values)
+(note: variable wage_2001_az was long, now double to accommodate using data's
+       values)
+(note: variable month_2001_az was byte, now double to accommodate using
+       data's values)
+(note: variable zanaf2001 was int, now double to accommodate using data's
+       values)
+(note: variable zwage_2001_az was long, now double to accommodate using
+       data's values)
+(note: variable zmonth_2001_az was byte, now double to accommodate using
+       data's values)
+(note: variable em_tz_em was long, now double to accommodate using data's
+       values)
+(label Status already defined)
+
+. 
+. * KEEPING OBSERVATIONS THAT ARE FOUND IN THE DEMOGRAPHIC SAMPLE *
+. keep if dmg == 1
+(313 observations deleted)
+
+. 
+. * DROPPING INDIVIDUALS WHO HAVE WAGE PROBLEM (note that this doesnt vary acco
+> rding to the a/b/c definitions)*
+. drop if wage_problem_2000 == 1
+(14 observations deleted)
+
+. drop if wage_problem_2001 == 1
+(X observations deleted)
+
+. drop if wage_problem_2002 == 1
+(27 observations deleted)
+
+. drop if wage_problem_2003 == 1
+(16 observations deleted)
+
+. drop if wage_problem_2004 == 1
+(20 observations deleted)
+
+. drop if wage_problem_2005 == 1
+(15 observations deleted)
+
+. drop if wage_problem_2006 == 1
+(21 observations deleted)
+
+. drop if wage_problem_2007 == 1
+(30 observations deleted)
+
+. drop if wage_problem_2008 == 1
+(37 observations deleted)
+
+. drop if wage_problem_2009 == 1
+(86 observations deleted)
+
+. drop if wage_problem_2010 == 1
+(112 observations deleted)
+
+. drop if wage_problem_2011 == 1
+(21 observations deleted)
+
+. drop if wage_problem_2012 == 1
+(23 observations deleted)
+
+. drop if wage_problem_2013 == 1
+(16 observations deleted)
+
+. 
+. *DROP INDIVIDUALS WITH WAGES HIGHER THAN 400,000 NIS *
+. *drop if sum_wage_2009a > 400000 | sum_wage_2010a > 400000 | sum_wage_2011a >
+>  400000 | sum_wage_2012a > 400000
+. 
+. drop if sum_wage_2000a > 400000 |sum_wage_2001a > 400000 |sum_wage_2002a > 40
+> 0000 |sum_wage_2003a > 400000 |sum_wage_2004a > 400000 |sum_wage_2005a > 4000
+> 00 |sum_wage_2006a > 400000 |sum_wage_2007a > 400000 |sum_wage_2008a > 400000
+>  |sum_wage_2009a > 400000 | sum_wage_2010a > 400000 | sum_wage_2011a > 400000
+>  | sum_wage_2012a > 400000 | sum_wage_2013a > 400000
+(175 observations deleted)
+
+. 
+. ***Drop if wage is negative (this applies only to the b and c definitions***
+. 
+. foreach year in 2000 2001 2002 2003 2004 2005 2006 2007 2008 2009 2010 2011 2
+> 012 2013 {
+  2.         drop if sum_wage_`year'a<0
+  3.         drop if sum_wage_`year'b<0
+  4.         drop if sum_wage_`year'c<0
+  5.         }
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(X observation deleted)
+(0 observations deleted)
+(0 observations deleted)
+(X observation deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(X observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(X observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(X observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(X observation deleted)
+(0 observations deleted)
+(0 observations deleted)
+(3 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(37 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(X observations deleted)
+(0 observations deleted)
+
+. 
+. * INFLATION-ADJUSTING OF WAGES (2009 PRICES)*
+. 
+. replace sum_wage_2010a = sum_wage_2010a / 1.026
+(31,690 real changes made)
+
+. replace sum_wage_2011a = sum_wage_2011a / ((1.026)*(1.0217))
+(32,547 real changes made)
+
+. replace sum_wage_2012a = sum_wage_2012a / ((1.026)*(1.0217)*(1.0163))
+(32,263 real changes made)
+
+. replace sum_wage_2013a = sum_wage_2013a / ((1.026)*(1.0217)*(1.0163)*(1.0182)
+> )
+(32,648 real changes made)
+
+. replace sum_wage_2008a = sum_wage_2008a * 1.0391
+(32,979 real changes made)
+
+. replace sum_wage_2007a = sum_wage_2007a * 1.0391 * 1.038
+(32,599 real changes made)
+
+. replace sum_wage_2006a = sum_wage_2006a * 1.0391 * 1.038 * 1.034
+(31,738 real changes made)
+
+. replace sum_wage_2005a = sum_wage_2005a * 1.0391 * 1.038 * 1.034 * 0.999
+(29,700 real changes made)
+
+. replace sum_wage_2004a = sum_wage_2004a * 1.0391 * 1.038 * 1.034 * 0.999 * 1.
+> 0239 
+(24,384 real changes made)
+
+. replace sum_wage_2003a = sum_wage_2003a * 1.0391 * 1.038 * 1.034 * 0.999 * 1.
+> 0239 * 1.0121 
+(20,435 real changes made)
+
+. replace sum_wage_2002a = sum_wage_2002a * 1.0391 * 1.038 * 1.034 * 0.999 * 1.
+> 0239 * 1.0121 * 0.9811
+(20,664 real changes made)
+
+. replace sum_wage_2001a = sum_wage_2001a * 1.0391 * 1.038 * 1.034 * 0.999 * 1.
+> 0239 * 1.0121 * 0.9811 * 1.065
+(21,444 real changes made)
+
+. replace sum_wage_2000a = sum_wage_2000a * 1.0391 * 1.038 * 1.034 * 0.999 * 1.
+> 0239 * 1.0121 * 0.9811 * 1.065 * 1.0141
+(19,928 real changes made)
+
+. 
+. *In order to cluster by school_codeYear
+. gen school_codeYear = school_code
+(13,257 missing values generated)
+
+. 
+. replace school_codeYear = school_code * 1000 if year == 2000
+(12,650 real changes made)
+
+. 
+. * KEEP INDIVIDUALS WITH POSITIVE WAGE *
+. *keep if (sum_wage_2009a > 0 & sum_wage_2010a > 0 & sum_wage_2011a > 0 & sum_
+> wage_2012a > 0) & (work_2009 == 1 & work_2010 == 1 & work_2011 == 1 & work_20
+> 12 == 1) 
+. 
+.  *** CREATE YEAR-AVERAGE WAGE VARIABLES ***
+. *egen avg_wage_09_11 = rowmean(sum_wage_2009a sum_wage_2010a sum_wage_2011a)
+. *egen avg_wage_09_12 = rowmean(sum_wage_2009a sum_wage_2010a sum_wage_2011a s
+> um_wage_2012a)
+. 
+. 
+. ***generate mean wage for father and mother for the years 2000-2002***
+. gen av_avwage00_02 = (av_sum_wage_2000a + av_sum_wage_2001a + av_sum_wage_200
+> 2a)/3
+(2,679 missing values generated)
+
+. gen em_avwage00_02 = (em_sum_wage_2000a + em_sum_wage_2001a + em_sum_wage_200
+> 2a)/3
+(1,003 missing values generated)
+
+. 
+. 
+. 
+. ***generate household income***
+. foreach year in 2000 2001 2002 {
+  2.         gen house_sum_wage_`year'a = av_sum_wage_`year'a + em_sum_wage_`ye
+> ar'a
+  3.         }
+(2,462 missing values generated)
+(2,732 missing values generated)
+(2,868 missing values generated)
+
+.         
+. gen house_avwage00_02 = (house_sum_wage_2000a + house_sum_wage_2001a + house_
+> sum_wage_2002a)/3
+(3,375 missing values generated)
+
+. 
+. *Generate dummy for above median household salary       
+. sum house_avwage00_02, detail
+
+                      house_avwage00_02
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%         2600              0       Obs              34,981
+25%     43737.67              0       Sum of Wgt.      34,981
+
+50%       105176                      Mean           144935.6
+                        Largest       Std. Dev.      161634.2
+75%       198626        2932197
+90%       317390        3064296       Variance       2.61e+10
+95%     414102.3        5585889       Skewness       5.507112
+99%     703645.3        5761669       Kurtosis       107.2493
+
+. local med = r(p50)
+
+. gen house_avwage00_02H = (house_avwage00_02>=`med')
+
+. gen house_avwage00_02L = (house_avwage00_02<`med')
+
+. 
+. 
+. /**************************************************
+> II. DEFINE `after' AND `before' 
+> changed according to the referees' suggestion
+> ***************************************************/
+. *constructing schools constant vars
+. 
+. foreach var in educav educem m_ahim {
+  2. replace `var'=. if `var'==99
+  3. replace `var'=0 if `var'==88
+  4. replace `var'=25 if `var'>25 & `var'!=.
+  5. }
+(1,563 real changes made, 1,563 to missing)
+(62 real changes made)
+(11 real changes made)
+(2,097 real changes made, 2,097 to missing)
+(31 real changes made)
+(X real changes made)
+(1,950 real changes made, 1,950 to missing)
+(39 real changes made)
+(0 real changes made)
+
+. 
+. foreach var in treated inRD inNE school_code {
+  2. bysort semelmos: egen `var'_temp=mean(`var')
+  3. replace `var'= `var'_temp if year==2002
+  4. drop `var'_temp
+  5. }
+(X missing values generated)
+(13,250 real changes made)
+(7 missing values generated)
+(13,250 real changes made)
+(X missing values generated)
+(13,250 real changes made)
+(X missing values generated)
+(13,250 real changes made)
+
+. *Constructing New Before and After
+. 
+. drop if year==2001
+(12,449 observations deleted)
+
+. gen before = (year == 2000)
+
+. gen after = (year == 2002)
+
+. 
+. ************************************
+. 
+. /*
+> drop if year==1999
+> 
+> gen before = (year == 2000)
+> gen after = (year == 2001)
+> */
+. 
+. /**************************************************
+> III. DEFINE TREATMENT AND CONTROL GROUPS
+> ***************************************************/
+. 
+. gen treatment = (treated == 1)
+
+. gen control = (treated == 0)
+
+. 
+. gen afterXtreatment = after * treatment
+
+. 
+. *** SET QUARTILES SAMPLES ***
+. drop q1 q2 q3 q4
+
+. gen q4 = 1
+
+. gen q3 = (q != 4)
+
+. gen q_1 = (q==1)
+
+. gen q_2 = (q==2)
+
+. gen q_3 = (q==3)
+
+. gen q_4 = (q==4)
+
+. 
+. *** SET EXPERIMENT SAMPLE GROUPS ***
+. rename inNE NE
+
+. rename inRD RD
+
+. rename inEL EL
+
+. 
+. 
+. ***Sum up all forms of education except university***
+. foreach year in 2000 2001 2002 2003 2004 2005 2006 2007 2008 2009 2010 2011 2
+> 012 2013 2014 2015 {
+  2.         gen NonUniEduc`year' = col`year'+teach`year'+semeng`year'+other`ye
+> ar'
+  3.         gen NonUniEnrol`year' = max(B`year', C`year', S`year', O`year')
+  4.         gen AtLeast3Uni`year' = (uni`year'>=3)
+  5.         gen AtLeast4Uni`year' = (uni`year'>=4)
+  6.         gen AtLeast5Uni`year' = (uni`year'>=5)
+  7. }
+(13,257 missing values generated)
+(13,257 missing values generated)
+(5,663 missing values generated)
+
+. 
+. ***Generate lag education for the 2000 cohort (E A B C S O educ uni col teach
+>  semeng other)
+. foreach var in E A B C S O educ uni col teach semeng other NonUniEduc NonUniE
+> nrol AtLeast3Uni AtLeast4Uni AtLeast5Uni {
+  2. foreach year in  2002 2003 2004 2005 2006 2007 2008 2009 2010 2011 2012 20
+> 13 2014 2015 {
+  3.         local years_after_school = `year'-2002
+  4.         gen `var'_`years_after_school'_afterSchool = `var'`year'
+  5.         local yearMinus1 = `year'-2
+  6.         replace `var'_`years_after_school'_afterSchool = `var'`yearMinus1'
+>  if year==2000
+  7.         }
+  8.         }
+(1,058 real changes made)
+(1,394 real changes made)
+(1,701 real changes made)
+(1,697 real changes made)
+(1,511 real changes made)
+(1,297 real changes made)
+(834 real changes made)
+(367 real changes made)
+(235 real changes made)
+(268 real changes made)
+(246 real changes made)
+(125 real changes made)
+(105 real changes made)
+(55 real changes made)
+(389 real changes made)
+(599 real changes made)
+(789 real changes made)
+(824 real changes made)
+(748 real changes made)
+(549 real changes made)
+(332 real changes made)
+(216 real changes made)
+(162 real changes made)
+(147 real changes made)
+(149 real changes made)
+(114 real changes made)
+(85 real changes made)
+(42 real changes made)
+(158 real changes made)
+(291 real changes made)
+(502 real changes made)
+(569 real changes made)
+(548 real changes made)
+(668 real changes made)
+(539 real changes made)
+(216 real changes made)
+(164 real changes made)
+(281 real changes made)
+(256 real changes made)
+(126 real changes made)
+(108 real changes made)
+(46 real changes made)
+(280 real changes made)
+(300 real changes made)
+(242 real changes made)
+(182 real changes made)
+(148 real changes made)
+(124 real changes made)
+(99 real changes made)
+(123 real changes made)
+(124 real changes made)
+(84 real changes made)
+(68 real changes made)
+(57 real changes made)
+(53 real changes made)
+(26 real changes made)
+(197 real changes made)
+(183 real changes made)
+(191 real changes made)
+(204 real changes made)
+(207 real changes made)
+(179 real changes made)
+(109 real changes made)
+(74 real changes made)
+(52 real changes made)
+(51 real changes made)
+(45 real changes made)
+(17 real changes made)
+(18 real changes made)
+(14 real changes made)
+(123 real changes made)
+(142 real changes made)
+(135 real changes made)
+(136 real changes made)
+(140 real changes made)
+(96 real changes made)
+(54 real changes made)
+(30 real changes made)
+(22 real changes made)
+(16 real changes made)
+(11 real changes made)
+(X real changes made)
+(13 real changes made)
+(10 real changes made)
+(1,538 real changes made)
+(2,057 real changes made)
+(2,761 real changes made)
+(3,298 real changes made)
+(3,565 real changes made)
+(3,735 real changes made)
+(3,388 real changes made)
+(2,785 real changes made)
+(2,285 real changes made)
+(2,016 real changes made)
+(1,645 real changes made)
+(1,331 real changes made)
+(1,078 real changes made)
+(713 real changes made)
+(502 real changes made)
+(843 real changes made)
+(1,204 real changes made)
+(1,543 real changes made)
+(1,715 real changes made)
+(1,718 real changes made)
+(1,588 real changes made)
+(1,384 real changes made)
+(1,173 real changes made)
+(958 real changes made)
+(768 real changes made)
+(666 real changes made)
+(564 real changes made)
+(371 real changes made)
+(178 real changes made)
+(367 real changes made)
+(630 real changes made)
+(818 real changes made)
+(937 real changes made)
+(1,190 real changes made)
+(1,117 real changes made)
+(833 real changes made)
+(609 real changes made)
+(696 real changes made)
+(579 real changes made)
+(425 real changes made)
+(299 real changes made)
+(193 real changes made)
+(334 real changes made)
+(441 real changes made)
+(476 real changes made)
+(462 real changes made)
+(405 real changes made)
+(338 real changes made)
+(288 real changes made)
+(289 real changes made)
+(280 real changes made)
+(210 real changes made)
+(185 real changes made)
+(174 real changes made)
+(171 real changes made)
+(109 real changes made)
+(350 real changes made)
+(246 real changes made)
+(269 real changes made)
+(302 real changes made)
+(356 real changes made)
+(363 real changes made)
+(308 real changes made)
+(250 real changes made)
+(200 real changes made)
+(158 real changes made)
+(117 real changes made)
+(75 real changes made)
+(40 real changes made)
+(25 real changes made)
+(199 real changes made)
+(224 real changes made)
+(227 real changes made)
+(231 real changes made)
+(229 real changes made)
+(197 real changes made)
+(146 real changes made)
+(102 real changes made)
+(76 real changes made)
+(36 real changes made)
+(19 real changes made)
+(X real changes made)
+(18 real changes made)
+(18 real changes made)
+(1,012 real changes made)
+(1,224 real changes made)
+(1,572 real changes made)
+(1,779 real changes made)
+(1,880 real changes made)
+(2,050 real changes made)
+(1,826 real changes made)
+(1,424 real changes made)
+(1,127 real changes made)
+(1,081 real changes made)
+(889 real changes made)
+(675 real changes made)
+(523 real changes made)
+(344 real changes made)
+(681 real changes made)
+(830 real changes made)
+(983 real changes made)
+(974 real changes made)
+(911 real changes made)
+(928 real changes made)
+(679 real changes made)
+(317 real changes made)
+(230 real changes made)
+(291 real changes made)
+(265 real changes made)
+(130 real changes made)
+(114 real changes made)
+(60 real changes made)
+(99 real changes made)
+(220 real changes made)
+(310 real changes made)
+(504 real changes made)
+(639 real changes made)
+(679 real changes made)
+(622 real changes made)
+(416 real changes made)
+(234 real changes made)
+(145 real changes made)
+(98 real changes made)
+(76 real changes made)
+(60 real changes made)
+(21 real changes made)
+(X real change made)
+(79 real changes made)
+(185 real changes made)
+(264 real changes made)
+(382 real changes made)
+(488 real changes made)
+(552 real changes made)
+(498 real changes made)
+(342 real changes made)
+(201 real changes made)
+(113 real changes made)
+(91 real changes made)
+(70 real changes made)
+(24 real changes made)
+(0 real changes made)
+(X real change made)
+(56 real changes made)
+(113 real changes made)
+(150 real changes made)
+(238 real changes made)
+(325 real changes made)
+(365 real changes made)
+(328 real changes made)
+(251 real changes made)
+(171 real changes made)
+(117 real changes made)
+(88 real changes made)
+(33 real changes made)
+
+. 
+.         
+. ***Generate lag earnings for the 2000 cohort
+. 
+. 
+.                 
+.         foreach year in  2010 2011 2012 2013{
+  2.         local years_after_school = `year'-2002
+  3.         gen sum_wage_`years_after_school'_afterSchoola = sum_wage_`year'a
+  4.         gen work_`years_after_school'_afterSchoola = work_`year'a
+  5.         
+.         local yearMinus1 = `year'-2
+  6.         replace sum_wage_`years_after_school'_afterSchoola = sum_wage_`yea
+> rMinus1'a if year==2000
+  7.         replace work_`years_after_school'_afterSchoola = work_`yearMinus1'
+> a if year==2000
+  8.         gen months_`years_after_school'_afterSchoola = sum_month_`year'a
+  9.         replace months_`years_after_school'_afterSchoola = sum_month_`year
+> Minus1'a if year==2000
+ 10.         
+.         }
+(11,506 real changes made)
+(1,679 real changes made)
+(6,730 real changes made)
+(11,291 real changes made)
+(1,384 real changes made)
+(6,044 real changes made)
+(11,251 real changes made)
+(1,526 real changes made)
+(5,964 real changes made)
+(11,262 real changes made)
+(1,142 real changes made)
+(5,594 real changes made)
+
+.         
+. 
+. 
+. *To run table only on the sub-sample above median for household income
+. *keep if house_avwage00_02H==1
+. 
+. *To run table only on the sub-sample of boys
+. *keep if boy==1
+. 
+. /**************************************************
+> IV. RUN DID REGRESSIONS - PART I (FULL SAMPLE) 
+> ***************************************************/
+. 
+. /***************
+> DEFINITION A
+> **************/
+. 
+. replace school_code = semelmos
+(25,900 real changes made)
+
+.         
+. **2000 to 2002 placebo**
+. local i = 0
+
+. 
+. foreach sample in NE {  
+  2. 
+.         local i = `i' + 1
+  3.                                                 
+.         foreach group in q4 {
+  4.         
+.                 postfile values str50 rowKey B0 Binteraction using "results\a
+> utomatic\\Table_4_lagged_`sample'_`group'_incomeALagged", replace  
+  5.         
+.                         preserve
+  6.                         
+.                         keep if `sample' == 1 & `group' == 1
+  7. 
+.                         di "*************************************************
+> **************"
+  8.                         di "**********************************************
+> *****************"
+  9.                         di ""
+ 10.                         di "Sample: `sample'"
+ 11.                         di ""
+ 12.                         di "Group: `group'"
+ 13.                         di ""
+ 14.                         di "**********************************************
+> *****************"
+ 15.                         di "**********************************************
+> *****************"
+ 16.                         
+.                         foreach var in sum_wage work months{
+ 17.                         foreach yearsAfterSchool in  11  {
+ 18.                         
+.                                 di "*****************************************
+> ****************"
+ 19.                                 di ""
+ 20.                                 di "SIMPLE DD with FE and controls placebo
+>  1999-2000"
+ 21.                                 di ""
+ 22.                                 di "Outcome: `var'_`yearsAfterSchool'_afte
+> rSchoola"
+ 23.                                 di ""
+ 24.                                 di "Cohorts: 1999,2002"0
+ 25.                                 di ""
+ 26.                                 di "Sample: `sample'"
+ 27.                                 di ""
+ 28.                                 di "**************************************
+> *******************"
+ 29.                                 di ""
+ 30.                                                 
+.                                 if `i' != 3 {
+ 31. 
+.                                 xi: reg `var'_`yearsAfterSchool'_afterSchoola
+>  afterXtreatment   ole boy educav educem m_ahim i.year i.school_code , cluste
+> r(school_code)
+ 32.                                 }
+ 33.                                 
+.                                 else{
+ 34.                                 xi: reg `var'_`yearsAfterSchool'_afterScho
+> ola afterXtreatment   ole boy educav educem m_ahim i.year i.school_code, clus
+> ter(school_code)
+ 35.                                 }
+ 36.                                 
+.                                 
+.                         
+.                                 local B3`var'_`yearsAfterSchool'_afterSchoola
+>  = _b[afterXtreatment]
+ 37.                                 local SE3`var'_`yearsAfterSchool'_afterSch
+> oola = _se[afterXtreatment]
+ 38.                                 
+.                                 su `var'_`yearsAfterSchool'_afterSchool if tr
+> eatment == 1 & before == 1 
+ 39.                                 local B0`var'_`yearsAfterSchool'_afterScho
+> ola = r(mean)
+ 40.                                 local S0`var'_`yearsAfterSchool'_afterScho
+> ola = r(sd)
+ 41.                         
+.                 
+.                                 post values ("B `var'_`yearsAfterSchool'_afte
+> rSchoola")                          (`B0`var'_`yearsAfterSchool'_afterSchoola
+> ') (`B3`var'_`yearsAfterSchool'_afterSchoola') 
+ 42.                                 post values ("SCHOOL YEAR CLUSTERED SE `va
+> r'_`yearsAfterSchool'_afterSchoola")   (`S0`var'_`yearsAfterSchool'_afterScho
+> ola') (`SE3`var'_`yearsAfterSchool'_afterSchoola') 
+ 43.                                 post values ("") (.) (.)
+ 44.                                 
+.                                 // COUNTING NUMBER OF OBSERVATIONS
+. 
+.                                 count if treatment == 1 & before == 1
+ 45.                                 local ntb = r(N)
+ 46. 
+.                                 count if (treatment == 1 | control == 1) & (a
+> fter == 1 | before == 1) 
+ 47.                                 local n = r(N)
+ 48. 
+.                                 post values ("N OBS `sample'_treated_before")
+>  (`ntb') (.)
+ 49.                                 post values ("N OBS `sample'") (`n') (.) 
+ 50.                                 
+.                                 if `i' != 3{
+ 51.                                 su treatment if treatment == 1 & before ==
+>  1  
+ 52.                                 local wntb = r(N)
+ 53. 
+.                                 su E if (treatment == 1 | control == 1) & (af
+> ter == 1 | before == 1) [fweight=hoodWeight] 
+ 54.                                 local wn = r(N)
+ 55.                                 
+.                                 post values ("Weighted N OBS `sample'+treated
+> _before")  (`wntb') (.) 
+ 56.                                 post values ("Weighted N OBS `sample'")  (
+> `wn') (.)  
+ 57.                                 post values ("") (.) (.)
+ 58.                                 }
+ 59.                                 
+.                                 }                               
+ 60.                                 }
+ 61.                         {
+ 62. 
+.                         foreach var in A B col uni{
+ 63.                         foreach yearsAfterSchool in  12 {
+ 64.                         
+.                                 di "*****************************************
+> ****************"
+ 65.                                 di ""
+ 66.                                 di "SIMPLE DD with FE and controls placebo
+>  2000-2002"
+ 67.                                 di ""
+ 68.                                 di "Outcome: `var'_`yearsAfterSchool'_afte
+> rSchool"
+ 69.                                 di ""
+ 70.                                 di "Cohorts: 1999,2000"
+ 71.                                 di ""
+ 72.                                 di "Sample: `sample'"
+ 73.                                 di ""
+ 74.                                 di "**************************************
+> *******************"
+ 75.                                 di ""
+ 76.                                                 
+.                                 if `i' != 3 {
+ 77.                                 tab year
+ 78.                                 xi: reg `var'_`yearsAfterSchool'_afterScho
+> ol afterXtreatment  ole boy educav educem m_ahim i.year i.school_code  , clus
+> ter(school_code)
+ 79.                                 }
+ 80.                                 
+.                                 else{
+ 81.                                 xi: reg `var'_`yearsAfterSchool'_afterScho
+> ol afterXtreatment  ole boy educav educem m_ahim i.year i.school_code, cluste
+> r(school_code)
+ 82.                                 }
+ 83.                                 
+.                                 
+.                         
+.                                 local B3`var'_`yearsAfterSchool'_afterSchoola
+>  = _b[afterXtreatment]
+ 84.                                 local SE3`var'_`yearsAfterSchool'_afterSch
+> oola = _se[afterXtreatment]
+ 85.                                 
+.                                 su `var'_`yearsAfterSchool'_afterSchool if tr
+> eatment == 1 & before == 1 
+ 86.                                 local B0`var'_`yearsAfterSchool'_afterScho
+> ola = r(mean)
+ 87.                                 local S0`var'_`yearsAfterSchool'_afterScho
+> ola = r(sd)
+ 88.                         
+.                 
+.                                 post values ("B `var'_`yearsAfterSchool'_afte
+> rSchoola")                          (`B0`var'_`yearsAfterSchool'_afterSchoola
+> ') (`B3`var'_`yearsAfterSchool'_afterSchoola') 
+ 89.                                 post values ("SCHOOL YEAR CLUSTERED SE `va
+> r'_`yearsAfterSchool'_afterSchoola")   (`S0`var'_`yearsAfterSchool'_afterScho
+> ola') (`SE3`var'_`yearsAfterSchool'_afterSchoola') 
+ 90.                                 post values ("") (.) (.)
+ 91.                                 
+.                                 // COUNTING NUMBER OF OBSERVATIONS
+. 
+.                                 count if treatment == 1 & before == 1
+ 92.                                 local ntb = r(N)
+ 93. 
+.                                 count if (treatment == 1 | control == 1) & (a
+> fter == 1 | before == 1) 
+ 94.                                 local n = r(N)
+ 95. 
+.                                 post values ("N OBS `sample'_treated_before")
+>  (`ntb') (.)
+ 96.                                 post values ("N OBS `sample'") (`n') (.) 
+ 97.                                 
+.                                 if `i' != 3{
+ 98.                                 su treatment if treatment == 1 & before ==
+>  1 [fweight=hoodWeight] 
+ 99.                                 local wntb = r(N)
+100. 
+.                                 su E if (treatment == 1 | control == 1) & (af
+> ter == 1 | before == 1) [fweight=hoodWeight] 
+101.                                 local wn = r(N)
+102.                                 
+.                                 post values ("Weighted N OBS `sample'+treated
+> _before")  (`wntb') (.) 
+103.                                 post values ("Weighted N OBS `sample'")  (
+> `wn') (.)  
+104.                                 post values ("") (.) (.)
+105.                                 }
+106.                                 
+.                                 }                               
+107.                                 }
+108. 
+.                         }
+109.                                 postclose values
+110.                                 
+.                                 /********************************************
+> ******
+>                                 V. REFORMAT DATA TO CSV 
+>                                 *********************************************
+> ******/
+. 
+.                                 use "results\automatic\\Table_4_lagged_`sampl
+> e'_`group'_incomeALagged", clear
+111. 
+.                                 outsheet using "results\automatic\\{$name}_`s
+> ample'_`group'.csv", replace comma
+112. 
+.                                 erase "results\automatic\\Table_4_lagged_`sam
+> ple'_`group'_incomeALagged.dta"
+113.                                 
+.                                 restore
+114.                         
+.                                 }
+115.                                 
+.                 }               
+(note: file results\automatic\\Table_4_lagged_NE_q4_incomeALagged.dta not found
+> )
+(15,602 observations deleted)
+***************************************************************
+***************************************************************
+
+Sample: NE
+
+Group: q4
+
+***************************************************************
+***************************************************************
+*********************************************************
+
+SIMPLE DD with FE and controls placebo 1999-2000
+
+Outcome: sum_wage_11_afterSchoola
+
+Cohorts: 1999,20020
+
+Sample: NE
+
+*********************************************************
+
+i.year            _Iyear_2000-2002    (naturally coded; _Iyear_2000 omitted)
+i.school_code     _Ischool_co_140129-800086(naturally coded; _Ischool_co_140129
+>  omitted)
+
+Linear regression                               Number of obs     =      8,899
+                                                F(6, 35)          =          .
+                                                Prob > F          =          .
+                                                R-squared         =     0.0685
+                                                Root MSE          =      54019
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+s~1_afterS~a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+afterXtrea~t |   2242.056    2238.27     1.00   0.323    -2301.874    6785.987
+         ole |  -2396.083   2465.786    -0.97   0.338    -7401.895    2609.729
+         boy |    21882.4   2072.207    10.56   0.000      17675.6    26089.21
+      educav |   350.1785   233.8837     1.50   0.143    -124.6306    824.9877
+      educem |   321.9279    202.351     1.59   0.121     -88.8665    732.7223
+      m_ahim |  -975.5166   321.2262    -3.04   0.004    -1627.641   -323.3927
+ _Iyear_2002 |  -2260.404   1459.829    -1.55   0.131    -5224.015    703.2072
+_Isch~170514 |   13922.49   289.1286    48.15   0.000     13335.53    14509.45
+_Isch~180018 |   3750.645   1069.794     3.51   0.001     1578.847    5922.443
+_Isch~240051 |   1657.656   1196.701     1.39   0.175    -771.7751    4087.088
+_Isch~240176 |   13091.96   1128.392    11.60   0.000      10801.2    15382.72
+_Isch~278028 |  -19117.28   1536.124   -12.45   0.000    -22235.78   -15998.78
+_Isch~340166 |  -7072.675   1062.164    -6.66   0.000    -9228.983   -4916.367
+_Isch~340174 |   14824.56   1251.281    11.85   0.000     12284.32    17364.79
+_Isch~340240 |   14394.36   1932.329     7.45   0.000     10471.53     18317.2
+_Isch~340349 |   8285.011   1199.812     6.91   0.000     5849.264    10720.76
+_Isch~360123 |   14806.17   1166.857    12.69   0.000     12437.33    17175.02
+_Isch~360149 |  -4124.154     1626.5    -2.54   0.016    -7426.124   -822.1836
+_Isch~440073 |   9032.344   1415.328     6.38   0.000     6159.075    11905.61
+_Isch~440180 |   14269.81   1392.251    10.25   0.000     11443.39    17096.23
+_Isch~440198 |   18672.03    1202.75    15.52   0.000     16230.32    21113.75
+_Isch~440370 |   11875.93   348.8835    34.04   0.000     11167.66     12584.2
+_Isch~470054 |   11732.21   1042.606    11.25   0.000     9615.611    13848.82
+_Isch~470237 |   8901.239   1136.062     7.84   0.000     6594.911    11207.57
+_Isch~470377 |   8236.064   1577.807     5.22   0.000     5032.946    11439.18
+_Isch~480012 |   14397.33   1269.817    11.34   0.000     11819.47     16975.2
+_Isch~570036 |   24503.39   1293.548    18.94   0.000     21877.35    27129.43
+_Isch~570101 |   3233.612   1381.853     2.34   0.025     428.3018    6038.921
+_Isch~570259 |   8553.827   1194.431     7.16   0.000     6129.003    10978.65
+_Isch~580027 |   9900.514    2135.55     4.64   0.000     5565.118    14235.91
+_Isch~640037 |   15938.61   1221.168    13.05   0.000     13459.51    18417.72
+_Isch~640128 |   14034.55   1374.366    10.21   0.000     11244.44    16824.66
+_Isch~640235 |   10508.22   1351.018     7.78   0.000      7765.51    13250.94
+_Isch~640581 |   16379.12   2106.905     7.77   0.000     12101.88    20656.37
+_Isch~640631 |   -2912.36   2243.114    -1.30   0.203    -7466.124    1641.403
+_Isch~644328 |   14126.22    1067.66    13.23   0.000     11958.76    16293.69
+_Isch~670042 |   8881.391   1134.975     7.83   0.000     6577.269    11185.51
+_Isch~670422 |   7045.105    1514.61     4.65   0.000     3970.282    10119.93
+_Isch~770552 |  -2974.875   1316.569    -2.26   0.030    -5647.653   -302.0969
+_Isch~770859 |   13832.04   1186.865    11.65   0.000     11422.58     16241.5
+_Isch~800078 |   -7169.67   1430.918    -5.01   0.000    -10074.59   -4264.752
+_Isch~800086 |   -10787.1   1456.603    -7.41   0.000    -13744.17   -7830.042
+       _cons |   41695.15   3670.325    11.36   0.000     34243.99    49146.31
+------------------------------------------------------------------------------
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+s~1_afterS~a |      2,703    62990.67    55226.12          0   370303.6
+  2,703
+  10,305
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+   treatment |      2,703           1           0          1          1
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+           E |      8,151    .5030058    .5000216          0          1
+*********************************************************
+
+SIMPLE DD with FE and controls placebo 1999-2000
+
+Outcome: work_11_afterSchoola
+
+Cohorts: 1999,20020
+
+Sample: NE
+
+*********************************************************
+
+i.year            _Iyear_2000-2002    (naturally coded; _Iyear_2000 omitted)
+i.school_code     _Ischool_co_140129-800086(naturally coded; _Ischool_co_140129
+>  omitted)
+
+Linear regression                               Number of obs     =      8,899
+                                                F(6, 35)          =          .
+                                                Prob > F          =          .
+                                                R-squared         =     0.0264
+                                                Root MSE          =     .34241
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+work_11_af~a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+afterXtrea~t |  -.0151029    .012074    -1.25   0.219    -.0396144    .0094085
+         ole |   -.044824   .0143394    -3.13   0.004    -.0739346   -.0157133
+         boy |   .0056612   .0195767     0.29   0.774    -.0340816    .0454041
+      educav |  -.0008585   .0013525    -0.63   0.530    -.0036043    .0018873
+      educem |  -.0001194    .001496    -0.08   0.937    -.0031564    .0029175
+      m_ahim |  -.0038806   .0028389    -1.37   0.180    -.0096438    .0018827
+ _Iyear_2002 |   .0316774   .0071265     4.44   0.000     .0172098    .0461451
+_Isch~170514 |   .0981559   .0018841    52.10   0.000      .094331    .1019808
+_Isch~180018 |   .0972012   .0085704    11.34   0.000     .0798025    .1145999
+_Isch~240051 |   .1208638   .0098484    12.27   0.000     .1008705    .1408571
+_Isch~240176 |   .1089632   .0064344    16.93   0.000     .0959005    .1220258
+_Isch~278028 |  -.0783904   .0157371    -4.98   0.000    -.1103385   -.0464423
+_Isch~340166 |   .0574451   .0059506     9.65   0.000     .0453647    .0695255
+_Isch~340174 |   .1229874   .0109547    11.23   0.000     .1007482    .1452266
+_Isch~340240 |   .1643423   .0180174     9.12   0.000      .127765    .2009196
+_Isch~340349 |   .0982854   .0107987     9.10   0.000     .0763627     .120208
+_Isch~360123 |   .1301271   .0111964    11.62   0.000     .1073972    .1528571
+_Isch~360149 |   .0660365   .0136639     4.83   0.000     .0382972    .0937757
+_Isch~440073 |   .1061023   .0136864     7.75   0.000     .0783174    .1338871
+_Isch~440180 |   .0991241   .0122407     8.10   0.000     .0742741    .1239741
+_Isch~440198 |   .1392818    .010442    13.34   0.000     .1180835    .1604801
+_Isch~440370 |    .090684   .0035799    25.33   0.000     .0834164    .0979516
+_Isch~470054 |   .0657478   .0075669     8.69   0.000     .0503862    .0811093
+_Isch~470237 |   .1239827   .0067559    18.35   0.000     .1102676    .1376979
+_Isch~470377 |   .1077621   .0149168     7.22   0.000     .0774795    .1380448
+_Isch~480012 |   .1252943   .0105106    11.92   0.000     .1039566     .146632
+_Isch~570036 |   .0959954   .0110136     8.72   0.000     .0736366    .1183542
+_Isch~570101 |   .0911088    .012132     7.51   0.000     .0664795    .1157381
+_Isch~570259 |   .1601555   .0104923    15.26   0.000     .1388549     .181456
+_Isch~580027 |   .1636395   .0193637     8.45   0.000      .124329      .20295
+_Isch~640037 |   .0992666   .0108825     9.12   0.000      .077174    .1213592
+_Isch~640128 |   .0998708    .012048     8.29   0.000     .0754121    .1243296
+_Isch~640235 |    .137371   .0126962    10.82   0.000     .1115964    .1631456
+_Isch~640581 |   .1492866   .0195658     7.63   0.000     .1095659    .1890073
+_Isch~640631 |   .0052205   .0215345     0.24   0.810    -.0384969    .0489379
+_Isch~644328 |   .1159765   .0096047    12.08   0.000      .096478     .135475
+_Isch~670042 |   .0730398   .0092295     7.91   0.000     .0543029    .0917767
+_Isch~670422 |   .0711994   .0124681     5.71   0.000     .0458878    .0965111
+_Isch~770552 |   .0536595    .012122     4.43   0.000     .0290505    .0782685
+_Isch~770859 |   .1100665   .0099776    11.03   0.000     .0898108    .1303222
+_Isch~800078 |  -.0229511   .0125381    -1.83   0.076    -.0484048    .0025025
+_Isch~800086 |  -.0484282   .0140435    -3.45   0.001    -.0769379   -.0199184
+       _cons |   .7816416   .0298075    26.22   0.000     .7211292     .842154
+------------------------------------------------------------------------------
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+work_11_af~a |      2,703    .8390677    .3675365          0          1
+  2,703
+  10,305
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+   treatment |      2,703           1           0          1          1
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+           E |      8,151    .5030058    .5000216          0          1
+*********************************************************
+
+SIMPLE DD with FE and controls placebo 1999-2000
+
+Outcome: months_11_afterSchoola
+
+Cohorts: 1999,20020
+
+Sample: NE
+
+*********************************************************
+
+i.year            _Iyear_2000-2002    (naturally coded; _Iyear_2000 omitted)
+i.school_code     _Ischool_co_140129-800086(naturally coded; _Ischool_co_140129
+>  omitted)
+
+Linear regression                               Number of obs     =      8,899
+                                                F(6, 35)          =          .
+                                                Prob > F          =          .
+                                                R-squared         =     0.0308
+                                                Root MSE          =     4.3462
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+months_11_~a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+afterXtrea~t |   .0893471   .1807112     0.49   0.624     -.277516    .4562103
+         ole |  -.8461342   .1906343    -4.44   0.000    -1.233142    -.459126
+         boy |   .5108883   .2475939     2.06   0.047     .0082459    1.013531
+      educav |  -.0068426    .014765    -0.46   0.646    -.0368172     .023132
+      educem |  -.0079909   .0175346    -0.46   0.651     -.043588    .0276062
+      m_ahim |  -.0844137   .0357454    -2.36   0.024    -.1569808   -.0118467
+ _Iyear_2002 |  -.0500577   .1229668    -0.41   0.686    -.2996936    .1995783
+_Isch~170514 |   1.199531   .0279391    42.93   0.000     1.142812     1.25625
+_Isch~180018 |   1.041843   .1176152     8.86   0.000     .8030717    1.280615
+_Isch~240051 |   1.453506   .1407227    10.33   0.000     1.167824    1.739188
+_Isch~240176 |    1.93104   .1022639    18.88   0.000     1.723434    2.138647
+_Isch~278028 |  -1.312075   .2039908    -6.43   0.000    -1.726199   -.8979521
+_Isch~340166 |   .8049754   .0841342     9.57   0.000     .6341738     .975777
+_Isch~340174 |   1.404975   .1501353     9.36   0.000     1.100185    1.709766
+_Isch~340240 |   1.915204   .2343254     8.17   0.000     1.439498     2.39091
+_Isch~340349 |   1.145108    .144941     7.90   0.000     .8508623    1.439354
+_Isch~360123 |   1.945177   .1426244    13.64   0.000     1.655634     2.23472
+_Isch~360149 |   .6413847   .1640577     3.91   0.000     .3083297    .9744396
+_Isch~440073 |   1.648459   .1736699     9.49   0.000     1.295891    2.001028
+_Isch~440180 |   1.137978   .1544417     7.37   0.000     .8244446    1.451511
+_Isch~440198 |    1.93185    .136277    14.18   0.000     1.655193    2.208507
+_Isch~440370 |   1.075126   .0471199    22.82   0.000     .9794678    1.170785
+_Isch~470054 |    .966853   .1102361     8.77   0.000     .7430619    1.190644
+_Isch~470237 |   1.415195   .1080546    13.10   0.000     1.195832    1.634557
+_Isch~470377 |   1.664952   .1863039     8.94   0.000     1.286735     2.04317
+_Isch~480012 |   1.886066    .144068    13.09   0.000     1.593592    2.178539
+_Isch~570036 |   1.424648   .1492021     9.55   0.000     1.121751    1.727544
+_Isch~570101 |   1.059551   .1634096     6.48   0.000     .7278123    1.391291
+_Isch~570259 |   1.960536   .1396959    14.03   0.000     1.676938    2.244134
+_Isch~580027 |   2.156013   .2486782     8.67   0.000     1.651169    2.660856
+_Isch~640037 |    1.47672   .1432986    10.31   0.000     1.185809    1.767632
+_Isch~640128 |   1.397846   .1581302     8.84   0.000     1.076825    1.718867
+_Isch~640235 |    1.64877   .1696414     9.72   0.000      1.30438    1.993161
+_Isch~640581 |   1.662669   .2502954     6.64   0.000     1.154542    2.170795
+_Isch~640631 |   .7312878   .2504546     2.92   0.006     .2228379    1.239738
+_Isch~644328 |   1.416963   .1272301    11.14   0.000     1.158672    1.675254
+_Isch~670042 |    1.07041   .1289539     8.30   0.000       .80862    1.332201
+_Isch~670422 |   .9965033   .1724702     5.78   0.000     .6463701    1.346637
+_Isch~770552 |   .4913186   .1573003     3.12   0.004      .171982    .8106552
+_Isch~770859 |   1.400972   .1387869    10.09   0.000      1.11922    1.682724
+_Isch~800078 |  -.4913662   .1764665    -2.78   0.009    -.8496122   -.1331202
+_Isch~800086 |  -.5281092   .1871398    -2.82   0.008    -.9080232   -.1481952
+       _cons |   8.185336   .4046566    20.23   0.000      7.36384    9.006833
+------------------------------------------------------------------------------
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+months_11_~a |      2,703    8.987791    4.605318          0         12
+  2,703
+  10,305
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+   treatment |      2,703           1           0          1          1
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+           E |      8,151    .5030058    .5000216          0          1
+*********************************************************
+
+SIMPLE DD with FE and controls placebo 2000-2002
+
+Outcome: A_12_afterSchool
+
+Cohorts: 1999,2000
+
+Sample: NE
+
+*********************************************************
+
+
+       year |      Freq.     Percent        Cum.
+------------+-----------------------------------
+       2000 |      5,127       49.75       49.75
+       2002 |      5,178       50.25      100.00
+------------+-----------------------------------
+      Total |     10,305      100.00
+i.year            _Iyear_2000-2002    (naturally coded; _Iyear_2000 omitted)
+i.school_code     _Ischool_co_140129-800086(naturally coded; _Ischool_co_140129
+>  omitted)
+
+Linear regression                               Number of obs     =      8,899
+                                                F(6, 35)          =          .
+                                                Prob > F          =          .
+                                                R-squared         =     0.0970
+                                                Root MSE          =     .38648
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+A_12_after~l |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+afterXtrea~t |   .0150968   .0215986     0.70   0.489    -.0287507    .0589442
+         ole |   .0468799   .0204233     2.30   0.028     .0054184    .0883413
+         boy |  -.0331152   .0117568    -2.82   0.008    -.0569828   -.0092476
+      educav |   .0115442   .0027852     4.14   0.000     .0058899    .0171985
+      educem |   .0087425   .0025697     3.40   0.002     .0035258    .0139593
+      m_ahim |  -.0149233   .0031877    -4.68   0.000    -.0213947   -.0084518
+ _Iyear_2002 |  -.0372895    .011362    -3.28   0.002    -.0603556   -.0142234
+_Isch~170514 |  -.0325837   .0023441   -13.90   0.000    -.0373424    -.027825
+_Isch~180018 |   .0078744   .0089611     0.88   0.386    -.0103177    .0260664
+_Isch~240051 |   .0125486   .0122041     1.03   0.311     -.012227    .0373243
+_Isch~240176 |   .0723781   .0109364     6.62   0.000      .050176    .0945802
+_Isch~278028 |   .0404012   .0156907     2.57   0.014     .0085475    .0722549
+_Isch~340166 |   .2483059   .0105861    23.46   0.000     .2268148    .2697969
+_Isch~340174 |   .1363529   .0110967    12.29   0.000     .1138254    .1588805
+_Isch~340240 |   .3462501   .0161083    21.50   0.000     .3135484    .3789517
+_Isch~340349 |   .1073303     .01078     9.96   0.000     .0854457    .1292149
+_Isch~360123 |   .1239459   .0091558    13.54   0.000     .1053587    .1425332
+_Isch~360149 |   .0919839   .0145631     6.32   0.000     .0624192    .1215485
+_Isch~440073 |   .1408529   .0103898    13.56   0.000     .1197606    .1619453
+_Isch~440180 |   .1671555    .008588    19.46   0.000     .1497209    .1845901
+_Isch~440198 |   .2088905   .0076524    27.30   0.000     .1933553    .2244257
+_Isch~440370 |   .2631578   .0054631    48.17   0.000     .2520671    .2742486
+_Isch~470054 |   .0407162   .0102178     3.98   0.000     .0199729    .0614594
+_Isch~470237 |   -.020678   .0138133    -1.50   0.143    -.0487206    .0073645
+_Isch~470377 |   .0189634   .0122877     1.54   0.132     -.005982    .0439088
+_Isch~480012 |   .1776685   .0148477    11.97   0.000      .147526     .207811
+_Isch~570036 |    .252891   .0079967    31.62   0.000     .2366568    .2691252
+_Isch~570101 |  -.0971732   .0123438    -7.87   0.000    -.1222324   -.0721139
+_Isch~570259 |  -.0206511   .0077115    -2.68   0.011    -.0363062    -.004996
+_Isch~580027 |    .047725   .0229284     2.08   0.045     .0011779    .0942721
+_Isch~640037 |   .1374888   .0066846    20.57   0.000     .1239184    .1510593
+_Isch~640128 |   .0755667   .0088188     8.57   0.000     .0576635    .0934698
+_Isch~640235 |   .1604812   .0119523    13.43   0.000     .1362167    .1847457
+_Isch~640581 |    .155357   .0116924    13.29   0.000     .1316202    .1790939
+_Isch~640631 |  -.0662931   .0152049    -4.36   0.000    -.0971607   -.0354255
+_Isch~644328 |    .153952   .0060216    25.57   0.000     .1417276    .1661764
+_Isch~670042 |   .1536443   .0094666    16.23   0.000      .134426    .1728626
+_Isch~670422 |   -.030933   .0098517    -3.14   0.003     -.050933    -.010933
+_Isch~770552 |   .0816385   .0136894     5.96   0.000     .0538474    .1094295
+_Isch~770859 |   .0849454    .010573     8.03   0.000     .0634812    .1064096
+_Isch~800078 |   .0538417   .0147085     3.66   0.001     .0239819    .0837015
+_Isch~800086 |   .0931455   .0141146     6.60   0.000     .0644913    .1217996
+       _cons |   -.054335   .0446492    -1.22   0.232    -.1449777    .0363077
+------------------------------------------------------------------------------
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+A_12_after~l |      2,703    .1986681    .3990715          0          1
+  2,703
+  10,305
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+   treatment |      4,171           1           0          1          1
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+           E |      8,151    .5030058    .5000216          0          1
+*********************************************************
+
+SIMPLE DD with FE and controls placebo 2000-2002
+
+Outcome: B_12_afterSchool
+
+Cohorts: 1999,2000
+
+Sample: NE
+
+*********************************************************
+
+
+       year |      Freq.     Percent        Cum.
+------------+-----------------------------------
+       2000 |      5,127       49.75       49.75
+       2002 |      5,178       50.25      100.00
+------------+-----------------------------------
+      Total |     10,305      100.00
+i.year            _Iyear_2000-2002    (naturally coded; _Iyear_2000 omitted)
+i.school_code     _Ischool_co_140129-800086(naturally coded; _Ischool_co_140129
+>  omitted)
+
+Linear regression                               Number of obs     =      8,899
+                                                F(6, 35)          =          .
+                                                Prob > F          =          .
+                                                R-squared         =     0.0363
+                                                Root MSE          =     .37406
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+B_12_after~l |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+afterXtrea~t |  -.0148451   .0168886    -0.88   0.385    -.0491309    .0194406
+         ole |  -.0474542    .012104    -3.92   0.000    -.0720267   -.0228817
+         boy |  -.0033952   .0126648    -0.27   0.790    -.0291062    .0223158
+      educav |   .0032497    .001533     2.12   0.041     .0001375    .0063619
+      educem |   .0042346   .0018621     2.27   0.029     .0004544    .0080149
+      m_ahim |  -.0041775   .0028383    -1.47   0.150    -.0099395    .0015845
+ _Iyear_2002 |   .0532974   .0110393     4.83   0.000     .0308865    .0757083
+_Isch~170514 |  -.0251667   .0020696   -12.16   0.000    -.0293681   -.0209653
+_Isch~180018 |  -.0251842   .0081631    -3.09   0.004    -.0417562   -.0086122
+_Isch~240051 |   .0260869   .0087186     2.99   0.005     .0083872    .0437866
+_Isch~240176 |   .0796429   .0091982     8.66   0.000     .0609696    .0983163
+_Isch~278028 |  -.1450832   .0125578   -11.55   0.000    -.1705769   -.1195895
+_Isch~340166 |  -.0125919   .0075649    -1.66   0.105    -.0279495    .0027658
+_Isch~340174 |   .0016756   .0097885     0.17   0.865    -.0181961    .0215472
+_Isch~340240 |  -.0745737   .0144119    -5.17   0.000    -.1038315   -.0453159
+_Isch~340349 |  -.0224171   .0095678    -2.34   0.025    -.0418408   -.0029934
+_Isch~360123 |   .1350562   .0083126    16.25   0.000     .1181807    .1519318
+_Isch~360149 |    .009425   .0095153     0.99   0.329     -.009892     .028742
+_Isch~440073 |  -.0385567   .0078883    -4.89   0.000    -.0545707   -.0225426
+_Isch~440180 |   .0661081   .0080631     8.20   0.000     .0497393     .082477
+_Isch~440198 |   .0220001   .0072733     3.02   0.005     .0072346    .0367656
+_Isch~440370 |   .0687679   .0035542    19.35   0.000     .0615526    .0759833
+_Isch~470054 |   .0144645   .0082325     1.76   0.088    -.0022483    .0311773
+_Isch~470237 |  -.0957537   .0092752   -10.32   0.000    -.1145833    -.076924
+_Isch~470377 |   .0112371   .0089909     1.25   0.220    -.0070153    .0294895
+_Isch~480012 |   .0285258   .0108399     2.63   0.013     .0065197     .050532
+_Isch~570036 |   .0787231   .0076505    10.29   0.000     .0631918    .0942545
+_Isch~570101 |  -.0242813   .0104523    -2.32   0.026    -.0455005    -.003062
+_Isch~570259 |  -.0866502   .0060862   -14.24   0.000    -.0990057   -.0742946
+_Isch~580027 |   .0173888   .0108117     1.61   0.117      -.00456    .0393377
+_Isch~640037 |   .0364606   .0067791     5.38   0.000     .0226984    .0502229
+_Isch~640128 |  -.0497032   .0068025    -7.31   0.000    -.0635129   -.0358934
+_Isch~640235 |   .0283579   .0103703     2.73   0.010     .0073051    .0494106
+_Isch~640581 |  -.1076831   .0127598    -8.44   0.000    -.1335868   -.0817794
+_Isch~640631 |  -.1673979   .0164615   -10.17   0.000    -.2008165   -.1339793
+_Isch~644328 |   .0393767   .0059926     6.57   0.000     .0272111    .0515422
+_Isch~670042 |   .0628876   .0086652     7.26   0.000     .0452964    .0804788
+_Isch~670422 |  -.0805959   .0079832   -10.10   0.000    -.0968026   -.0643891
+_Isch~770552 |   .0181237   .0071374     2.54   0.016      .003634    .0326133
+_Isch~770859 |  -.0690816   .0090496    -7.63   0.000    -.0874532   -.0507101
+_Isch~800078 |  -.1199162   .0122062    -9.82   0.000    -.1446962   -.0951363
+_Isch~800086 |  -.0257118    .012137    -2.12   0.041    -.0503513   -.0010722
+       _cons |   .1004986   .0182323     5.51   0.000      .063485    .1375122
+------------------------------------------------------------------------------
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+B_12_after~l |      2,703    .1494636    .3566108          0          1
+  2,703
+  10,305
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+   treatment |      4,171           1           0          1          1
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+           E |      8,151    .5030058    .5000216          0          1
+*********************************************************
+
+SIMPLE DD with FE and controls placebo 2000-2002
+
+Outcome: col_12_afterSchool
+
+Cohorts: 1999,2000
+
+Sample: NE
+
+*********************************************************
+
+
+       year |      Freq.     Percent        Cum.
+------------+-----------------------------------
+       2000 |      5,127       49.75       49.75
+       2002 |      5,178       50.25      100.00
+------------+-----------------------------------
+      Total |     10,305      100.00
+i.year            _Iyear_2000-2002    (naturally coded; _Iyear_2000 omitted)
+i.school_code     _Ischool_co_140129-800086(naturally coded; _Ischool_co_140129
+>  omitted)
+
+Linear regression                               Number of obs     =      8,899
+                                                F(6, 35)          =          .
+                                                Prob > F          =          .
+                                                R-squared         =     0.0346
+                                                Root MSE          =     1.1365
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+col_12_aft~l |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+afterXtrea~t |  -.0013829   .0474399    -0.03   0.977     -.097691    .0949251
+         ole |  -.1683045   .0363533    -4.63   0.000    -.2421055   -.0945034
+         boy |  -.0273394   .0413473    -0.66   0.513    -.1112789    .0566002
+      educav |   .0079503   .0041655     1.91   0.065    -.0005061    .0164068
+      educem |   .0167613    .004398     3.81   0.001     .0078329    .0256897
+      m_ahim |  -.0146317   .0065607    -2.23   0.032    -.0279505   -.0013129
+ _Iyear_2002 |   .1258488   .0338404     3.72   0.001     .0571492    .1945484
+_Isch~170514 |  -.0279009   .0049367    -5.65   0.000    -.0379229    -.017879
+_Isch~180018 |  -.0413473   .0278858    -1.48   0.147    -.0979585     .015264
+_Isch~240051 |   .1799453   .0264367     6.81   0.000      .126276    .2336146
+_Isch~240176 |   .2736429   .0230697    11.86   0.000      .226809    .3204769
+_Isch~278028 |  -.3004572   .0355533    -8.45   0.000    -.3726342   -.2282802
+_Isch~340166 |  -.0051332   .0231559    -0.22   0.826    -.0521422    .0418758
+_Isch~340174 |   .0456248   .0324285     1.41   0.168    -.0202086    .1114582
+_Isch~340240 |  -.1155929    .050572    -2.29   0.028    -.2182595   -.0129262
+_Isch~340349 |   .0434517   .0313119     1.39   0.174    -.0201148    .1070181
+_Isch~360123 |   .5387833   .0219875    24.50   0.000     .4941462    .5834203
+_Isch~360149 |   .1930465   .0275226     7.01   0.000     .1371726    .2489204
+_Isch~440073 |  -.0943533   .0246967    -3.82   0.001    -.1444902   -.0442164
+_Isch~440180 |   .3284522   .0275661    11.92   0.000     .2724901    .3844143
+_Isch~440198 |   .1240235   .0245702     5.05   0.000     .0741433    .1739037
+_Isch~440370 |   .2516152   .0098369    25.58   0.000     .2316452    .2715852
+_Isch~470054 |    .120934   .0255471     4.73   0.000     .0690706    .1727973
+_Isch~470237 |   -.207831   .0229004    -9.08   0.000    -.2543214   -.1613407
+_Isch~470377 |  -.0201829    .029154    -0.69   0.493    -.0793688    .0390029
+_Isch~480012 |   .1970443   .0276169     7.13   0.000     .1409791    .2531095
+_Isch~570036 |   .3943725   .0252307    15.63   0.000     .3431514    .4455937
+_Isch~570101 |   .0905292   .0369439     2.45   0.019     .0155291    .1655294
+_Isch~570259 |  -.1702991   .0197291    -8.63   0.000    -.2103513   -.1302469
+_Isch~580027 |   .0902879   .0312933     2.89   0.007     .0267591    .1538167
+_Isch~640037 |   .2027908   .0225822     8.98   0.000     .1569465     .248635
+_Isch~640128 |  -.0797761   .0225153    -3.54   0.001    -.1254846   -.0340675
+_Isch~640235 |   .1819752   .0319532     5.70   0.000     .1171069    .2468436
+_Isch~640581 |  -.2736031   .0410315    -6.67   0.000    -.3569015   -.1903047
+_Isch~640631 |  -.3817725   .0490115    -7.79   0.000    -.4812712   -.2822738
+_Isch~644328 |   .1857707   .0193368     9.61   0.000     .1465148    .2250266
+_Isch~670042 |   .2121582   .0290188     7.31   0.000      .153247    .2710694
+_Isch~670422 |  -.1162493   .0249125    -4.67   0.000    -.1668244   -.0656742
+_Isch~770552 |    .131119   .0231612     5.66   0.000     .0840993    .1781388
+_Isch~770859 |  -.1028784   .0298081    -3.45   0.001     -.163392   -.0423648
+_Isch~800078 |  -.2124417   .0333796    -6.36   0.000    -.2802059   -.1446775
+_Isch~800086 |   .1215563   .0343359     3.54   0.001     .0518507     .191262
+       _cons |   .1458963   .0496383     2.94   0.006     .0451252    .2466673
+------------------------------------------------------------------------------
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+col_12_aft~l |      2,703    .3977063    1.074478          0          7
+  2,703
+  10,305
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+   treatment |      4,171           1           0          1          1
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+           E |      8,151    .5030058    .5000216          0          1
+*********************************************************
+
+SIMPLE DD with FE and controls placebo 2000-2002
+
+Outcome: uni_12_afterSchool
+
+Cohorts: 1999,2000
+
+Sample: NE
+
+*********************************************************
+
+
+       year |      Freq.     Percent        Cum.
+------------+-----------------------------------
+       2000 |      5,127       49.75       49.75
+       2002 |      5,178       50.25      100.00
+------------+-----------------------------------
+      Total |     10,305      100.00
+i.year            _Iyear_2000-2002    (naturally coded; _Iyear_2000 omitted)
+i.school_code     _Ischool_co_140129-800086(naturally coded; _Ischool_co_140129
+>  omitted)
+
+Linear regression                               Number of obs     =      8,899
+                                                F(6, 35)          =          .
+                                                Prob > F          =          .
+                                                R-squared         =     0.0932
+                                                Root MSE          =     1.7676
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+uni_12_aft~l |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+afterXtrea~t |   .0827816   .0792711     1.04   0.304    -.0781473    .2437105
+         ole |   .2526133   .1110552     2.27   0.029     .0271593    .4780673
+         boy |  -.0939694   .0475486    -1.98   0.056    -.1904981    .0025594
+      educav |   .0503581   .0118002     4.27   0.000     .0264025    .0743138
+      educem |   .0418585   .0111858     3.74   0.001     .0191502    .0645668
+      m_ahim |  -.0685541    .015507    -4.42   0.000     -.100035   -.0370732
+ _Iyear_2002 |  -.1807382   .0510097    -3.54   0.001    -.2842935    -.077183
+_Isch~170514 |  -.1003929   .0109243    -9.19   0.000    -.1225705   -.0782154
+_Isch~180018 |   .1121934   .0318458     3.52   0.001      .047543    .1768437
+_Isch~240051 |   .0830269    .052845     1.57   0.125    -.0242541    .1903079
+_Isch~240176 |    .193844   .0469628     4.13   0.000     .0985045    .2891835
+_Isch~278028 |   .4044944   .0777591     5.20   0.000      .246635    .5623537
+_Isch~340166 |   1.052622   .0373542    28.18   0.000     .9767888    1.128455
+_Isch~340174 |   .6806236   .0393931    17.28   0.000     .6006513    .7605959
+_Isch~340240 |   1.830169   .0594613    30.78   0.000     1.709456    1.950882
+_Isch~340349 |   .6443196   .0392273    16.43   0.000      .564684    .7239552
+_Isch~360123 |   .5379348   .0376327    14.29   0.000     .4615364    .6143332
+_Isch~360149 |   .7186332   .0772804     9.30   0.000     .5617456    .8755208
+_Isch~440073 |   .7811202   .0454876    17.17   0.000     .6887755    .8734649
+_Isch~440180 |   .8154591   .0334029    24.41   0.000     .7476476    .8832705
+_Isch~440198 |   .8075282   .0310712    25.99   0.000     .7444504     .870606
+_Isch~440370 |   1.399039    .025961    53.89   0.000     1.346335    1.451742
+_Isch~470054 |   .1656049   .0389608     4.25   0.000     .0865103    .2446994
+_Isch~470237 |   .0368425   .0617471     0.60   0.555    -.0885108    .1621958
+_Isch~470377 |   .2774714   .0515892     5.38   0.000     .1727398     .382203
+_Isch~480012 |   .7683318   .0693448    11.08   0.000     .6275544    .9091091
+_Isch~570036 |   1.192342   .0320675    37.18   0.000     1.127242    1.257443
+_Isch~570101 |  -.4490442   .0458739    -9.79   0.000    -.5421731   -.3559153
+_Isch~570259 |   .0219392   .0313193     0.70   0.488    -.0416423    .0855208
+_Isch~580027 |   .3296865   .0981556     3.36   0.002     .1304202    .5289529
+_Isch~640037 |   .6306106   .0252001    25.02   0.000     .5794518    .6817694
+_Isch~640128 |   .4577342   .0332967    13.75   0.000     .3901383      .52533
+_Isch~640235 |   .7171783   .0532891    13.46   0.000     .6089956    .8253609
+_Isch~640581 |   .7381583   .0494459    14.93   0.000     .6377778    .8385389
+_Isch~640631 |  -.1268813   .0720696    -1.76   0.087    -.2731903    .0194277
+_Isch~644328 |   .7514808   .0227926    32.97   0.000     .7052095    .7977522
+_Isch~670042 |   .7007154   .0338345    20.71   0.000     .6320277    .7694031
+_Isch~670422 |  -.0475981    .037131    -1.28   0.208    -.1229779    .0277818
+_Isch~770552 |   .3704699    .058481     6.33   0.000     .2517471    .4891926
+_Isch~770859 |   .4561046   .0384492    11.86   0.000     .3780487    .5341606
+_Isch~800078 |   .3743006   .0689708     5.43   0.000     .2342824    .5143188
+_Isch~800086 |   .5918024   .0681481     8.68   0.000     .4534544    .7301503
+       _cons |   -.481155   .1914884    -2.51   0.017    -.8698972   -.0924129
+------------------------------------------------------------------------------
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+uni_12_aft~l |      2,703    .7591565    1.828734          0         11
+  2,703
+  10,305
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+   treatment |      4,171           1           0          1          1
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+           E |      8,151    .5030058    .5000216          0          1
+
+. cap log close

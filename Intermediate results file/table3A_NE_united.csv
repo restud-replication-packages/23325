@@ -1,0 +1,15 @@
+panel,rowKey,eng_all_estimate,eng_se_school,eng_se_schoolYear
+"A","z",,,
+"A","z control mean",.5200403,.4996612,
+"A","z treat. effect",.0308625,.0280728,.0199389
+"A","wbonus",,,
+"A","wbonus control mean",74.77408,19.7328,
+"A","wbonus treat. effect",3.035568,1.394047,.9907407
+"A","mkmg",,,
+"A","mkmg control mean",2.067557,1.536897,
+"A","mkmg treat. effect",.1839023,.1140016,.0805864
+"A","units",,,
+"A","units control mean",21.12755,9.049417,
+"A","units treat. effect",.9002548,.5322704,.3762152
+"B","N",10311,,
+"B","N_weighted",15878,,

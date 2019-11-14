@@ -1,0 +1,57 @@
+rowKey,B0,Binteraction
+"B sum_wage_11_afterSchoola",61901.71,7204.107
+"SCHOOL YEAR CLUSTERED SE sum_wage_11_afterSchoola",53732.55,2891.844
+"",,
+"N OBS RD_alternative1_treated_before",3518,
+"N OBS RD_alternative1",11409,
+"Weighted N OBS RD_alternative1+treated_before",3737,
+"Weighted N OBS RD_alternative1",13684,
+"",,
+"B work_11_afterSchoola",.8375703,.0139595
+"SCHOOL YEAR CLUSTERED SE work_11_afterSchoola",.368894,.0120212
+"",,
+"N OBS RD_alternative1_treated_before",3518,
+"N OBS RD_alternative1",11409,
+"Weighted N OBS RD_alternative1+treated_before",3737,
+"Weighted N OBS RD_alternative1",13684,
+"",,
+"B months_11_afterSchoola",8.974846,.3482169
+"SCHOOL YEAR CLUSTERED SE months_11_afterSchoola",4.590968,.1664861
+"",,
+"N OBS RD_alternative1_treated_before",3518,
+"N OBS RD_alternative1",11409,
+"Weighted N OBS RD_alternative1+treated_before",3737,
+"Weighted N OBS RD_alternative1",13684,
+"",,
+"B A_12_afterSchoola",.2261172,.0463664
+"SCHOOL YEAR CLUSTERED SE A_12_afterSchoola",.4183719,.0200955
+"",,
+"N OBS RD_alternative1_treated_before",3518,
+"N OBS RD_alternative1",11409,
+"Weighted N OBS RD_alternative1+treated_before",3737,
+"Weighted N OBS RD_alternative1",13684,
+"",,
+"B B_12_afterSchoola",.1461065,-.0180405
+"SCHOOL YEAR CLUSTERED SE B_12_afterSchoola",.3532602,.0230844
+"",,
+"N OBS RD_alternative1_treated_before",3518,
+"N OBS RD_alternative1",11409,
+"Weighted N OBS RD_alternative1+treated_before",3737,
+"Weighted N OBS RD_alternative1",13684,
+"",,
+"B col_12_afterSchoola",.3826599,-.0384636
+"SCHOOL YEAR CLUSTERED SE col_12_afterSchoola",1.056082,.0636459
+"",,
+"N OBS RD_alternative1_treated_before",3518,
+"N OBS RD_alternative1",11409,
+"Weighted N OBS RD_alternative1+treated_before",3737,
+"Weighted N OBS RD_alternative1",13684,
+"",,
+"B uni_12_afterSchoola",.8702167,.2188203
+"SCHOOL YEAR CLUSTERED SE uni_12_afterSchoola",1.922624,.1023115
+"",,
+"N OBS RD_alternative1_treated_before",3518,
+"N OBS RD_alternative1",11409,
+"Weighted N OBS RD_alternative1+treated_before",3737,
+"Weighted N OBS RD_alternative1",13684,
+"",,

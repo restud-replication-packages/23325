@@ -1,0 +1,97 @@
+rowKey,B0,Binteraction
+"B E_11_afterSchool",.2385463,.0144442
+"SCHOOL YEAR CLUSTERED SE E_11_afterSchool",,.0406596
+"",,
+"N OBS NE_treated_before",1222,
+"N OBS NE",4186,
+"Weighted N OBS NE+treated_before",1854,
+"Weighted N OBS NE",6838,
+"",,
+"B E_12_afterSchool",.2415196,.0159565
+"SCHOOL YEAR CLUSTERED SE E_12_afterSchool",,.0434637
+"",,
+"N OBS NE_treated_before",1222,
+"N OBS NE",4186,
+"Weighted N OBS NE+treated_before",1854,
+"Weighted N OBS NE",6838,
+"",,
+"B A_11_afterSchool",.0514745,.0286157
+"SCHOOL YEAR CLUSTERED SE A_11_afterSchool",,.020616
+"",,
+"N OBS NE_treated_before",1222,
+"N OBS NE",4186,
+"Weighted N OBS NE+treated_before",1854,
+"Weighted N OBS NE",6838,
+"",,
+"B A_12_afterSchool",.0525586,.0274621
+"SCHOOL YEAR CLUSTERED SE A_12_afterSchool",,.0208085
+"",,
+"N OBS NE_treated_before",1222,
+"N OBS NE",4186,
+"Weighted N OBS NE+treated_before",1854,
+"Weighted N OBS NE",6838,
+"",,
+"B B_11_afterSchool",.0995425,-.0230974
+"SCHOOL YEAR CLUSTERED SE B_11_afterSchool",,.0190687
+"",,
+"N OBS NE_treated_before",1222,
+"N OBS NE",4186,
+"Weighted N OBS NE+treated_before",1854,
+"Weighted N OBS NE",6838,
+"",,
+"B B_12_afterSchool",.0953411,-.0200841
+"SCHOOL YEAR CLUSTERED SE B_12_afterSchool",,.0183591
+"",,
+"N OBS NE_treated_before",1222,
+"N OBS NE",4186,
+"Weighted N OBS NE+treated_before",1854,
+"Weighted N OBS NE",6838,
+"",,
+"B educ_11_afterSchool",.3373047,.062094
+"SCHOOL YEAR CLUSTERED SE educ_11_afterSchool",,.1341377
+"",,
+"N OBS NE_treated_before",1222,
+"N OBS NE",4186,
+"Weighted N OBS NE+treated_before",1854,
+"Weighted N OBS NE",6838,
+"",,
+"B educ_12_afterSchool",.3939607,.0442774
+"SCHOOL YEAR CLUSTERED SE educ_12_afterSchool",,.1432328
+"",,
+"N OBS NE_treated_before",1222,
+"N OBS NE",4186,
+"Weighted N OBS NE+treated_before",1854,
+"Weighted N OBS NE",6838,
+"",,
+"B uni_11_afterSchool",.006915,.1301595
+"SCHOOL YEAR CLUSTERED SE uni_11_afterSchool",,.0646474
+"",,
+"N OBS NE_treated_before",1222,
+"N OBS NE",4186,
+"Weighted N OBS NE+treated_before",1854,
+"Weighted N OBS NE",6838,
+"",,
+"B uni_12_afterSchool",.0192006,.127063
+"SCHOOL YEAR CLUSTERED SE uni_12_afterSchool",,.0689569
+"",,
+"N OBS NE_treated_before",1222,
+"N OBS NE",4186,
+"Weighted N OBS NE+treated_before",1854,
+"Weighted N OBS NE",6838,
+"",,
+"B col_11_afterSchool",.1529611,-.0965686
+"SCHOOL YEAR CLUSTERED SE col_11_afterSchool",,.0557187
+"",,
+"N OBS NE_treated_before",1222,
+"N OBS NE",4186,
+"Weighted N OBS NE+treated_before",1854,
+"Weighted N OBS NE",6838,
+"",,
+"B col_12_afterSchool",.1759734,-.1034863
+"SCHOOL YEAR CLUSTERED SE col_12_afterSchool",,.0592222
+"",,
+"N OBS NE_treated_before",1222,
+"N OBS NE",4186,
+"Weighted N OBS NE+treated_before",1854,
+"Weighted N OBS NE",6838,
+"",,

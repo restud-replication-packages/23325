@@ -1,0 +1,882 @@
+---------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\Users\peleg\OneDrive\Documents\Victor\Other\Teacher Bonuses\Recreate T3A\McRary1.6.18.txt
+  log type:  text
+ opened on:   7 Aug 2019, 08:35:48
+
+. local today="$S_DATE"
+
+. local day=word("`today'",1)
+
+. local month=word("`today'",2)
+
+. local year=substr(word("`today'",3),3,2)
+
+. if `day'<10 local day="0`day'"  
+
+.                 
+.                 use "data\math_base00", clear
+
+. 
+.         gen year00 = 1
+
+.         append using "data\math_base01"
+
+.         replace year00 = 0 if year00 == .
+(12,774 real changes made)
+
+.         
+.         gen year01 = 1 - year00
+
+. 
+.         gen semarab = schtype == "NON JEWISH"
+
+.         gen semrel  = schtype == "JEWISH REL."
+
+.         
+.         *gen school_code = semelmos - this was used in the full data sets in which school_code was called sem
+> elmos
+.         // This is the error in the measurement of the rate in 1999
+.         gen error = tmp_bgrt - zak99
+
+.         gen error2= error
+
+.         drop error
+
+.         gen error = error2>=0
+
+.         
+.         egen inYear00 = max(year00), by(school_code)
+
+.         egen inYear01 = max(year01), by(school_code)
+
+. 
+.         
+.         
+.         
+.         
+.                 collapse semrel semarab tmp_bgrt educav educem m_ahim boy error inYear00 inYear01, by(school_
+> code)
+
+.         gen schtype="not jewish sec."
+
+.         replace schtype="JEWISH SEC." if semrel!=1 & semarab!=1
+(42 real changes made)
+
+.         
+.         /*
+>         **************************************************
+> ************************ 565 schools
+> **************************************************
+> tab tmp_bg,m
+>                 tab tmp_bg if educav==. | educem==. | m_ahim==. | boy==. | error == . ,m 
+>                 tab tmp_bg if ! (inYear00 & inYear01)   ,m
+>         // Drop if not in both schools
+>         *drop if educav==. | educem==. | m_ahim==. | boy==. | error == .
+> drop if tmp_bgrt==.
+>         
+>                 *drop if ! (inYear00 & inYear01)        
+> cap drop  x y z r b
+> 
+> DCdensity tmp_bgrt , breakpoint(0.42) generate (x y z r b) graphname(plots\DCdensity_2example42-565.png)
+> drop  x y z r b
+> 
+> DCdensity tmp_bgrt , breakpoint(0.43) generate (x y z r b) graphname(plots\DCdensity_2example43-565.png) 
+> drop  x y z r b
+> DCdensity tmp_bgrt , breakpoint(0.44) generate (x y z r b) graphname(plots\DCdensity_2example44-565.png)
+> drop  x y z r b
+> 
+> DCdensity tmp_bgrt , breakpoint(0.45) generate (x y z r b) graphname(plots\DCdensity_2example45-565.png)
+> drop  x y z r b
+> 
+> DCdensity tmp_bgrt , breakpoint(0.46) generate (x y z r b) graphname(plots\DCdensity_2example46-565.png)
+> 
+> drop  x y z r b
+> 
+> 
+>         **************************************************
+> ************************ 537 schools (without tmp_bgrt==0)
+> **************************************************
+> drop if tmp_bgrt==0
+> tab tmp_bgrt
+> cap drop  x y z r b
+> 
+> DCdensity tmp_bgrt , breakpoint(0.42) generate (x y z r b) graphname(DCdensity_2example42-537.png)
+> drop  x y z r b
+> 
+> DCdensity tmp_bgrt , breakpoint(0.43) generate (x y z r b) graphname(DCdensity_2example43-537.png) 
+> drop  x y z r b
+> DCdensity tmp_bgrt , breakpoint(0.44) generate (x y z r b) graphname(DCdensity_2example44-537.png)
+> drop  x y z r b
+> 
+> DCdensity tmp_bgrt , breakpoint(0.45) generate (x y z r b) graphname(DCdensity_2example45-537.png)
+> drop  x y z r b
+> 
+> DCdensity tmp_bgrt , breakpoint(0.46) generate (x y z r b) graphname(DCdensity_2example46-537.png)
+> 
+> drop  x y z r b
+> 
+> 
+> 
+> 
+>         **************************************************
+> ************************ secular 537 schools (without tmp_bgrt==0)
+> **************************************************
+> preserve 
+> keep if schtype=="JEWISH SEC."
+> 
+> 
+> tab tmp_bgrt
+> cap drop  x y z r b
+> 
+> DCdensity tmp_bgrt , breakpoint(0.42) generate (x y z r b) graphname(DCdensity_2example42-537s.png)
+> drop  x y z r b
+> 
+> DCdensity tmp_bgrt , breakpoint(0.43) generate (x y z r b) graphname(DCdensity_2example43-537s.png) 
+> drop  x y z r b
+> DCdensity tmp_bgrt , breakpoint(0.44) generate (x y z r b) graphname(DCdensity_2example44-537s.png)
+> drop  x y z r b
+> 
+> DCdensity tmp_bgrt , breakpoint(0.45) generate (x y z r b) graphname(DCdensity_2example45-537s.png)
+> drop  x y z r b
+> 
+> DCdensity tmp_bgrt , breakpoint(0.46) generate (x y z r b) graphname(DCdensity_2example46-537s.png)
+> 
+> drop  x y z r b
+> 
+> restore
+> 
+> 
+> 
+>         **************************************************
+> ************************ religious 537 schools (without tmp_bgrt==0)
+> **************************************************
+> preserve 
+> keep if schtype!="JEWISH SEC."
+> 
+> 
+> tab tmp_bgrt
+> cap drop  x y z r b
+> 
+> DCdensity tmp_bgrt , breakpoint(0.42) generate (x y z r b) graphname(DCdensity_2example42-537r.png)
+> drop  x y z r b
+> 
+> DCdensity tmp_bgrt , breakpoint(0.43) generate (x y z r b) graphname(DCdensity_2example43-537r.png) 
+> drop  x y z r b
+> DCdensity tmp_bgrt , breakpoint(0.44) generate (x y z r b) graphname(DCdensity_2example44-537r.png)
+> drop  x y z r b
+> 
+> DCdensity tmp_bgrt , breakpoint(0.45) generate (x y z r b) graphname(DCdensity_2example45-537r.png)
+> drop  x y z r b
+> 
+> DCdensity tmp_bgrt , breakpoint(0.46) generate (x y z r b) graphname(DCdensity_2example46-537r.png)
+> 
+> drop  x y z r b
+> 
+> restore
+>         
+> *histogram tmp_bgrt, discrete frequency xtitle(Erroneously measured 1999 matriculation rate) xlabel(#25) titl
+> e("Erroneously measured matriculation rate ") subtitle("entire data set - 507 schools")
+>         
+> *histogram tmp_bgrt if schtype=="JEWISH SEC.", discrete frequency xtitle(Erroneously measured 1999 matriculat
+> ion rate) xlabel(#25) yscale(range(0 20)) ylabel(#6) xline(0.45 ) title("Erroneously measured matriculation r
+> ate ") subtitle("schools eligible for the program - Jewish Secular")
+> 
+> *histogram tmp_bgrt if schtype!="JEWISH SEC.", discrete frequency xtitle(Erroneously measured 1999 matriculat
+> ion rate) xlabel(#25) yscale(range(0 20)) xline( 0.43) ylabel(#6) title("Erroneously measured matriculation r
+> ate ") subtitle("schools eligible for the program - Jewish Non Secular and Arab")
+> 
+> */
+. 
+. **************************************************
+. ************************ 98 eligible
+. *************************************************
+. 
+. use "C:\Users\peleg\OneDrive\Documents\Victor\Other\Teacher Bonuses\Recreate T3A\data\eng_base00.dta",clear
+
+. 
+. collapse tmp_bgrt  zak99 zakaibag treated  , by( school_code schtype )
+
+. 
+. tab tmp_bgrt,m
+
+     (mean) |
+   tmp_bgrt |      Freq.     Percent        Cum.
+------------+-----------------------------------
+        .04 |          1        1.02        1.02
+        .12 |          1        1.02        2.04
+        .14 |          1        1.02        3.06
+        .16 |          1        1.02        4.08
+        .19 |          1        1.02        5.10
+         .2 |          1        1.02        6.12
+        .21 |          1        1.02        7.14
+        .24 |          1        1.02        8.16
+        .27 |          1        1.02        9.18
+        .28 |          1        1.02       10.20
+        .29 |          2        2.04       12.24
+         .3 |          2        2.04       14.29
+        .31 |          3        3.06       17.35
+        .32 |          1        1.02       18.37
+        .33 |          4        4.08       22.45
+        .34 |          2        2.04       24.49
+        .37 |          2        2.04       26.53
+        .38 |          4        4.08       30.61
+        .39 |          2        2.04       32.65
+         .4 |          1        1.02       33.67
+        .41 |          4        4.08       37.76
+        .42 |          1        1.02       38.78
+        .43 |          6        6.12       44.90
+        .44 |          3        3.06       47.96
+        .45 |          5        5.10       53.06
+        .47 |          2        2.04       55.10
+        .48 |          2        2.04       57.14
+         .5 |          1        1.02       58.16
+        .51 |          1        1.02       59.18
+        .52 |          3        3.06       62.24
+        .53 |          4        4.08       66.33
+        .54 |          1        1.02       67.35
+        .55 |          2        2.04       69.39
+        .56 |          1        1.02       70.41
+        .58 |          1        1.02       71.43
+        .59 |          1        1.02       72.45
+         .6 |          3        3.06       75.51
+        .61 |          2        2.04       77.55
+        .62 |          1        1.02       78.57
+        .63 |          1        1.02       79.59
+        .65 |          3        3.06       82.65
+        .66 |          1        1.02       83.67
+         .7 |          2        2.04       85.71
+        .71 |          1        1.02       86.73
+        .74 |          1        1.02       87.76
+        .75 |          1        1.02       88.78
+        .77 |          2        2.04       90.82
+        .78 |          2        2.04       92.86
+        .84 |          2        2.04       94.90
+        .86 |          2        2.04       96.94
+        .87 |          1        1.02       97.96
+        .88 |          2        2.04      100.00
+------------+-----------------------------------
+      Total |         98      100.00
+
+. 
+. cap drop  x y z r b
+
+. 
+. DCdensity tmp_bgrt , breakpoint(0.42) generate (x y z r b) graphname(plots\DCdensity_2example42-98.png)
+Using default bin size calculation, bin size = .037734278
+Using default bandwidth calculation, bandwidth = .171212492
+
+Discontinuity estimate (log difference in height): .557738647
+                                                   (.465216809)
+Performing LLR smoothing.
+24 iterations will be performed 
+..
+Exporting graph as plots\DCdensity_2example42-98.png
+(note: file plots\DCdensity_2example42-98.png not found)
+(file plots\DCdensity_2example42-98.png written in PNG format)
+
+. drop  x y z r b
+
+. 
+. DCdensity tmp_bgrt , breakpoint(0.43) generate (x y z r b) graphname(plots\DCdensity_2example43-98.png) 
+Using default bin size calculation, bin size = .037734278
+Using default bandwidth calculation, bandwidth = .179045386
+
+Discontinuity estimate (log difference in height): .708026003
+                                                   (.478362122)
+Performing LLR smoothing.
+24 iterations will be performed 
+..
+Exporting graph as plots\DCdensity_2example43-98.png
+(note: file plots\DCdensity_2example43-98.png not found)
+(file plots\DCdensity_2example43-98.png written in PNG format)
+
+. drop  x y z r b
+
+. DCdensity tmp_bgrt , breakpoint(0.44) generate (x y z r b) graphname(plots\DCdensity_2example44-98.png)
+Using default bin size calculation, bin size = .037734278
+Using default bandwidth calculation, bandwidth = .17692555
+
+Discontinuity estimate (log difference in height): -.777902454
+                                                   (.474857978)
+Performing LLR smoothing.
+24 iterations will be performed 
+..
+Exporting graph as plots\DCdensity_2example44-98.png
+(note: file plots\DCdensity_2example44-98.png not found)
+(file plots\DCdensity_2example44-98.png written in PNG format)
+
+. drop  x y z r b
+
+. 
+. DCdensity tmp_bgrt , breakpoint(0.45) generate (x y z r b) graphname(plots\DCdensity_2example45-98.png)
+Using default bin size calculation, bin size = .037734278
+Using default bandwidth calculation, bandwidth = .157555637
+
+Discontinuity estimate (log difference in height): -1.5063301
+                                                   (.625680351)
+Performing LLR smoothing.
+24 iterations will be performed 
+..
+Exporting graph as plots\DCdensity_2example45-98.png
+(note: file plots\DCdensity_2example45-98.png not found)
+(file plots\DCdensity_2example45-98.png written in PNG format)
+
+. drop  x y z r b
+
+. 
+. DCdensity tmp_bgrt , breakpoint(0.46) generate (x y z r b) graphname(plots\DCdensity_2example46-98.png)
+Using default bin size calculation, bin size = .037734278
+Using default bandwidth calculation, bandwidth = .174709457
+
+Discontinuity estimate (log difference in height): -.979071241
+                                                   (.527406696)
+Performing LLR smoothing.
+24 iterations will be performed 
+..
+Exporting graph as plots\DCdensity_2example46-98.png
+(note: file plots\DCdensity_2example46-98.png not found)
+(file plots\DCdensity_2example46-98.png written in PNG format)
+
+. 
+. drop  x y z r b
+
+. 
+. 
+. cap drop  x y z r b
+
+. 
+. DCdensity tmp_bgrt , breakpoint(0.42) generate (x y z r b) graphname(plots\DCdensity_2example42-98.eps)
+Using default bin size calculation, bin size = .037734278
+Using default bandwidth calculation, bandwidth = .171212492
+
+Discontinuity estimate (log difference in height): .557738647
+                                                   (.465216809)
+Performing LLR smoothing.
+24 iterations will be performed 
+..
+Exporting graph as plots\DCdensity_2example42-98.eps
+(note: file plots\DCdensity_2example42-98.eps not found)
+(file plots\DCdensity_2example42-98.eps written in EPS format)
+
+. drop  x y z r b
+
+. 
+. DCdensity tmp_bgrt , breakpoint(0.43) generate (x y z r b) graphname(plots\DCdensity_2example43-98.eps) 
+Using default bin size calculation, bin size = .037734278
+Using default bandwidth calculation, bandwidth = .179045386
+
+Discontinuity estimate (log difference in height): .708026003
+                                                   (.478362122)
+Performing LLR smoothing.
+24 iterations will be performed 
+..
+Exporting graph as plots\DCdensity_2example43-98.eps
+(note: file plots\DCdensity_2example43-98.eps not found)
+(file plots\DCdensity_2example43-98.eps written in EPS format)
+
+. drop  x y z r b
+
+. DCdensity tmp_bgrt , breakpoint(0.44) generate (x y z r b) graphname(plots\DCdensity_2example44-98.eps)
+Using default bin size calculation, bin size = .037734278
+Using default bandwidth calculation, bandwidth = .17692555
+
+Discontinuity estimate (log difference in height): -.777902454
+                                                   (.474857978)
+Performing LLR smoothing.
+24 iterations will be performed 
+..
+Exporting graph as plots\DCdensity_2example44-98.eps
+(note: file plots\DCdensity_2example44-98.eps not found)
+(file plots\DCdensity_2example44-98.eps written in EPS format)
+
+. drop  x y z r b
+
+. 
+. DCdensity tmp_bgrt , breakpoint(0.45) generate (x y z r b) graphname(plots\DCdensity_2example45-98.eps)
+Using default bin size calculation, bin size = .037734278
+Using default bandwidth calculation, bandwidth = .157555637
+
+Discontinuity estimate (log difference in height): -1.5063301
+                                                   (.625680351)
+Performing LLR smoothing.
+24 iterations will be performed 
+..
+Exporting graph as plots\DCdensity_2example45-98.eps
+(note: file plots\DCdensity_2example45-98.eps not found)
+(file plots\DCdensity_2example45-98.eps written in EPS format)
+
+. drop  x y z r b
+
+. 
+. DCdensity tmp_bgrt , breakpoint(0.46) generate (x y z r b) graphname(plots\DCdensity_2example46-98.eps)
+Using default bin size calculation, bin size = .037734278
+Using default bandwidth calculation, bandwidth = .174709457
+
+Discontinuity estimate (log difference in height): -.979071241
+                                                   (.527406696)
+Performing LLR smoothing.
+24 iterations will be performed 
+..
+Exporting graph as plots\DCdensity_2example46-98.eps
+(note: file plots\DCdensity_2example46-98.eps not found)
+(file plots\DCdensity_2example46-98.eps written in EPS format)
+
+. 
+. drop  x y z r b
+
+. 
+. **************************************************
+. ************************secular 98 schools
+. *************************************************
+. dis "religiossssssssssssssssss"
+religiossssssssssssssssss
+
+. preserve 
+
+. keep if schtype=="JEWISH SEC."
+(56 observations deleted)
+
+. 
+. tab tmp_bgrt
+
+     (mean) |
+   tmp_bgrt |      Freq.     Percent        Cum.
+------------+-----------------------------------
+        .04 |          1        2.38        2.38
+        .12 |          1        2.38        4.76
+         .2 |          1        2.38        7.14
+        .24 |          1        2.38        9.52
+        .27 |          1        2.38       11.90
+        .29 |          1        2.38       14.29
+        .33 |          2        4.76       19.05
+        .37 |          1        2.38       21.43
+        .38 |          1        2.38       23.81
+        .39 |          2        4.76       28.57
+         .4 |          1        2.38       30.95
+        .41 |          1        2.38       33.33
+        .42 |          1        2.38       35.71
+        .43 |          3        7.14       42.86
+        .44 |          1        2.38       45.24
+        .45 |          3        7.14       52.38
+        .47 |          1        2.38       54.76
+         .5 |          1        2.38       57.14
+        .51 |          1        2.38       59.52
+        .52 |          2        4.76       64.29
+        .53 |          2        4.76       69.05
+        .54 |          1        2.38       71.43
+        .58 |          1        2.38       73.81
+         .6 |          2        4.76       78.57
+        .61 |          1        2.38       80.95
+        .62 |          1        2.38       83.33
+        .63 |          1        2.38       85.71
+        .65 |          1        2.38       88.10
+        .66 |          1        2.38       90.48
+         .7 |          1        2.38       92.86
+        .77 |          1        2.38       95.24
+        .86 |          1        2.38       97.62
+        .88 |          1        2.38      100.00
+------------+-----------------------------------
+      Total |         42      100.00
+
+. cap drop  x y z r b
+
+. 
+. DCdensity tmp_bgrt , breakpoint(0.42) generate (x y z r b) graphname(plots\DCdensity_2example42-98s.png)
+Using default bin size calculation, bin size = .054045355
+Using default bandwidth calculation, bandwidth = .111113823
+
+Discontinuity estimate (log difference in height): .051293294
+                                                   (.692263229)
+Performing LLR smoothing.
+17 iterations will be performed 
+.
+Exporting graph as plots\DCdensity_2example42-98s.png
+(note: file plots\DCdensity_2example42-98s.png not found)
+(file plots\DCdensity_2example42-98s.png written in PNG format)
+
+. drop  x y z r b
+
+. 
+. DCdensity tmp_bgrt , breakpoint(0.43) generate (x y z r b) graphname(plots\DCdensity_2example43-98s.png) 
+Using default bin size calculation, bin size = .054045355
+Using default bandwidth calculation, bandwidth = .150429109
+
+Discontinuity estimate (log difference in height): .281970461
+                                                   (.653016062)
+Performing LLR smoothing.
+17 iterations will be performed 
+.
+Exporting graph as plots\DCdensity_2example43-98s.png
+(note: file plots\DCdensity_2example43-98s.png not found)
+(file plots\DCdensity_2example43-98s.png written in PNG format)
+
+. drop  x y z r b
+
+. DCdensity tmp_bgrt , breakpoint(0.44) generate (x y z r b) graphname(plots\DCdensity_2example44-98s.png)
+Using default bin size calculation, bin size = .054045355
+Using default bandwidth calculation, bandwidth = .128905296
+
+Discontinuity estimate (log difference in height): -1.60943791
+                                                   (.982845025)
+Performing LLR smoothing.
+17 iterations will be performed 
+.
+Exporting graph as plots\DCdensity_2example44-98s.png
+(note: file plots\DCdensity_2example44-98s.png not found)
+(file plots\DCdensity_2example44-98s.png written in PNG format)
+
+. drop  x y z r b
+
+. 
+. DCdensity tmp_bgrt , breakpoint(0.45) generate (x y z r b) graphname(plots\DCdensity_2example45-98s.png)
+Using default bin size calculation, bin size = .054045355
+Using default bandwidth calculation, bandwidth = .10960911
+
+Discontinuity estimate (log difference in height): .
+                                                   (.)
+Performing LLR smoothing.
+17 iterations will be performed 
+.
+Exporting graph as plots\DCdensity_2example45-98s.png
+(note: file plots\DCdensity_2example45-98s.png not found)
+(file plots\DCdensity_2example45-98s.png written in PNG format)
+
+. drop  x y z r b
+
+. 
+. DCdensity tmp_bgrt , breakpoint(0.46) generate (x y z r b) graphname(plots\DCdensity_2example46-98s.png)
+Using default bin size calculation, bin size = .054045355
+Using default bandwidth calculation, bandwidth = .113269041
+
+Discontinuity estimate (log difference in height): -1.70474809
+                                                   (1.16333429)
+Performing LLR smoothing.
+17 iterations will be performed 
+.
+Exporting graph as plots\DCdensity_2example46-98s.png
+(note: file plots\DCdensity_2example46-98s.png not found)
+(file plots\DCdensity_2example46-98s.png written in PNG format)
+
+. 
+. drop  x y z r b
+
+. 
+. cap drop  x y z r b
+
+. 
+. DCdensity tmp_bgrt , breakpoint(0.42) generate (x y z r b) graphname(plots\DCdensity_2example42-98s.eps)
+Using default bin size calculation, bin size = .054045355
+Using default bandwidth calculation, bandwidth = .111113823
+
+Discontinuity estimate (log difference in height): .051293294
+                                                   (.692263229)
+Performing LLR smoothing.
+17 iterations will be performed 
+.
+Exporting graph as plots\DCdensity_2example42-98s.eps
+(note: file plots\DCdensity_2example42-98s.eps not found)
+(file plots\DCdensity_2example42-98s.eps written in EPS format)
+
+. drop  x y z r b
+
+. 
+. DCdensity tmp_bgrt , breakpoint(0.43) generate (x y z r b) graphname(plots\DCdensity_2example43-98s.eps) 
+Using default bin size calculation, bin size = .054045355
+Using default bandwidth calculation, bandwidth = .150429109
+
+Discontinuity estimate (log difference in height): .281970461
+                                                   (.653016062)
+Performing LLR smoothing.
+17 iterations will be performed 
+.
+Exporting graph as plots\DCdensity_2example43-98s.eps
+(note: file plots\DCdensity_2example43-98s.eps not found)
+(file plots\DCdensity_2example43-98s.eps written in EPS format)
+
+. drop  x y z r b
+
+. DCdensity tmp_bgrt , breakpoint(0.44) generate (x y z r b) graphname(plots\DCdensity_2example44-98s.eps)
+Using default bin size calculation, bin size = .054045355
+Using default bandwidth calculation, bandwidth = .128905296
+
+Discontinuity estimate (log difference in height): -1.60943791
+                                                   (.982845025)
+Performing LLR smoothing.
+17 iterations will be performed 
+.
+Exporting graph as plots\DCdensity_2example44-98s.eps
+(note: file plots\DCdensity_2example44-98s.eps not found)
+(file plots\DCdensity_2example44-98s.eps written in EPS format)
+
+. drop  x y z r b
+
+. 
+. DCdensity tmp_bgrt , breakpoint(0.45) generate (x y z r b) graphname(plots\DCdensity_2example45-98s.eps)
+Using default bin size calculation, bin size = .054045355
+Using default bandwidth calculation, bandwidth = .10960911
+
+Discontinuity estimate (log difference in height): .
+                                                   (.)
+Performing LLR smoothing.
+17 iterations will be performed 
+.
+Exporting graph as plots\DCdensity_2example45-98s.eps
+(note: file plots\DCdensity_2example45-98s.eps not found)
+(file plots\DCdensity_2example45-98s.eps written in EPS format)
+
+. drop  x y z r b
+
+. 
+. DCdensity tmp_bgrt , breakpoint(0.46) generate (x y z r b) graphname(plots\DCdensity_2example46-98s.eps)
+Using default bin size calculation, bin size = .054045355
+Using default bandwidth calculation, bandwidth = .113269041
+
+Discontinuity estimate (log difference in height): -1.70474809
+                                                   (1.16333429)
+Performing LLR smoothing.
+17 iterations will be performed 
+.
+Exporting graph as plots\DCdensity_2example46-98s.eps
+(note: file plots\DCdensity_2example46-98s.eps not found)
+(file plots\DCdensity_2example46-98s.eps written in EPS format)
+
+. 
+. drop  x y z r b
+
+. restore
+
+. 
+. 
+. **************************************************
+. ************************religious 98 schools
+. *************************************************
+. dis "religiossssssssssssssssss"
+religiossssssssssssssssss
+
+. preserve 
+
+. keep if schtype!="JEWISH SEC."
+(42 observations deleted)
+
+. 
+. tab tmp_bgrt
+
+     (mean) |
+   tmp_bgrt |      Freq.     Percent        Cum.
+------------+-----------------------------------
+        .14 |          1        1.79        1.79
+        .16 |          1        1.79        3.57
+        .19 |          1        1.79        5.36
+        .21 |          1        1.79        7.14
+        .28 |          1        1.79        8.93
+        .29 |          1        1.79       10.71
+         .3 |          2        3.57       14.29
+        .31 |          3        5.36       19.64
+        .32 |          1        1.79       21.43
+        .33 |          2        3.57       25.00
+        .34 |          2        3.57       28.57
+        .37 |          1        1.79       30.36
+        .38 |          3        5.36       35.71
+        .41 |          3        5.36       41.07
+        .43 |          3        5.36       46.43
+        .44 |          2        3.57       50.00
+        .45 |          2        3.57       53.57
+        .47 |          1        1.79       55.36
+        .48 |          2        3.57       58.93
+        .52 |          1        1.79       60.71
+        .53 |          2        3.57       64.29
+        .55 |          2        3.57       67.86
+        .56 |          1        1.79       69.64
+        .59 |          1        1.79       71.43
+         .6 |          1        1.79       73.21
+        .61 |          1        1.79       75.00
+        .65 |          2        3.57       78.57
+         .7 |          1        1.79       80.36
+        .71 |          1        1.79       82.14
+        .74 |          1        1.79       83.93
+        .75 |          1        1.79       85.71
+        .77 |          1        1.79       87.50
+        .78 |          2        3.57       91.07
+        .84 |          2        3.57       94.64
+        .86 |          1        1.79       96.43
+        .87 |          1        1.79       98.21
+        .88 |          1        1.79      100.00
+------------+-----------------------------------
+      Total |         56      100.00
+
+. cap drop  x y z r b
+
+. 
+. DCdensity tmp_bgrt , breakpoint(0.42) generate (x y z r b) graphname(plots\DCdensity_2example42-98r.png)
+Using default bin size calculation, bin size = .05246078
+Using default bandwidth calculation, bandwidth = .245432473
+
+Discontinuity estimate (log difference in height): -.009490727
+                                                   (.514938308)
+Performing LLR smoothing.
+16 iterations will be performed 
+.
+Exporting graph as plots\DCdensity_2example42-98r.png
+(note: file plots\DCdensity_2example42-98r.png not found)
+(file plots\DCdensity_2example42-98r.png written in PNG format)
+
+. drop  x y z r b
+
+. 
+. DCdensity tmp_bgrt , breakpoint(0.43) generate (x y z r b) graphname(plots\DCdensity_2example43-98r.png) 
+Using default bin size calculation, bin size = .05246078
+Using default bandwidth calculation, bandwidth = .159696633
+
+Discontinuity estimate (log difference in height): .759978332
+                                                   (.650234945)
+Performing LLR smoothing.
+16 iterations will be performed 
+.
+Exporting graph as plots\DCdensity_2example43-98r.png
+(note: file plots\DCdensity_2example43-98r.png not found)
+(file plots\DCdensity_2example43-98r.png written in PNG format)
+
+. drop  x y z r b
+
+. DCdensity tmp_bgrt , breakpoint(0.44) generate (x y z r b) graphname(plots\DCdensity_2example44-98r.png)
+Using default bin size calculation, bin size = .05246078
+Using default bandwidth calculation, bandwidth = .17222229
+
+Discontinuity estimate (log difference in height): -.386946263
+                                                   (.690474767)
+Performing LLR smoothing.
+16 iterations will be performed 
+.
+Exporting graph as plots\DCdensity_2example44-98r.png
+(note: file plots\DCdensity_2example44-98r.png not found)
+(file plots\DCdensity_2example44-98r.png written in PNG format)
+
+. drop  x y z r b
+
+. 
+. DCdensity tmp_bgrt , breakpoint(0.45) generate (x y z r b) graphname(plots\DCdensity_2example45-98r.png)
+Using default bin size calculation, bin size = .05246078
+Using default bandwidth calculation, bandwidth = .111602911
+
+Discontinuity estimate (log difference in height): -1.87180218
+                                                   (1.14093049)
+Performing LLR smoothing.
+16 iterations will be performed 
+.
+Exporting graph as plots\DCdensity_2example45-98r.png
+(note: file plots\DCdensity_2example45-98r.png not found)
+(file plots\DCdensity_2example45-98r.png written in PNG format)
+
+. drop  x y z r b
+
+. 
+. DCdensity tmp_bgrt , breakpoint(0.46) generate (x y z r b) graphname(plots\DCdensity_2example46-98r.png)
+Using default bin size calculation, bin size = .05246078
+Using default bandwidth calculation, bandwidth = .127444028
+
+Discontinuity estimate (log difference in height): -2.15948425
+                                                   (1.21211811)
+Performing LLR smoothing.
+16 iterations will be performed 
+.
+Exporting graph as plots\DCdensity_2example46-98r.png
+(note: file plots\DCdensity_2example46-98r.png not found)
+(file plots\DCdensity_2example46-98r.png written in PNG format)
+
+. 
+. drop  x y z r b
+
+. 
+. cap drop  x y z r b
+
+. 
+. DCdensity tmp_bgrt , breakpoint(0.42) generate (x y z r b) graphname(plots\DCdensity_2example42-98r.eps)
+Using default bin size calculation, bin size = .05246078
+Using default bandwidth calculation, bandwidth = .245432473
+
+Discontinuity estimate (log difference in height): -.009490727
+                                                   (.514938308)
+Performing LLR smoothing.
+16 iterations will be performed 
+.
+Exporting graph as plots\DCdensity_2example42-98r.eps
+(note: file plots\DCdensity_2example42-98r.eps not found)
+(file plots\DCdensity_2example42-98r.eps written in EPS format)
+
+. drop  x y z r b
+
+. 
+. DCdensity tmp_bgrt , breakpoint(0.43) generate (x y z r b) graphname(plots\DCdensity_2example43-98r.eps) 
+Using default bin size calculation, bin size = .05246078
+Using default bandwidth calculation, bandwidth = .159696633
+
+Discontinuity estimate (log difference in height): .759978332
+                                                   (.650234945)
+Performing LLR smoothing.
+16 iterations will be performed 
+.
+Exporting graph as plots\DCdensity_2example43-98r.eps
+(note: file plots\DCdensity_2example43-98r.eps not found)
+(file plots\DCdensity_2example43-98r.eps written in EPS format)
+
+. drop  x y z r b
+
+. DCdensity tmp_bgrt , breakpoint(0.44) generate (x y z r b) graphname(plots\DCdensity_2example44-98r.eps)
+Using default bin size calculation, bin size = .05246078
+Using default bandwidth calculation, bandwidth = .17222229
+
+Discontinuity estimate (log difference in height): -.386946263
+                                                   (.690474767)
+Performing LLR smoothing.
+16 iterations will be performed 
+.
+Exporting graph as plots\DCdensity_2example44-98r.eps
+(note: file plots\DCdensity_2example44-98r.eps not found)
+(file plots\DCdensity_2example44-98r.eps written in EPS format)
+
+. drop  x y z r b
+
+. 
+. DCdensity tmp_bgrt , breakpoint(0.45) generate (x y z r b) graphname(plots\DCdensity_2example45-98r.eps)
+Using default bin size calculation, bin size = .05246078
+Using default bandwidth calculation, bandwidth = .111602911
+
+Discontinuity estimate (log difference in height): -1.87180218
+                                                   (1.14093049)
+Performing LLR smoothing.
+16 iterations will be performed 
+.
+Exporting graph as plots\DCdensity_2example45-98r.eps
+(note: file plots\DCdensity_2example45-98r.eps not found)
+(file plots\DCdensity_2example45-98r.eps written in EPS format)
+
+. drop  x y z r b
+
+. 
+. DCdensity tmp_bgrt , breakpoint(0.46) generate (x y z r b) graphname(plots\DCdensity_2example46-98r.eps)
+Using default bin size calculation, bin size = .05246078
+Using default bandwidth calculation, bandwidth = .127444028
+
+Discontinuity estimate (log difference in height): -2.15948425
+                                                   (1.21211811)
+Performing LLR smoothing.
+16 iterations will be performed 
+.
+Exporting graph as plots\DCdensity_2example46-98r.eps
+(note: file plots\DCdensity_2example46-98r.eps not found)
+(file plots\DCdensity_2example46-98r.eps written in EPS format)
+
+. 
+. drop  x y z r b
+
+. 
+. 
+. 
+. restore
+
+. 
+. 
+. 
+. 
+. cap log close

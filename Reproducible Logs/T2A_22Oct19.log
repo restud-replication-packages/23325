@@ -1,0 +1,277 @@
+---------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\Users\peleg\OneDrive\Documents\Victor\Other\Teacher Bonuses\For publication\Reproduction\logs\T
+> 2A_22Oct19.log
+  log type:  text
+ opened on:  22 Oct 2019, 20:34:31
+
+. 
+. use data\PublicationDataSet, clear      
+
+. 
+. 
+. 
+. *rename sum_wage_11_afterSchoola sw_11_after
+. local depvars "sum_wage_11_afterSchoola months_11_afterSchoola"
+
+. 
+. local controls "att_lgcr att_lgsc awr_lgcr e_awr_lgcr asiafr ole boy educav educem m_ahim"
+
+. 
+.  
+.    
+. *local controls "slrate99 asiafr ole boy educav educem m_ahim att_lgsc att_lgcr awr_lgcr m_awr_lgcr e_awr_lgc
+> r i.year "
+. *drop if arab==1
+. foreach sample in NE RD  {  
+  2. 
+.         
+.         postfile values str50 rowKey  pre_treat post_treat using "results\automatic\\${name}", replace
+  3.         
+.                 preserve
+  4.                         
+.                         keep if `sample' == 1
+  5. 
+.                         di "***************************************************************"
+  6.                         di "***************************************************************"
+  7.                         di ""
+  8.                         di "Sample: `sample'"
+  9.                         di ""
+ 10.                         di "***************************************************************"
+ 11.                         di "***************************************************************"
+ 12.                         
+.                         foreach var of varlist `depvars' {
+ 13.                         
+.                                 
+.                                 // SUMMARY STATISTICS
+.                                 di ""
+ 14.                                 di "*********************************************************"
+ 15.                                 di ""
+ 16.                                 di "COMPUTING SAMPLE MEAN AND STANDARD DEVIATIONS FOR T AND C"
+ 17.                                 di ""
+ 18.                                 di "Outcome: `var'"
+ 19.                                 di ""
+ 20.                                 di "Cohorts: 2000"
+ 21.                                 di ""
+ 22.                                 di "Sample: All Observations"
+ 23.                                 di ""
+ 24.                                 di "*********************************************************"
+ 25.                                 di ""
+ 26.                                 
+.                                 regress `var' treatment    [fweight = hoodWeight]  if after == 0 & q4==1, vce
+> (cluster school_code)
+ 27.                                 local B1_pre_noC = _b[treatment]
+ 28.                                 local SE_pre_noC = _se[treatment]
+ 29.                                 xi: regress `var' treatment  i.schtype [fweight = hoodWeight]   if after =
+> = 0 & q4==1, vce(cluster school_code)
+ 30.                                 local B1_pre_C = _b[treatment]
+ 31.                                 local SE_pre_C = _se[treatment]
+ 32.                                 regress `var' treatment    [fweight = hoodWeight]   if after == 1 & q4==1,
+>  vce(cluster school_code)
+ 33.                                 local B1_post_noC = _b[treatment]
+ 34.                                 local SE_post_noC = _se[treatment]
+ 35.                                 xi: regress `var' treatment  i.schtype [fweight = hoodWeight] if after == 
+> 1 & q4==1, vce(cluster school_code)
+ 36.                                 local B1_post_C = _b[treatment]
+ 37.                                 local SE_post_C = _se[treatment]
+ 38.                                 
+.                                 post values ("Estimate `var' WITH school type control")     (`B1_pre_C')  (`B
+> 1_post_C')
+ 39.                                 post values ("CLUSTERED SCHOOL SE `var' WIT school type control")   (`SE_p
+> re_C') (`SE_post_C')
+ 40.                                 post values ("Estimate `var' WITHOUT school type control")     (`B1_pre_no
+> C')  (`B1_post_noC')
+ 41.                                 post values ("CLUSTERED SCHOOL SE `var' WITHOUT school type control")   (`
+> SE_pre_noC') (`SE_post_noC')
+ 42.                                 
+.                         
+.                                                 
+.                                 }
+ 43. 
+.  
+.                                 
+.                                 
+.                                 postclose values
+ 44.                                 
+.                                 /**************************************************
+>                                 V. REFORMAT DATA TO CSV 
+>                                 ***************************************************/
+. 
+.                                 use "results\automatic\\${name}", clear
+ 45. 
+.                                 outsheet using "results\automatic\\${name}_`sample'.csv", replace comma
+ 46. 
+.                                 erase "results\automatic\\${name}.dta"
+ 47. 
+.                                 cap log close
+ 48.                                 
+.                                 restore
+ 49. }
+(note: file results\automatic\T2A.dta not found)
+(3,361 observations deleted)
+***************************************************************
+***************************************************************
+
+Sample: NE
+
+***************************************************************
+***************************************************************
+
+*********************************************************
+
+COMPUTING SAMPLE MEAN AND STANDARD DEVIATIONS FOR T AND C
+
+Outcome: sum_wage_11_afterSchoola
+
+Cohorts: 2000
+
+Sample: All Observations
+
+*********************************************************
+
+
+Linear regression                               Number of obs     =      8,151
+                                                F(1, 35)          =       3.03
+                                                Prob > F          =     0.0907
+                                                R-squared         =     0.0027
+                                                Root MSE          =      54534
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+s~1_afterS~a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -5681.374    3265.96    -1.74   0.091    -12311.63     948.877
+       _cons |   67682.35   1523.244    44.43   0.000        64590     70774.7
+------------------------------------------------------------------------------
+i.schtype         _Ischtype_1-3       (_Ischtype_1 for sc~pe==JEWISH REL. omitted)
+
+Linear regression                               Number of obs     =      8,151
+                                                F(3, 35)          =      10.31
+                                                Prob > F          =     0.0001
+                                                R-squared         =     0.0199
+                                                Root MSE          =      54068
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+s~1_afterS~a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -601.1622   2262.415    -0.27   0.792    -5194.109    3991.784
+ _Ischtype_2 |   5723.171    2498.15     2.29   0.028     651.6577    10794.68
+ _Ischtype_3 |  -22585.01   5834.334    -3.87   0.000    -34429.34   -10740.68
+       _cons |    63243.3    2661.29    23.76   0.000     57840.59       68646
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      7,752
+                                                F(1, 35)          =       0.32
+                                                Prob > F          =     0.5770
+                                                R-squared         =     0.0003
+                                                Root MSE          =      55028
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+s~1_afterS~a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -1843.844   3274.602    -0.56   0.577     -8491.64    4803.951
+       _cons |   65366.48   1750.983    37.33   0.000      61811.8    68921.16
+------------------------------------------------------------------------------
+i.schtype         _Ischtype_1-3       (_Ischtype_1 for sc~pe==JEWISH REL. omitted)
+
+Linear regression                               Number of obs     =      7,752
+                                                F(3, 35)          =      15.55
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.0127
+                                                Root MSE          =      54692
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+s~1_afterS~a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |   2358.844   2611.788     0.90   0.373    -2943.367    7661.054
+ _Ischtype_2 |   2820.532   3699.423     0.76   0.451    -4689.697    10330.76
+ _Ischtype_3 |  -21746.15    4949.32    -4.39   0.000     -31793.8   -11698.49
+       _cons |   63152.71   3788.777    16.67   0.000     55461.08    70844.33
+------------------------------------------------------------------------------
+
+*********************************************************
+
+COMPUTING SAMPLE MEAN AND STANDARD DEVIATIONS FOR T AND C
+
+Outcome: months_11_afterSchoola
+
+Cohorts: 2000
+
+Sample: All Observations
+
+*********************************************************
+
+
+Linear regression                               Number of obs     =      8,151
+                                                F(1, 35)          =       4.05
+                                                Prob > F          =     0.0518
+                                                R-squared         =     0.0033
+                                                Root MSE          =     4.4203
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+months_11_~a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.5071005    .251855    -2.01   0.052    -1.018393    .0041923
+       _cons |    9.49799   .0842812   112.69   0.000      9.32689     9.66909
+------------------------------------------------------------------------------
+i.schtype         _Ischtype_1-3       (_Ischtype_1 for sc~pe==JEWISH REL. omitted)
+
+Linear regression                               Number of obs     =      8,151
+                                                F(3, 35)          =       7.84
+                                                Prob > F          =     0.0004
+                                                R-squared         =     0.0235
+                                                Root MSE          =     4.3757
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+months_11_~a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.1849453   .1292296    -1.43   0.161    -.4472952    .0774046
+ _Ischtype_2 |  -.2630278   .1761759    -1.49   0.144    -.6206839    .0946282
+ _Ischtype_3 |  -2.549564   .5630004    -4.53   0.000    -3.692516   -1.406613
+       _cons |   9.702002    .187841    51.65   0.000     9.320664    10.08334
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      7,752
+                                                F(1, 35)          =       1.49
+                                                Prob > F          =     0.2306
+                                                R-squared         =     0.0007
+                                                Root MSE          =     4.4159
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+months_11_~a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.2359703   .1934023    -1.22   0.231    -.6285977    .1566572
+       _cons |   9.237016    .101781    90.75   0.000      9.03039    9.443643
+------------------------------------------------------------------------------
+i.schtype         _Ischtype_1-3       (_Ischtype_1 for sc~pe==JEWISH REL. omitted)
+
+Linear regression                               Number of obs     =      7,752
+                                                F(3, 35)          =      18.72
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.0105
+                                                Root MSE          =     4.3947
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+months_11_~a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |   .0161761   .1182444     0.14   0.892    -.2238728    .2562249
+ _Ischtype_2 |  -.0966368    .130329    -0.74   0.463    -.3612187    .1679451
+ _Ischtype_3 |  -1.758793   .2501495    -7.03   0.000    -2.266623   -1.250962
+       _cons |   9.312864    .129723    71.79   0.000     9.049513    9.576216
+------------------------------------------------------------------------------
+(note: file results\automatic\T2A_NE.csv not found)

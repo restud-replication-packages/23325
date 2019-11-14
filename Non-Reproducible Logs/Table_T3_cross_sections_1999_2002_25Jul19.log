@@ -1,0 +1,3114 @@
+-------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  W:\victor_lavi\Incoming\olim1\elior\Teachers Bonuses\logs\Table_T3
+> _cross_sections_1999_2002_25Jul19.log
+  log type:  text
+ opened on:  25 Jul 2019, 12:08:14
+
+. 
+. use data\BL_SAMPLE_FULL_UPDATED_WithParents, clear
+
+. 
+. cap drop _f
+
+. append using "W:\victor_lavi\Incoming\olim1\elior\Teachers Bonuses\Palcebo_sa
+> mple_2002_May17_BL_Data.dta", force
+(note: variable zsex was str4 in the using data, but will be double now)
+(note: variable zstatus was str2 in the using data, but will be double now)
+(note: variable av_sex was str1 in the using data, but will be byte now)
+(note: variable av_status was str2 in the using data, but will be byte now)
+(note: variable em_sex was str1 in the using data, but will be byte now)
+(note: variable em_status was str2 in the using data, but will be byte now)
+(note: variable year was float, now double to accommodate using data's
+       values)
+(note: variable anaf2001 was int, now double to accommodate using data's
+       values)
+(note: variable wage_2001_az was long, now double to accommodate using data's
+       values)
+(note: variable month_2001_az was byte, now double to accommodate using
+       data's values)
+(note: variable zanaf2001 was int, now double to accommodate using data's
+       values)
+(note: variable zwage_2001_az was long, now double to accommodate using
+       data's values)
+(note: variable zmonth_2001_az was byte, now double to accommodate using
+       data's values)
+(note: variable em_tz_em was long, now double to accommodate using data's
+       values)
+(label Status already defined)
+
+. cap drop _f
+
+.         append using "W:\victor_lavi\Incoming\olim1\elior\Teachers Bonuses\Pa
+> lcebo_sample_1999_11May17", force
+(note: variable zsex was str4 in the using data, but will be double now)
+(note: variable zstatus was str2 in the using data, but will be double now)
+(note: variable av_sex was str1 in the using data, but will be byte now)
+(note: variable av_status was str2 in the using data, but will be byte now)
+(note: variable em_sex was str1 in the using data, but will be byte now)
+(note: variable em_status was str2 in the using data, but will be byte now)
+(label Sex already defined)
+(label Status already defined)
+
+. 
+. * KEEPING OBSERVATIONS THAT ARE FOUND IN THE DEMOGRAPHIC SAMPLE *
+. keep if dmg == 1
+(388 observations deleted)
+
+. 
+. * DROPPING INDIVIDUALS WHO HAVE WAGE PROBLEM (note that this doesnt vary acco
+> rding to the a/b/c definitions)*
+. drop if wage_problem_2000 == 1
+(35 observations deleted)
+
+. drop if wage_problem_2001 == 1
+(17 observations deleted)
+
+. drop if wage_problem_2002 == 1
+(48 observations deleted)
+
+. drop if wage_problem_2003 == 1
+(37 observations deleted)
+
+. drop if wage_problem_2004 == 1
+(41 observations deleted)
+
+. drop if wage_problem_2005 == 1
+(21 observations deleted)
+
+. drop if wage_problem_2006 == 1
+(28 observations deleted)
+
+. drop if wage_problem_2007 == 1
+(32 observations deleted)
+
+. drop if wage_problem_2008 == 1
+(51 observations deleted)
+
+. drop if wage_problem_2009 == 1
+(109 observations deleted)
+
+. drop if wage_problem_2010 == 1
+(140 observations deleted)
+
+. drop if wage_problem_2011 == 1
+(29 observations deleted)
+
+. drop if wage_problem_2012 == 1
+(31 observations deleted)
+
+. drop if wage_problem_2013 == 1
+(29 observations deleted)
+
+. 
+. *DROP INDIVIDUALS WITH WAGES HIGHER THAN 400,000 NIS *
+. *drop if sum_wage_2009a > 400000 | sum_wage_2010a > 400000 | sum_wage_2011a >
+>  400000 | sum_wage_2012a > 400000
+. 
+. drop if sum_wage_2000a > 400000 |sum_wage_2001a > 400000 |sum_wage_2002a > 40
+> 0000 |sum_wage_2003a > 400000 |sum_wage_2004a > 400000 |sum_wage_2005a > 4000
+> 00 |sum_wage_2006a > 400000 |sum_wage_2007a > 400000 |sum_wage_2008a > 400000
+>  |sum_wage_2009a > 400000 | sum_wage_2010a > 400000 | sum_wage_2011a > 400000
+>  | sum_wage_2012a > 400000 | sum_wage_2013a > 400000
+(295 observations deleted)
+
+. 
+. ***Drop if wage is negative (this applies only to the b and c definitions***
+. 
+. foreach year in 2000 2001 2002 2003 2004 2005 2006 2007 2008 2009 2010 2011 2
+> 012 2013 {
+  2.         drop if sum_wage_`year'a<0
+  3.         drop if sum_wage_`year'b<0
+  4.         drop if sum_wage_`year'c<0
+  5.         }
+(0 observations deleted)
+(X observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(X observation deleted)
+(0 observations deleted)
+(0 observations deleted)
+(X observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(X observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(X observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(X observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(X observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(X observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(45 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(X observations deleted)
+(0 observations deleted)
+
+. 
+. * INFLATION-ADJUSTING OF WAGES (2009 PRICES)*
+. 
+. replace sum_wage_2010a = sum_wage_2010a / 1.026
+(42,565 real changes made)
+
+. replace sum_wage_2011a = sum_wage_2011a / ((1.026)*(1.0217))
+(43,679 real changes made)
+
+. replace sum_wage_2012a = sum_wage_2012a / ((1.026)*(1.0217)*(1.0163))
+(43,190 real changes made)
+
+. replace sum_wage_2013a = sum_wage_2013a / ((1.026)*(1.0217)*(1.0163)*(1.0182)
+> )
+(43,685 real changes made)
+
+. replace sum_wage_2008a = sum_wage_2008a * 1.0391
+(44,327 real changes made)
+
+. replace sum_wage_2007a = sum_wage_2007a * 1.0391 * 1.038
+(43,941 real changes made)
+
+. replace sum_wage_2006a = sum_wage_2006a * 1.0391 * 1.038 * 1.034
+(42,962 real changes made)
+
+. replace sum_wage_2005a = sum_wage_2005a * 1.0391 * 1.038 * 1.034 * 0.999
+(40,790 real changes made)
+
+. replace sum_wage_2004a = sum_wage_2004a * 1.0391 * 1.038 * 1.034 * 0.999 * 1.
+> 0239 
+(35,055 real changes made)
+
+. replace sum_wage_2003a = sum_wage_2003a * 1.0391 * 1.038 * 1.034 * 0.999 * 1.
+> 0239 * 1.0121 
+(30,822 real changes made)
+
+. replace sum_wage_2002a = sum_wage_2002a * 1.0391 * 1.038 * 1.034 * 0.999 * 1.
+> 0239 * 1.0121 * 0.9811
+(29,840 real changes made)
+
+. replace sum_wage_2001a = sum_wage_2001a * 1.0391 * 1.038 * 1.034 * 0.999 * 1.
+> 0239 * 1.0121 * 0.9811 * 1.065
+(28,775 real changes made)
+
+. replace sum_wage_2000a = sum_wage_2000a * 1.0391 * 1.038 * 1.034 * 0.999 * 1.
+> 0239 * 1.0121 * 0.9811 * 1.065 * 1.0141
+(26,230 real changes made)
+
+. 
+. *In order to cluster by school_codeYear
+. gen school_codeYear = school_code
+(26,354 missing values generated)
+
+. 
+. replace school_codeYear = school_code * 1000 if year == 2001
+(12,449 real changes made)
+
+. 
+. 
+. ***Drop if wage is negative***
+. 
+. foreach year in 2000 2001 2002 2003 2004 2005 2006 2007 2008 2009 2010 2011 2
+> 012 2013 {
+  2.         drop if sum_wage_`year'a<0
+  3.         drop if sum_wage_`year'b<0
+  4.         drop if sum_wage_`year'c<0
+  5.         }
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+
+. 
+.  *** CREATE YEAR-AVERAGE WAGE VARIABLES ***
+. *egen avg_wage_09_11 = rowmean(sum_wage_2009a sum_wage_2010a sum_wage_2011a)
+. *egen avg_wage_09_12 = rowmean(sum_wage_2009a sum_wage_2010a sum_wage_2011a s
+> um_wage_2012a)
+. 
+. ***generate mean wage for father and mother for the years 2000-2002***
+. gen av_avwage00_02 = (av_sum_wage_2000a + av_sum_wage_2001a + av_sum_wage_200
+> 2a)/3
+(3,620 missing values generated)
+
+. gen em_avwage00_02 = (em_sum_wage_2000a + em_sum_wage_2001a + em_sum_wage_200
+> 2a)/3
+(1,332 missing values generated)
+
+. 
+. 
+. 
+. ***generate household income***
+. foreach year in 2000 2001 2002 {
+  2.         gen house_sum_wage_`year'a = av_sum_wage_`year'a + em_sum_wage_`ye
+> ar'a
+  3.         }
+(3,237 missing values generated)
+(3,640 missing values generated)
+(3,784 missing values generated)
+
+.         
+. gen house_avwage00_02 = (house_sum_wage_2000a + house_sum_wage_2001a + house_
+> sum_wage_2002a)/3
+(4,513 missing values generated)
+
+. 
+. *Generate dummy for above median household salary       
+. sum house_avwage00_02, detail
+
+                      house_avwage00_02
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%       1896.5              0       Obs              46,940
+25%     43203.83              0       Sum of Wgt.      46,940
+
+50%     104862.5                      Mean           145448.5
+                        Largest       Std. Dev.      164792.6
+75%     198811.8        3784974
+90%     317934.3        4482427       Variance       2.72e+10
+95%     416942.7        5585889       Skewness        5.59968
+99%     714838.3        5761669       Kurtosis        102.219
+
+. local med = r(p50)
+
+. gen house_avwage00_02H = (house_avwage00_02>=`med')
+
+. gen house_avwage00_02L = (house_avwage00_02<`med')
+
+. 
+. /**************************************************
+> II. DEFINE `after' AND `before' 
+> ***************************************************/
+. gen before = (year == 1999)
+
+. gen after = (year == 2002)
+
+. 
+. /**************************************************
+> III. DEFINE TREATMENT AND CONTROL GROUPS
+> ***************************************************/
+. 
+. gen treatment = (treated == 1)
+
+. gen control = (treated == 0)
+
+. 
+. 
+. 
+. *** SET QUARTILES SAMPLES ***
+. drop q1 q2 q3 q4
+
+. gen q4 = 1
+
+. gen q3 = (q != 4)
+
+. gen q_1 = (q==1)
+
+. gen q_2 = (q==2)
+
+. gen q_3 = (q==3)
+
+. gen q_4 = (q==4)
+
+. 
+. *** SET EXPERIMENT SAMPLE GROUPS ***
+. rename inNE NE
+
+. rename inRD RD
+
+. rename inEL EL
+
+. 
+. bysort semelmos: egen test = max(treatment)
+
+. bysort semelmos: egen testNE = max(NE)
+(298 missing values generated)
+
+. bysort semelmos: egen testRD = max(RD)
+(298 missing values generated)
+
+. 
+. bysort semelmos: egen testFW = max(hoodWeight)
+(31062 missing values generated)
+
+. 
+. replace treatment=test
+(13,326 real changes made)
+
+. replace hoodWeight=testFW
+(10,643 real changes made)
+
+. replace NE=testNE
+(26,056 real changes made)
+
+. replace RD = testRD
+(26,056 real changes made)
+
+. replace  school_code = semelmos
+(51,155 real changes made)
+
+. *Generate age at birth of first child (in months)
+. gen  age_at_first_birth=(gil_yld1_yy-leda_yy)*12+(gil_yld1_mm-leda_mm)
+(30,749 missing values generated)
+
+. 
+. *Generate age at marriage (in months)
+. 
+. gen age_at_marriage=(nis1_tar_yy-leda_yy)*12+(nis1_tar_mm-leda_mm)
+(24,538 missing values generated)
+
+. 
+. 
+. gen age_at_first_birth_years=gil_yld1_yy-leda_yy
+(30,749 missing values generated)
+
+. gen age_at_marriage_years=(nis1_tar_yy-leda_yy)
+(24,538 missing values generated)
+
+. 
+. *gen  school type dummy
+. gen arab =  schtype=="NON JEWISH"
+
+. replace arab=. if  schtype==""
+(26,354 real changes made, 26,354 to missing)
+
+. gen dati =  schtype=="JEWISH REL."
+
+. replace dati=. if  schtype==""
+(26,354 real changes made, 26,354 to missing)
+
+. encode schtype , g(schtype2)
+
+. 
+. bysort semelmos: egen tess= max(schtype2)
+(298 missing values generated)
+
+. 
+. replace schtype2 = tess if schtype2==.
+(26,056 real changes made)
+
+. drop arab dati 
+
+. gen arab =  schtype2==3
+
+. replace arab=. if schtype2==.
+(298 real changes made, 298 to missing)
+
+. gen dati =  schtype2==1
+
+. replace dati=. if schtype2==.
+(298 real changes made, 298 to missing)
+
+. 
+. 
+. 
+. 
+. 
+. local depvars "A2011 A2013 B2011 B2013  uni2011 uni2013 col2011 col2013 work_
+> 2010a work_2012a sum_wage_2010a sum_wage_2012a sum_month_2010a sum_month_2012
+> a psum_wage_2010a  psum_wage_2012a " 
+
+. 
+. local controls "  ole boy educav educem m_ahim "
+
+. ***add i.schtype2 if needed for the analysis
+. 
+. 
+. 
+. 
+. drop if year==2000 | year==2001 |year==.
+(25,397 observations deleted)
+
+. 
+. 
+. 
+. xtile psum_wage_2010a = sum_wage_2010a if year==1999, nquantiles(100)
+
+. xtile Ppsum_wage_2010a = sum_wage_2010a if year==2002, nquantiles(100)
+
+. replace psum_wage_2010a = Ppsum_wage_2010a if year==2002
+(13,250 real changes made)
+
+. drop Ppsum_wage_2010a
+
+. 
+. 
+. xtile psum_wage_2012a = sum_wage_2012a, nquantiles(100)
+
+. xtile Ppsum_wage_2012a = sum_wage_2012a if year==2002, nquantiles(100)
+
+. replace psum_wage_2012a = Ppsum_wage_2012a if year==2002
+(10,599 real changes made)
+
+. drop Ppsum_wage_2012a
+
+. 
+. 
+. 
+. 
+. 
+. 
+. gen afterXtreatment = after * treatment
+
+. 
+. foreach sample in NE RD {  
+  2. 
+.         
+.         postfile values str50 rowKey   no_weights99 weights99 no_weights02 we
+> ights02  using "results\automatic\\${name}", replace
+  3.         
+.                 preserve
+  4.                         
+.                         keep if `sample' == 1
+  5. 
+.                         di "*************************************************
+> **************"
+  6.                         di "**********************************************
+> *****************"
+  7.                         di ""
+  8.                         di "Sample: `sample'"
+  9.                         di ""
+ 10.                         di "**********************************************
+> *****************"
+ 11.                         di "**********************************************
+> *****************"
+ 12.                         
+.                         foreach var of varlist `depvars' {
+ 13.                         
+.                                 
+.                                 // SUMMARY STATISTICS
+.                                 di ""
+ 14.                                 di "**************************************
+> *******************"
+ 15.                                 di ""
+ 16.                                 di "COMPUTING SAMPLE MEAN AND STANDARD DEV
+> IATIONS FOR T AND C"
+ 17.                                 di ""
+ 18.                                 di "Outcome: `var'"
+ 19.                                 di ""
+ 20.                                 di "Cohorts: 2000"
+ 21.                                 di ""
+ 22.                                 di "Sample: All Observations"
+ 23.                                 di ""
+ 24.                                 di "**************************************
+> *******************"
+ 25.                                 di ""
+ 26.                                 
+. 
+.                                 
+.                                 regress `var' treatment `controls'    if afte
+> r == 0 & q4==1 [fweight=hoodWeight], vce(cluster school_code)
+ 27. 
+.                                 local Ndif_00_`var'_q4 = _b[treatment]
+ 28.                                 local Nse_dif_00_`var'_q4 = _se[treatment]
+>               
+ 29. 
+.                                 
+.                                 regress `var' treatment `controls'   if after
+>  == 0 & q4==1, vce(cluster school_code)
+ 30.         
+.                                 
+.                                 local dif_00_`var'_q4 = _b[treatment]
+ 31.                                 local se_dif_00_`var'_q4 = _se[treatment]
+ 32.                                 
+.                                 
+.                                 regress `var' treatment `controls'   if after
+>  == 1 & q4==1 [fweight=hoodWeight], vce(cluster school_code)
+ 33. 
+.                                 local Ndif_01_`var'_q4 = _b[treatment]
+ 34.                                 local Nse_dif_01_`var'_q4 = _se[treatment]
+>               
+ 35. 
+.                                 
+.                                 regress `var' treatment `controls'   if after
+>  == 1 & q4==1, vce(cluster school_code)
+ 36.         
+.                                 
+.                                 local dif_01_`var'_q4 = _b[treatment]
+ 37.                                 local se_dif_01_`var'_q4 = _se[treatment] 
+>       
+ 38.                                 
+.                                 
+.                                                                         regre
+> ss `var' treatment    if after == 0 & q4==1 [fweight=hoodWeight], vce(cluster
+>  school_code)
+ 39. 
+.                                 local CNdif_00_`var'_q4 = _b[treatment]
+ 40.                                 local CNse_dif_00_`var'_q4 = _se[treatment
+> ]             
+ 41. 
+.                                 
+.                                 regress `var' treatment    if after == 0 & q4
+> ==1, vce(cluster school_code)
+ 42.         
+.                                 
+.                                 local Cdif_00_`var'_q4 = _b[treatment]
+ 43.                                 local Cse_dif_00_`var'_q4 = _se[treatment]
+ 44.                                 
+.                                 
+.                                 regress `var' treatment   if after == 1 & q4=
+> =1 [fweight=hoodWeight], vce(cluster school_code)
+ 45. 
+.                                 local CNdif_01_`var'_q4 = _b[treatment]
+ 46.                                 local CNse_dif_01_`var'_q4 = _se[treatment
+> ]             
+ 47. 
+.                                 
+.                                 regress `var' treatment    if after == 1 & q4
+> ==1, vce(cluster school_code)
+ 48.         
+.                                 
+.                                 local Cdif_01_`var'_q4 = _b[treatment]
+ 49.                                 local Cse_dif_01_`var'_q4 = _se[treatment]
+>       
+ 50.                                 
+.                                 
+.                                 
+.                                 post values ("MEAN `var'")                   
+>                          (`Ndif_00_`var'_q4')  (`dif_00_`var'_q4') (`Ndif_01_
+> `var'_q4')  (`dif_01_`var'_q4')      
+ 51.                                 post values ("CLUSTERED SCHOOL SE `var'") 
+>                           (`Nse_dif_00_`var'_q4') (`se_dif_00_`var'_q4') (`Ns
+> e_dif_01_`var'_q4') (`se_dif_01_`var'_q4')
+ 52.         
+.                         
+.                                                 
+.                                 }
+ 53. 
+.                                 
+.                                 
+.                                 
+.                                 postclose values
+ 54.                                 
+.                                 /********************************************
+> ******
+>                                 V. REFORMAT DATA TO CSV 
+>                                 *********************************************
+> ******/
+. 
+.                                 use "results\automatic\\${name}", clear
+ 55. 
+.                                 outsheet using "results\automatic\\${name}_`s
+> ample'.csv", replace comma
+ 56. 
+.                                 erase "results\automatic\\${name}.dta"
+ 57. 
+.                                 cap log close
+ 58.                                 
+.                                 restore
+ 59.                 
+.                 
+. }
+(note: file results\automatic\Table_T3_cross_sections_1999_2002.dta not found)
+(15,742 observations deleted)
+***************************************************************
+***************************************************************
+
+Sample: NE
+
+***************************************************************
+***************************************************************
+
+*********************************************************
+
+COMPUTING SAMPLE MEAN AND STANDARD DEVIATIONS FOR T AND C
+
+Outcome: A2011
+
+Cohorts: 2000
+
+Sample: All Observations
+
+*********************************************************
+
+
+Linear regression                               Number of obs     =      8,298
+                                                F(6, 35)          =       8.93
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.0217
+                                                Root MSE          =     .40733
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+       A2011 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |   .0116384    .041207     0.28   0.779    -.0720162     .095293
+         ole |  -.0486583   .0259819    -1.87   0.069    -.1014044    .0040878
+         boy |  -.0296137   .0291147    -1.02   0.316    -.0887197    .0294924
+      educav |  -.0000359   .0003124    -0.11   0.909    -.0006702    .0005984
+      educem |   .0003371   .0005217     0.65   0.522    -.0007221    .0013963
+      m_ahim |  -.0298933   .0053776    -5.56   0.000    -.0408104   -.0189761
+       _cons |    .351692   .0452562     7.77   0.000     .2598171    .4435669
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,096
+                                                F(6, 35)          =       9.63
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.0275
+                                                Root MSE          =     .41315
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+       A2011 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0346944   .0291126    -1.19   0.241    -.0937962    .0244073
+         ole |   -.015362   .0186008    -0.83   0.414    -.0531237    .0223997
+         boy |  -.0379932   .0175159    -2.17   0.037    -.0735525    -.002434
+      educav |  -.0000308   .0002558    -0.12   0.905    -.0005501    .0004885
+      educem |   .0002773    .000483     0.57   0.570    -.0007033    .0012579
+      m_ahim |  -.0319267   .0045377    -7.04   0.000    -.0411386   -.0227147
+       _cons |   .3898077   .0359127    10.85   0.000     .3169011    .4627144
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,416
+                                                F(6, 35)          =       3.95
+                                                Prob > F          =     0.0040
+                                                R-squared         =     0.0154
+                                                Root MSE          =     .36647
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+       A2011 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |    .054938   .0484022     1.14   0.264    -.0433236    .1531997
+         ole |   .0259516   .0299195     0.87   0.392    -.0347881    .0866914
+         boy |  -.0537834   .0262211    -2.05   0.048    -.1070151   -.0005518
+      educav |  -.0010932    .000344    -3.18   0.003    -.0017916   -.0003948
+      educem |   .0008719    .000485     1.80   0.081    -.0001126    .0018565
+      m_ahim |  -5.02e-07   .0002505    -0.00   0.998    -.0005091    .0005081
+       _cons |    .157999   .0474529     3.33   0.002     .0616645    .2543335
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,178
+                                                F(6, 35)          =       7.62
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.0111
+                                                Root MSE          =     .38842
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+       A2011 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0019055   .0318962    -0.06   0.953    -.0666582    .0628471
+         ole |   .0463592   .0293076     1.58   0.123    -.0131383    .1058568
+         boy |  -.0522914   .0166021    -3.15   0.003    -.0859955   -.0185874
+      educav |  -.0010386   .0003655    -2.84   0.007    -.0017806   -.0002967
+      educem |   .0007382   .0004457     1.66   0.107    -.0001666    .0016431
+      m_ahim |   .0000456   .0002498     0.18   0.856    -.0004615    .0005528
+       _cons |   .2068534   .0290259     7.13   0.000     .1479277    .2657791
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,359
+                                                F(1, 35)          =       0.00
+                                                Prob > F          =     0.9569
+                                                R-squared         =     0.0000
+                                                Root MSE          =     .41267
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+       A2011 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |   .0023816    .043724     0.05   0.957    -.0863829    .0911461
+       _cons |   .2163829   .0303476     7.13   0.000     .1547741    .2779918
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,136
+                                                F(1, 35)          =       1.90
+                                                Prob > F          =     0.1767
+                                                R-squared         =     0.0031
+                                                Root MSE          =     .41897
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+       A2011 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |   -.046846   .0339752    -1.38   0.177    -.1158194    .0221274
+       _cons |    .252443   .0251701    10.03   0.000     .2013449    .3035411
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,416
+                                                F(1, 35)          =       0.96
+                                                Prob > F          =     0.3346
+                                                R-squared         =     0.0044
+                                                Root MSE          =      .3684
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+       A2011 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |   .0488578   .0499355     0.98   0.335    -.0525167    .1502323
+       _cons |   .1381705   .0400612     3.45   0.001     .0568419    .2194991
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,178
+                                                F(1, 35)          =       0.08
+                                                Prob > F          =     0.7855
+                                                R-squared         =     0.0001
+                                                Root MSE          =     .39038
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+       A2011 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0089918   .0327839    -0.27   0.785    -.0755467    .0575631
+       _cons |   .1921694   .0261841     7.34   0.000     .1390128     .245326
+------------------------------------------------------------------------------
+
+*********************************************************
+
+COMPUTING SAMPLE MEAN AND STANDARD DEVIATIONS FOR T AND C
+
+Outcome: A2013
+
+Cohorts: 2000
+
+Sample: All Observations
+
+*********************************************************
+
+
+Linear regression                               Number of obs     =      8,298
+                                                F(6, 35)          =       9.29
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.0220
+                                                Root MSE          =     .41124
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+       A2013 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |   .0116337   .0432957     0.27   0.790    -.0762613    .0995287
+         ole |  -.0521042   .0240378    -2.17   0.037    -.1009036   -.0033049
+         boy |  -.0267894   .0301424    -0.89   0.380    -.0879817     .034403
+      educav |  -.0000114    .000316    -0.04   0.971    -.0006529    .0006301
+      educem |   .0002852   .0005181     0.55   0.586    -.0007666     .001337
+      m_ahim |  -.0303859   .0054045    -5.62   0.000    -.0413577   -.0194141
+       _cons |   .3594171   .0469756     7.65   0.000     .2640516    .4547827
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,096
+                                                F(6, 35)          =       9.62
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.0273
+                                                Root MSE          =     .41779
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+       A2013 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0376064   .0303766    -1.24   0.224    -.0992742    .0240614
+         ole |  -.0230258   .0184197    -1.25   0.220    -.0604198    .0143683
+         boy |  -.0356431   .0186902    -1.91   0.065    -.0735863       .0023
+      educav |   .0000176   .0002682     0.07   0.948    -.0005267     .000562
+      educem |   .0002173   .0004981     0.44   0.665    -.0007938    .0012284
+      m_ahim |  -.0321888   .0045356    -7.10   0.000    -.0413965   -.0229811
+       _cons |   .4000173   .0370785    10.79   0.000     .3247438    .4752907
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,416
+                                                F(6, 35)          =       4.22
+                                                Prob > F          =     0.0027
+                                                R-squared         =     0.0171
+                                                Root MSE          =     .37687
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+       A2013 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |   .0572353   .0498435     1.15   0.259    -.0439524    .1584231
+         ole |   .0208719   .0307413     0.68   0.502    -.0415362      .08328
+         boy |  -.0601882   .0264073    -2.28   0.029    -.1137979   -.0065786
+      educav |  -.0011902   .0003404    -3.50   0.001    -.0018811   -.0004992
+      educem |   .0009704   .0005164     1.88   0.069    -.0000781    .0020188
+      m_ahim |   -.000093   .0002481    -0.37   0.710    -.0005968    .0004108
+       _cons |   .1744388   .0481992     3.62   0.001     .0765893    .2722883
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,178
+                                                F(6, 35)          =       9.22
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.0118
+                                                Root MSE          =     .39867
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+       A2013 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |   .0003153   .0335285     0.01   0.993    -.0677512    .0683817
+         ole |   .0419418   .0298496     1.41   0.169     -.018656    .1025397
+         boy |  -.0590836   .0163882    -3.61   0.001    -.0923535   -.0258138
+      educav |  -.0011478   .0003632    -3.16   0.003    -.0018852   -.0004105
+      educem |   .0007667   .0004521     1.70   0.099    -.0001511    .0016844
+      m_ahim |  -.0000277   .0002481    -0.11   0.912    -.0005313    .0004759
+       _cons |   .2261268   .0304664     7.42   0.000     .1642767    .2879769
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,359
+                                                F(1, 35)          =       0.00
+                                                Prob > F          =     0.9524
+                                                R-squared         =     0.0000
+                                                Root MSE          =     .41662
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+       A2013 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |   .0027449   .0456306     0.06   0.952    -.0898901    .0953798
+       _cons |   .2220577   .0322074     6.89   0.000     .1566732    .2874422
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,136
+                                                F(1, 35)          =       1.97
+                                                Prob > F          =     0.1695
+                                                R-squared         =     0.0034
+                                                Root MSE          =     .42349
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+       A2013 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0494263   .0352317    -1.40   0.169    -.1209506    .0220979
+       _cons |   .2609935   .0265142     9.84   0.000     .2071669    .3148201
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,416
+                                                F(1, 35)          =       1.01
+                                                Prob > F          =     0.3228
+                                                R-squared         =     0.0046
+                                                Root MSE          =     .37915
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+       A2013 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |   .0517612   .0516175     1.00   0.323    -.0530279    .1565502
+       _cons |   .1489464   .0411049     3.62   0.001      .065499    .2323937
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,178
+                                                F(1, 35)          =       0.04
+                                                Prob > F          =     0.8452
+                                                R-squared         =     0.0001
+                                                Root MSE          =     .40084
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+       A2013 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0067975   .0345518    -0.20   0.845    -.0769414    .0633463
+       _cons |   .2045545   .0272142     7.52   0.000     .1493068    .2598023
+------------------------------------------------------------------------------
+
+*********************************************************
+
+COMPUTING SAMPLE MEAN AND STANDARD DEVIATIONS FOR T AND C
+
+Outcome: B2011
+
+Cohorts: 2000
+
+Sample: All Observations
+
+*********************************************************
+
+
+Linear regression                               Number of obs     =      8,298
+                                                F(6, 35)          =       5.27
+                                                Prob > F          =     0.0006
+                                                R-squared         =     0.0062
+                                                Root MSE          =     .36216
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+       B2011 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0201206   .0194498    -1.03   0.308    -.0596058    .0193647
+         ole |  -.0263294   .0158078    -1.67   0.105     -.058421    .0057621
+         boy |   .0295444   .0190678     1.55   0.130    -.0091653     .068254
+      educav |  -.0001915   .0002025    -0.95   0.351    -.0006027    .0002197
+      educem |   .0002919   .0002767     1.05   0.299    -.0002699    .0008537
+      m_ahim |  -.0106845   .0032358    -3.30   0.002    -.0172536   -.0041155
+       _cons |   .2005246    .029823     6.72   0.000     .1399807    .2610684
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,096
+                                                F(6, 35)          =       3.48
+                                                Prob > F          =     0.0084
+                                                R-squared         =     0.0075
+                                                Root MSE          =     .36286
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+       B2011 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0324944   .0247313    -1.31   0.197    -.0827017    .0177129
+         ole |  -.0346615   .0168699    -2.05   0.047    -.0689092   -.0004139
+         boy |   .0031929   .0151927     0.21   0.835      -.02765    .0340357
+      educav |  -.0001276   .0002125    -0.60   0.552     -.000559    .0003039
+      educem |   .0003422   .0003297     1.04   0.306    -.0003271    .0010114
+      m_ahim |  -.0123096   .0029377    -4.19   0.000    -.0182733   -.0063458
+       _cons |   .2251317   .0314185     7.17   0.000     .1613486    .2889147
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,416
+                                                F(6, 35)          =       3.50
+                                                Prob > F          =     0.0081
+                                                R-squared         =     0.0064
+                                                Root MSE          =     .36824
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+       B2011 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0300567   .0212683    -1.41   0.166    -.0732338    .0131203
+         ole |  -.0003677   .0184737    -0.02   0.984    -.0378713    .0371359
+         boy |    .043719   .0150633     2.90   0.006     .0131388    .0742992
+      educav |  -.0005311   .0004303    -1.23   0.225    -.0014047    .0003425
+      educem |  -2.57e-06   .0005533    -0.00   0.996    -.0011258    .0011206
+      m_ahim |   -.000079   .0001916    -0.41   0.683     -.000468      .00031
+       _cons |   .1692579   .0185851     9.11   0.000     .1315281    .2069876
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,178
+                                                F(6, 35)          =       1.57
+                                                Prob > F          =     0.1836
+                                                R-squared         =     0.0047
+                                                Root MSE          =     .37764
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+       B2011 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0289806   .0237301    -1.22   0.230    -.0771553     .019194
+         ole |  -.0166477   .0142206    -1.17   0.250    -.0455171    .0122217
+         boy |   .0232791   .0156221     1.49   0.145    -.0084355    .0549937
+      educav |  -.0005819   .0003557    -1.64   0.111    -.0013039    .0001402
+      educem |   .0003968    .000569     0.70   0.490    -.0007582    .0015519
+      m_ahim |  -.0001234   .0003036    -0.41   0.687    -.0007397     .000493
+       _cons |   .1841484   .0233438     7.89   0.000      .136758    .2315387
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,359
+                                                F(1, 35)          =       1.18
+                                                Prob > F          =     0.2852
+                                                R-squared         =     0.0010
+                                                Root MSE          =     .36452
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+       B2011 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0229789   .0211734    -1.09   0.285    -.0659632    .0200055
+       _cons |   .1697508    .014593    11.63   0.000     .1401255    .1993761
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,136
+                                                F(1, 35)          =       2.36
+                                                Prob > F          =     0.1333
+                                                R-squared         =     0.0027
+                                                Root MSE          =     .36405
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+       B2011 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0379722   .0247077    -1.54   0.133    -.0881315    .0121872
+       _cons |   .1775244   .0206969     8.58   0.000     .1355074    .2195414
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,416
+                                                F(1, 35)          =       1.41
+                                                Prob > F          =     0.2437
+                                                R-squared         =     0.0013
+                                                Root MSE          =     .36908
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+       B2011 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0269564   .0227347    -1.19   0.244    -.0731102    .0191975
+       _cons |   .1764847    .017771     9.93   0.000     .1404077    .2125616
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,178
+                                                F(1, 35)          =       1.46
+                                                Prob > F          =     0.2344
+                                                R-squared         =     0.0017
+                                                Root MSE          =     .37804
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+       B2011 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0308424   .0254882    -1.21   0.234    -.0825862    .0209014
+       _cons |   .1889732   .0212367     8.90   0.000     .1458604    .2320861
+------------------------------------------------------------------------------
+
+*********************************************************
+
+COMPUTING SAMPLE MEAN AND STANDARD DEVIATIONS FOR T AND C
+
+Outcome: B2013
+
+Cohorts: 2000
+
+Sample: All Observations
+
+*********************************************************
+
+
+Linear regression                               Number of obs     =      8,298
+                                                F(6, 35)          =       6.11
+                                                Prob > F          =     0.0002
+                                                R-squared         =     0.0065
+                                                Root MSE          =     .36847
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+       B2013 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0142645   .0200732    -0.71   0.482    -.0550153    .0264863
+         ole |  -.0229426   .0158628    -1.45   0.157    -.0551458    .0092606
+         boy |   .0363861   .0184758     1.97   0.057    -.0011218     .073894
+      educav |  -.0002909   .0002034    -1.43   0.161    -.0007038     .000122
+      educem |   .0002916   .0002632     1.11   0.275    -.0002428     .000826
+      m_ahim |  -.0105332    .003094    -3.40   0.002    -.0168144   -.0042519
+       _cons |   .2018474   .0299394     6.74   0.000     .1410673    .2626275
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,096
+                                                F(6, 35)          =       3.60
+                                                Prob > F          =     0.0070
+                                                R-squared         =     0.0064
+                                                Root MSE          =     .37062
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+       B2013 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0269861   .0251214    -1.07   0.290    -.0779853     .024013
+         ole |  -.0296508   .0181228    -1.64   0.111     -.066442    .0071403
+         boy |   .0093578   .0152759     0.61   0.544    -.0216539    .0403696
+      educav |  -.0002302   .0002103    -1.09   0.281    -.0006571    .0001966
+      educem |   .0003066   .0003231     0.95   0.349    -.0003494    .0009626
+      m_ahim |  -.0119245   .0028368    -4.20   0.000    -.0176835   -.0061655
+       _cons |   .2275205   .0312128     7.29   0.000     .1641551    .2908859
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,416
+                                                F(6, 35)          =       4.15
+                                                Prob > F          =     0.0030
+                                                R-squared         =     0.0070
+                                                Root MSE          =     .37932
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+       B2013 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0313093   .0235759    -1.33   0.193    -.0791708    .0165523
+         ole |   .0002651   .0191818     0.01   0.989     -.038676    .0392062
+         boy |   .0465633   .0155234     3.00   0.005      .015049    .0780775
+      educav |  -.0005909   .0004579    -1.29   0.205    -.0015206    .0003387
+      educem |   .0000234   .0005745     0.04   0.968    -.0011429    .0011897
+      m_ahim |  -.0001648   .0001894    -0.87   0.390    -.0005492    .0002196
+       _cons |    .183177   .0219625     8.34   0.000     .1385907    .2277633
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,178
+                                                F(6, 35)          =       2.14
+                                                Prob > F          =     0.0729
+                                                R-squared         =     0.0060
+                                                Root MSE          =     .39051
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+       B2013 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0337905   .0253249    -1.33   0.191    -.0852027    .0176218
+         ole |  -.0195835   .0152325    -1.29   0.207    -.0505072    .0113401
+         boy |   .0276088   .0161739     1.71   0.097    -.0052259    .0604435
+      educav |  -.0006262   .0003734    -1.68   0.102    -.0013843    .0001319
+      educem |   .0004468   .0005718     0.78   0.440     -.000714    .0016077
+      m_ahim |  -.0001929   .0002948    -0.65   0.517    -.0007913    .0004055
+       _cons |   .2017933   .0252274     8.00   0.000      .150579    .2530075
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,359
+                                                F(1, 35)          =       0.60
+                                                Prob > F          =     0.4453
+                                                R-squared         =     0.0005
+                                                Root MSE          =     .37089
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+       B2013 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |   -.016926   .0219241    -0.77   0.445    -.0614343    .0275823
+       _cons |   .1734518   .0151646    11.44   0.000     .1426659    .2042376
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,136
+                                                F(1, 35)          =       1.70
+                                                Prob > F          =     0.2010
+                                                R-squared         =     0.0019
+                                                Root MSE          =      .3717
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+       B2013 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0324445   .0248952    -1.30   0.201    -.0829844    .0180955
+       _cons |   .1828176   .0206369     8.86   0.000     .1409225    .2247127
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,416
+                                                F(1, 35)          =       1.20
+                                                Prob > F          =     0.2804
+                                                R-squared         =     0.0013
+                                                Root MSE          =     .38029
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+       B2013 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0273874   .0249773    -1.10   0.280     -.078094    .0233192
+       _cons |   .1894157   .0193051     9.81   0.000     .1502244     .228607
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,178
+                                                F(1, 35)          =       1.75
+                                                Prob > F          =     0.1939
+                                                R-squared         =     0.0021
+                                                Root MSE          =     .39108
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+       B2013 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0357624   .0269979    -1.32   0.194     -.090571    .0190462
+       _cons |   .2073512   .0223238     9.29   0.000     .1620315    .2526709
+------------------------------------------------------------------------------
+
+*********************************************************
+
+COMPUTING SAMPLE MEAN AND STANDARD DEVIATIONS FOR T AND C
+
+Outcome: uni2011
+
+Cohorts: 2000
+
+Sample: All Observations
+
+*********************************************************
+
+
+Linear regression                               Number of obs     =      8,298
+                                                F(6, 35)          =      10.71
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.0200
+                                                Root MSE          =     1.8539
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+     uni2011 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |   .0878901    .190933     0.46   0.648    -.2997245    .4755046
+         ole |  -.1207706   .1569213    -0.77   0.447    -.4393378    .1977967
+         boy |  -.1168272   .1462243    -0.80   0.430    -.4136782    .1800239
+      educav |  -.0004867   .0014119    -0.34   0.732     -.003353    .0023796
+      educem |   .0007079   .0023482     0.30   0.765    -.0040592    .0054749
+      m_ahim |  -.1299904   .0255425    -5.09   0.000    -.1818445   -.0781364
+       _cons |   1.409115   .2196946     6.41   0.000     .9631112    1.855119
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,096
+                                                F(6, 35)          =       9.88
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.0251
+                                                Root MSE          =     1.9062
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+     uni2011 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0843754   .1304724    -0.65   0.522    -.3492484    .1804976
+         ole |   .0623389   .1254991     0.50   0.622    -.1924379    .3171157
+         boy |  -.1229308   .0864382    -1.42   0.164    -.2984096    .0525481
+      educav |  -.0007251   .0010059    -0.72   0.476    -.0027672     .001317
+      educem |   .0008095   .0020612     0.39   0.697     -.003375    .0049939
+      m_ahim |  -.1435452   .0200803    -7.15   0.000    -.1843104   -.1027799
+       _cons |   1.553988   .1667919     9.32   0.000     1.215382    1.892593
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,416
+                                                F(6, 35)          =       3.82
+                                                Prob > F          =     0.0050
+                                                R-squared         =     0.0177
+                                                Root MSE          =     1.4474
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+     uni2011 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |    .243069   .1870206     1.30   0.202    -.1366029    .6227409
+         ole |   .1219312   .1143581     1.07   0.294    -.1102281    .3540905
+         boy |  -.2264082   .1245695    -1.82   0.078    -.4792977    .0264813
+      educav |  -.0044138   .0013547    -3.26   0.002    -.0071639   -.0016637
+      educem |   .0033587   .0019451     1.73   0.093    -.0005901    .0073074
+      m_ahim |  -.0003744   .0009849    -0.38   0.706    -.0023739     .001625
+       _cons |   .5453911   .1738013     3.14   0.003     .1925558    .8982265
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,178
+                                                F(6, 35)          =       5.93
+                                                Prob > F          =     0.0002
+                                                R-squared         =     0.0107
+                                                Root MSE          =     1.5338
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+     uni2011 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |   .0385638     .11513     0.33   0.740    -.1951625    .2722901
+         ole |   .1961712   .1142137     1.72   0.095    -.0356949    .4280373
+         boy |  -.1841395   .0755618    -2.44   0.020    -.3375381   -.0307409
+      educav |  -.0041819   .0014697    -2.85   0.007    -.0071655   -.0011983
+      educem |   .0030266   .0018934     1.60   0.119    -.0008172    .0068704
+      m_ahim |   .0003983   .0011073     0.36   0.721    -.0018496    .0026462
+       _cons |   .6835353   .1031016     6.63   0.000     .4742279    .8928427
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,359
+                                                F(1, 35)          =       0.06
+                                                Prob > F          =     0.8054
+                                                R-squared         =     0.0002
+                                                Root MSE          =     1.8734
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+     uni2011 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |   .0508606   .2048872     0.25   0.805    -.3650825    .4668037
+       _cons |   .8181594   .1311172     6.24   0.000     .5519773    1.084341
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,136
+                                                F(1, 35)          =       0.92
+                                                Prob > F          =     0.3450
+                                                R-squared         =     0.0014
+                                                Root MSE          =     1.9333
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+     uni2011 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.1459551   .1524601    -0.96   0.345    -.4554656    .1635554
+       _cons |   .9694625   .1115646     8.69   0.000     .7429744    1.195951
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,416
+                                                F(1, 35)          =       1.25
+                                                Prob > F          =     0.2712
+                                                R-squared         =     0.0057
+                                                Root MSE          =     1.4557
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+     uni2011 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |   .2212309   .1979076     1.12   0.271    -.1805429    .6230048
+       _cons |   .4528257   .1449164     3.12   0.004     .1586297    .7470217
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,178
+                                                F(1, 35)          =       0.01
+                                                Prob > F          =     0.9387
+                                                R-squared         =     0.0000
+                                                Root MSE          =     1.5414
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+     uni2011 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |   .0094051   .1214955     0.08   0.939     -.237244    .2560541
+       _cons |   .6444267   .0935467     6.89   0.000     .4545167    .8343367
+------------------------------------------------------------------------------
+
+*********************************************************
+
+COMPUTING SAMPLE MEAN AND STANDARD DEVIATIONS FOR T AND C
+
+Outcome: uni2013
+
+Cohorts: 2000
+
+Sample: All Observations
+
+*********************************************************
+
+
+Linear regression                               Number of obs     =      8,298
+                                                F(6, 35)          =       9.93
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.0191
+                                                Root MSE          =     1.9631
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+     uni2013 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |   .0887351   .2032112     0.44   0.665    -.3238056    .5012758
+         ole |  -.1240077   .1565944    -0.79   0.434    -.4419112    .1938959
+         boy |   -.100774   .1528924    -0.66   0.514     -.411162    .2096139
+      educav |   -.000897   .0014555    -0.62   0.542    -.0038518    .0020578
+      educem |   .0009768   .0024554     0.40   0.693     -.004008    .0059616
+      m_ahim |  -.1353175   .0262322    -5.16   0.000    -.1885717   -.0820633
+       _cons |   1.476047   .2331735     6.33   0.000      1.00268    1.949415
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,096
+                                                F(6, 35)          =       9.18
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.0241
+                                                Root MSE          =     2.0304
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+     uni2013 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0956432   .1406049    -0.68   0.501    -.3810864    .1897999
+         ole |   .0494129   .1285949     0.38   0.703    -.2116486    .3104744
+         boy |  -.1033722   .0921891    -1.12   0.270    -.2905261    .0837817
+      educav |    -.00109   .0010828    -1.01   0.321    -.0032881    .0011082
+      educem |    .001143   .0022005     0.52   0.607    -.0033241    .0056102
+      m_ahim |  -.1507555   .0214126    -7.04   0.000    -.1942254   -.1072856
+       _cons |   1.642668   .1789264     9.18   0.000     1.279428    2.005908
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,416
+                                                F(6, 35)          =       3.33
+                                                Prob > F          =     0.0107
+                                                R-squared         =     0.0161
+                                                Root MSE          =     1.6511
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+     uni2013 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |   .2674989   .2114286     1.27   0.214     -.161724    .6967218
+         ole |   .0944836   .1314641     0.72   0.477    -.1724028      .36137
+         boy |  -.2335307   .1334506    -1.75   0.089    -.5044498    .0373884
+      educav |  -.0048174   .0014746    -3.27   0.002     -.007811   -.0018238
+      educem |   .0040089   .0022358     1.79   0.082      -.00053    .0085477
+      m_ahim |  -.0006549   .0011721    -0.56   0.580    -.0030345    .0017246
+       _cons |   .6363197   .1922739     3.31   0.002     .2459829    1.026657
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,178
+                                                F(6, 35)          =       4.67
+                                                Prob > F          =     0.0014
+                                                R-squared         =     0.0082
+                                                Root MSE          =     1.7512
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+     uni2013 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |    .040147   .1371923     0.29   0.772    -.2383682    .3186622
+         ole |    .182073   .1317455     1.38   0.176    -.0853847    .4495307
+         boy |  -.1768395   .0816862    -2.16   0.037    -.3426713   -.0110078
+      educav |  -.0044621    .001625    -2.75   0.009     -.007761   -.0011632
+      educem |   .0032813   .0021052     1.56   0.128    -.0009924    .0075551
+      m_ahim |   .0002265   .0012951     0.17   0.862    -.0024026    .0028557
+       _cons |   .7941064   .1203718     6.60   0.000     .5497387    1.038474
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,359
+                                                F(1, 35)          =       0.06
+                                                Prob > F          =     0.8138
+                                                R-squared         =     0.0002
+                                                Root MSE          =     1.9825
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+     uni2013 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |   .0514882   .2169455     0.24   0.814    -.3889345     .491911
+       _cons |   .8667654   .1424416     6.09   0.000     .5775935    1.155937
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,136
+                                                F(1, 35)          =       0.95
+                                                Prob > F          =     0.3369
+                                                R-squared         =     0.0015
+                                                Root MSE          =     2.0571
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+     uni2013 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.1589649   .1632474    -0.97   0.337    -.4903748    .1724449
+       _cons |   1.035831   .1212863     8.54   0.000     .7896063    1.282055
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,416
+                                                F(1, 35)          =       1.23
+                                                Prob > F          =     0.2749
+                                                R-squared         =     0.0055
+                                                Root MSE          =     1.6594
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+     uni2013 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |   .2473316   .2229698     1.11   0.275    -.2053213    .6999844
+       _cons |    .536159   .1649359     3.25   0.003     .2013212    .8709968
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,178
+                                                F(1, 35)          =       0.00
+                                                Prob > F          =     0.9452
+                                                R-squared         =     0.0000
+                                                Root MSE          =     1.7576
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+     uni2013 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |    .009843   .1422834     0.07   0.945    -.2790076    .2986936
+       _cons |   .7538953   .1087711     6.93   0.000     .5330783    .9747124
+------------------------------------------------------------------------------
+
+*********************************************************
+
+COMPUTING SAMPLE MEAN AND STANDARD DEVIATIONS FOR T AND C
+
+Outcome: col2011
+
+Cohorts: 2000
+
+Sample: All Observations
+
+*********************************************************
+
+
+Linear regression                               Number of obs     =      8,298
+                                                F(6, 35)          =       3.64
+                                                Prob > F          =     0.0065
+                                                R-squared         =     0.0056
+                                                Root MSE          =      1.057
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+     col2011 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0227496   .0599788    -0.38   0.707     -.144513    .0990137
+         ole |  -.1136863   .0488215    -2.33   0.026    -.2127991   -.0145734
+         boy |   .0741601   .0472913     1.57   0.126    -.0218462    .1701665
+      educav |  -.0009072   .0006003    -1.51   0.140    -.0021259    .0003116
+      educem |   .0008414   .0007613     1.11   0.277    -.0007041    .0023869
+      m_ahim |  -.0275881   .0105106    -2.62   0.013    -.0489259   -.0062504
+       _cons |   .5070582   .0979042     5.18   0.000     .3083022    .7058143
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,096
+                                                F(6, 35)          =       2.22
+                                                Prob > F          =     0.0647
+                                                R-squared         =     0.0061
+                                                Root MSE          =     1.1051
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+     col2011 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0595839   .0760075    -0.78   0.438    -.2138874    .0947195
+         ole |  -.1416034   .0573102    -2.47   0.018    -.2579493   -.0252575
+         boy |   .0071471   .0471914     0.15   0.880    -.0886565    .1029507
+      educav |  -.0010145   .0005917    -1.71   0.095    -.0022157    .0001867
+      educem |   .0012066   .0009184     1.31   0.197    -.0006578     .003071
+      m_ahim |  -.0320893     .01011    -3.17   0.003    -.0526137    -.011565
+       _cons |    .594504   .1052646     5.65   0.000     .3808055    .8082026
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,416
+                                                F(6, 35)          =       0.65
+                                                Prob > F          =     0.6860
+                                                R-squared         =     0.0014
+                                                Root MSE          =     1.0043
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+     col2011 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0076714    .055623    -0.14   0.891    -.1205921    .1052493
+         ole |  -.0153141   .0489585    -0.31   0.756    -.1147052     .084077
+         boy |   .0058826   .0336648     0.17   0.862    -.0624607    .0742258
+      educav |  -.0013475   .0010683    -1.26   0.216    -.0035163    .0008212
+      educem |   .0001096   .0014802     0.07   0.941    -.0028954    .0031145
+      m_ahim |  -.0002356   .0004706    -0.50   0.620     -.001191    .0007198
+       _cons |    .413622   .0464213     8.91   0.000     .3193816    .5078623
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,178
+                                                F(6, 35)          =       1.27
+                                                Prob > F          =     0.2962
+                                                R-squared         =     0.0027
+                                                Root MSE          =     1.0269
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+     col2011 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0110398   .0651815    -0.17   0.866    -.1433653    .1212857
+         ole |  -.0600205   .0420149    -1.43   0.162    -.1453152    .0252743
+         boy |   -.029967   .0435956    -0.69   0.496    -.1184708    .0585367
+      educav |  -.0016143   .0008826    -1.83   0.076     -.003406    .0001774
+      educem |   .0011536   .0015282     0.75   0.455    -.0019488    .0042559
+      m_ahim |  -.0002893   .0007485    -0.39   0.701    -.0018088    .0012302
+       _cons |   .4472075   .0663894     6.74   0.000     .3124298    .5819853
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,359
+                                                F(1, 35)          =       0.23
+                                                Prob > F          =     0.6351
+                                                R-squared         =     0.0002
+                                                Root MSE          =     1.0753
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+     col2011 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0309585   .0646699    -0.48   0.635    -.1622455    .1003284
+       _cons |   .4162349   .0506057     8.23   0.000     .3134999    .5189699
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,136
+                                                F(1, 35)          =       0.95
+                                                Prob > F          =     0.3361
+                                                R-squared         =     0.0011
+                                                Root MSE          =     1.1111
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+     col2011 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0741395   .0760156    -0.98   0.336    -.2284593    .0801804
+       _cons |   .4539902   .0669161     6.78   0.000     .3181434     .589837
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,416
+                                                F(1, 35)          =       0.00
+                                                Prob > F          =     0.9572
+                                                R-squared         =     0.0000
+                                                Root MSE          =     1.0047
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+     col2011 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0031745   .0586982    -0.05   0.957    -.1223381    .1159891
+       _cons |   .3821839   .0464874     8.22   0.000     .2878096    .4765582
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,178
+                                                F(1, 35)          =       0.07
+                                                Prob > F          =     0.7992
+                                                R-squared         =     0.0001
+                                                Root MSE          =     1.0278
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+     col2011 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0180412    .070383    -0.26   0.799    -.1609262    .1248439
+       _cons |   .4143028   .0622326     6.66   0.000      .287964    .5406417
+------------------------------------------------------------------------------
+
+*********************************************************
+
+COMPUTING SAMPLE MEAN AND STANDARD DEVIATIONS FOR T AND C
+
+Outcome: col2013
+
+Cohorts: 2000
+
+Sample: All Observations
+
+*********************************************************
+
+
+Linear regression                               Number of obs     =      8,298
+                                                F(6, 35)          =       4.13
+                                                Prob > F          =     0.0031
+                                                R-squared         =     0.0058
+                                                Root MSE          =     1.1157
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+     col2013 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0190725    .065769    -0.29   0.774    -.1525907    .1144458
+         ole |  -.1132211   .0525189    -2.16   0.038    -.2198402    -.006602
+         boy |   .0939224   .0462233     2.03   0.050      .000084    .1877608
+      educav |  -.0012594   .0006264    -2.01   0.052     -.002531    .0000122
+      educem |   .0008734   .0008196     1.07   0.294    -.0007905    .0025373
+      m_ahim |  -.0256781    .011074    -2.32   0.026    -.0481594   -.0031968
+       _cons |   .5270764    .104116     5.06   0.000     .3157096    .7384432
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,096
+                                                F(6, 35)          =       2.50
+                                                Prob > F          =     0.0404
+                                                R-squared         =     0.0062
+                                                Root MSE          =     1.1648
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+     col2013 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0668816   .0811906    -0.82   0.416    -.2317073    .0979441
+         ole |  -.1413436   .0620101    -2.28   0.029    -.2672307   -.0154564
+         boy |   .0244092   .0467436     0.52   0.605    -.0704853    .1193038
+      educav |  -.0014381   .0006135    -2.34   0.025    -.0026835   -.0001926
+      educem |   .0013613   .0009899     1.38   0.178    -.0006483    .0033709
+      m_ahim |  -.0322714   .0101914    -3.17   0.003     -.052961   -.0115818
+       _cons |   .6297182    .109897     5.73   0.000     .4066154     .852821
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,416
+                                                F(6, 35)          =       1.36
+                                                Prob > F          =     0.2559
+                                                R-squared         =     0.0033
+                                                Root MSE          =     1.1574
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+     col2013 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0450676   .0650886    -0.69   0.493    -.1772044    .0870692
+         ole |  -.0124562   .0605838    -0.21   0.838     -.135448    .1105355
+         boy |   .0848525   .0440144     1.93   0.062    -.0045015    .1742065
+      educav |   -.001755   .0012408    -1.41   0.166    -.0042739    .0007639
+      educem |   .0000902   .0016055     0.06   0.955     -.003169    .0033495
+      m_ahim |  -.0002407   .0005345    -0.45   0.655    -.0013258    .0008444
+       _cons |   .4897192   .0553908     8.84   0.000       .37727    .6021684
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,178
+                                                F(6, 35)          =       1.28
+                                                Prob > F          =     0.2910
+                                                R-squared         =     0.0036
+                                                Root MSE          =     1.1699
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+     col2013 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0458214   .0761416    -0.60   0.551    -.2003971    .1087543
+         ole |  -.0747228    .048754    -1.53   0.134    -.1736986     .024253
+         boy |   .0367295   .0529694     0.69   0.493    -.0708042    .1442631
+      educav |  -.0019527   .0010001    -1.95   0.059    -.0039831    .0000777
+      educem |   .0013575   .0016147     0.84   0.406    -.0019205    .0046355
+      m_ahim |  -.0004103   .0008086    -0.51   0.615    -.0020518    .0012312
+       _cons |   .5288976   .0770183     6.87   0.000     .3725421    .6852531
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,359
+                                                F(1, 35)          =       0.13
+                                                Prob > F          =     0.7195
+                                                R-squared         =     0.0001
+                                                Root MSE          =     1.1331
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+     col2013 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0257601    .071151    -0.36   0.719    -.1702043    .1186841
+       _cons |    .446336   .0555877     8.03   0.000     .3334871     .559185
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,136
+                                                F(1, 35)          =       1.03
+                                                Prob > F          =     0.3163
+                                                R-squared         =     0.0012
+                                                Root MSE          =     1.1705
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+     col2013 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0821552   .0808124    -1.02   0.316     -.246213    .0819026
+       _cons |   .4918567   .0706273     6.96   0.000     .3484757    .6352377
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,416
+                                                F(1, 35)          =       0.29
+                                                Prob > F          =     0.5946
+                                                R-squared         =     0.0003
+                                                Root MSE          =     1.1589
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+     col2013 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0370581   .0690044    -0.54   0.595    -.1771445    .1030283
+       _cons |   .4863506   .0532646     9.13   0.000     .3782176    .5944836
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,178
+                                                F(1, 35)          =       0.42
+                                                Prob > F          =     0.5209
+                                                R-squared         =     0.0005
+                                                Root MSE          =     1.1711
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+     col2013 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |   -.052615   .0811271    -0.65   0.521    -.2173118    .1120818
+       _cons |   .5217739   .0702429     7.43   0.000     .3791733    .6643744
+------------------------------------------------------------------------------
+
+*********************************************************
+
+COMPUTING SAMPLE MEAN AND STANDARD DEVIATIONS FOR T AND C
+
+Outcome: work_2010a
+
+Cohorts: 2000
+
+Sample: All Observations
+
+*********************************************************
+
+
+Linear regression                               Number of obs     =      8,298
+                                                F(6, 35)          =       5.11
+                                                Prob > F          =     0.0007
+                                                R-squared         =     0.0095
+                                                Root MSE          =     .35224
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+  work_2010a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0404775   .0185237    -2.19   0.036    -.0780826   -.0028725
+         ole |  -.0141814   .0212821    -0.67   0.510    -.0573863    .0290236
+         boy |  -.0119865   .0190994    -0.63   0.534    -.0507605    .0267874
+      educav |  -.0003595   .0003436    -1.05   0.303    -.0010571     .000338
+      educem |   .0008712   .0004668     1.87   0.070    -.0000763    .0018188
+      m_ahim |  -.0122477   .0043051    -2.84   0.007    -.0209875   -.0035078
+       _cons |   .9246086   .0203076    45.53   0.000     .8833819    .9658353
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,096
+                                                F(6, 35)          =       8.97
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.0071
+                                                Root MSE          =     .36089
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+  work_2010a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0284164   .0115391    -2.46   0.019    -.0518419   -.0049908
+         ole |   .0140619   .0176251     0.80   0.430    -.0217191    .0498428
+         boy |  -.0200058   .0194558    -1.03   0.311    -.0595032    .0194917
+      educav |  -.0001707   .0002669    -0.64   0.526    -.0007125     .000371
+      educem |   .0005047   .0004377     1.15   0.257    -.0003839    .0013934
+      m_ahim |  -.0103624   .0037397    -2.77   0.009    -.0179544   -.0027705
+       _cons |   .9032843   .0116109    77.80   0.000     .8797129    .9268556
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,416
+                                                F(6, 35)          =       5.77
+                                                Prob > F          =     0.0003
+                                                R-squared         =     0.0084
+                                                Root MSE          =     .37278
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+  work_2010a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |    -.05459   .0198995    -2.74   0.010     -.094988   -.0141919
+         ole |   .0249044   .0217555     1.14   0.260    -.0192616    .0690704
+         boy |  -.0247437    .024623    -1.00   0.322    -.0747309    .0252436
+      educav |  -.0003218   .0002746    -1.17   0.249    -.0008793    .0002356
+      educem |   .0003398   .0001881     1.81   0.079     -.000042    .0007216
+      m_ahim |  -.0002692   .0002058    -1.31   0.200     -.000687    .0001487
+       _cons |   .8693771   .0169325    51.34   0.000     .8350024    .9037518
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,178
+                                                F(6, 35)          =       5.53
+                                                Prob > F          =     0.0004
+                                                R-squared         =     0.0094
+                                                Root MSE          =      .3744
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+  work_2010a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0595096   .0191054    -3.11   0.004    -.0982955   -.0207236
+         ole |   .0165537   .0205821     0.80   0.427    -.0252302    .0583376
+         boy |   -.030607   .0249646    -1.23   0.228    -.0812878    .0200738
+      educav |  -.0002955   .0002795    -1.06   0.298    -.0008629    .0002719
+      educem |   .0002843   .0001946     1.46   0.153    -.0001107    .0006793
+      m_ahim |  -.0001462   .0001948    -0.75   0.458    -.0005417    .0002494
+       _cons |   .8735416   .0195605    44.66   0.000     .8338317    .9132516
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,359
+                                                F(1, 35)          =       6.04
+                                                Prob > F          =     0.0191
+                                                R-squared         =     0.0042
+                                                Root MSE          =     .35295
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+  work_2010a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0459622   .0187087    -2.46   0.019    -.0839428   -.0079817
+       _cons |   .8771281   .0144331    60.77   0.000     .8478273    .9064288
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,136
+                                                F(1, 35)          =       5.35
+                                                Prob > F          =     0.0267
+                                                R-squared         =     0.0021
+                                                Root MSE          =     .36195
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+  work_2010a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0332393   .0143698    -2.31   0.027    -.0624117    -.004067
+       _cons |   .8619707    .009252    93.17   0.000     .8431881    .8807532
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,416
+                                                F(1, 35)          =       6.39
+                                                Prob > F          =     0.0161
+                                                R-squared         =     0.0055
+                                                Root MSE          =      .3732
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+  work_2010a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0556649   .0220138    -2.53   0.016    -.1003552   -.0109746
+       _cons |   .8596743   .0113861    75.50   0.000     .8365594    .8827893
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,178
+                                                F(1, 35)          =       9.80
+                                                Prob > F          =     0.0035
+                                                R-squared         =     0.0068
+                                                Root MSE          =     .37472
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+  work_2010a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0621397   .0198455    -3.13   0.004    -.1024283   -.0218511
+       _cons |   .8617659   .0091637    94.04   0.000     .8431625    .8803693
+------------------------------------------------------------------------------
+
+*********************************************************
+
+COMPUTING SAMPLE MEAN AND STANDARD DEVIATIONS FOR T AND C
+
+Outcome: work_2012a
+
+Cohorts: 2000
+
+Sample: All Observations
+
+*********************************************************
+
+
+Linear regression                               Number of obs     =      8,298
+                                                F(6, 35)          =       2.66
+                                                Prob > F          =     0.0315
+                                                R-squared         =     0.0066
+                                                Root MSE          =      .3556
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+  work_2012a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |   -.033656   .0170978    -1.97   0.057    -.0683664    .0010545
+         ole |  -.0138294   .0238793    -0.58   0.566    -.0623069    .0346481
+         boy |   .0040118   .0198612     0.20   0.841    -.0363086    .0443322
+      educav |   .0000263   .0002755     0.10   0.924    -.0005329    .0005856
+      educem |   .0007438   .0004655     1.60   0.119    -.0002013    .0016889
+      m_ahim |  -.0093151   .0054747    -1.70   0.098    -.0204293     .001799
+       _cons |    .893241   .0200526    44.54   0.000     .8525321      .93395
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,096
+                                                F(6, 35)          =       1.29
+                                                Prob > F          =     0.2865
+                                                R-squared         =     0.0034
+                                                Root MSE          =     .36175
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+  work_2012a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0242279   .0130909    -1.85   0.073    -.0508039    .0023481
+         ole |  -.0077649   .0177308    -0.44   0.664    -.0437602    .0282305
+         boy |  -.0016542   .0189099    -0.09   0.931    -.0400434     .036735
+      educav |   .0000285   .0002705     0.11   0.917    -.0005207    .0005778
+      educem |   .0003714   .0003916     0.95   0.349    -.0004235    .0011663
+      m_ahim |  -.0076972   .0057754    -1.33   0.191    -.0194219    .0040274
+       _cons |   .8839463   .0172421    51.27   0.000      .848943    .9189496
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,416
+                                                F(6, 35)          =       5.78
+                                                Prob > F          =     0.0003
+                                                R-squared         =     0.0050
+                                                Root MSE          =     .36266
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+  work_2012a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0381888   .0191362    -2.00   0.054    -.0770374    .0006597
+         ole |    .007476    .017483     0.43   0.672    -.0280164    .0429685
+         boy |  -.0071062   .0307315    -0.23   0.818    -.0694944    .0552819
+      educav |   .0000992   .0003145     0.32   0.754    -.0005393    .0007378
+      educem |   .0002345   .0002271     1.03   0.309    -.0002266    .0006956
+      m_ahim |  -.0004797   .0002965    -1.62   0.115    -.0010816    .0001221
+       _cons |   .8652271   .0214289    40.38   0.000      .821724    .9087302
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,178
+                                                F(6, 35)          =       3.90
+                                                Prob > F          =     0.0043
+                                                R-squared         =     0.0052
+                                                Root MSE          =     .36054
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+  work_2012a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0401129   .0194347    -2.06   0.046    -.0795673   -.0006584
+         ole |   .0023767   .0168563     0.14   0.889    -.0318434    .0365968
+         boy |  -.0304382    .020531    -1.48   0.147    -.0721184     .011242
+      educav |   .0000609   .0002679     0.23   0.822     -.000483    .0006047
+      educem |   .0000154   .0001898     0.08   0.936    -.0003698    .0004006
+      m_ahim |  -.0002191    .000209    -1.05   0.302    -.0006435    .0002052
+       _cons |   .8829175   .0174343    50.64   0.000     .8475241    .9183109
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,359
+                                                F(1, 35)          =       4.23
+                                                Prob > F          =     0.0472
+                                                R-squared         =     0.0029
+                                                Root MSE          =     .35579
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+  work_2012a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0386183   .0187747    -2.06   0.047     -.076733   -.0005036
+       _cons |   .8707131   .0109284    79.67   0.000     .8485272    .8928989
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,136
+                                                F(1, 35)          =       3.13
+                                                Prob > F          =     0.0855
+                                                R-squared         =     0.0014
+                                                Root MSE          =     .36189
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+  work_2012a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0274041   .0154863    -1.77   0.086     -.058843    .0040348
+       _cons |   .8591205   .0082204   104.51   0.000     .8424322    .8758088
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,416
+                                                F(1, 35)          =       2.59
+                                                Prob > F          =     0.1166
+                                                R-squared         =     0.0024
+                                                Root MSE          =     .36304
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+  work_2012a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |   -.035643   .0221546    -1.61   0.117    -.0806192    .0093331
+       _cons |   .8613506   .0135878    63.39   0.000     .8337659    .8889352
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,178
+                                                F(1, 35)          =       4.11
+                                                Prob > F          =     0.0503
+                                                R-squared         =     0.0031
+                                                Root MSE          =     .36075
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+  work_2012a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.0403919   .0199217    -2.03   0.050    -.0808352    .0000514
+       _cons |   .8665601   .0100779    85.99   0.000     .8461009    .8870194
+------------------------------------------------------------------------------
+
+*********************************************************
+
+COMPUTING SAMPLE MEAN AND STANDARD DEVIATIONS FOR T AND C
+
+Outcome: sum_wage_2010a
+
+Cohorts: 2000
+
+Sample: All Observations
+
+*********************************************************
+
+
+Linear regression                               Number of obs     =      8,298
+                                                F(6, 35)          =      12.92
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.0418
+                                                Root MSE          =      52490
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+sum_wa~2010a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -7676.052    2870.79    -2.67   0.011    -13504.07   -1848.038
+         ole |  -2996.323   2984.336    -1.00   0.322    -9054.847    3062.201
+         boy |   16584.87   2414.754     6.87   0.000     11682.66    21487.08
+      educav |   2.267759   53.22172     0.04   0.966    -105.7781    110.3136
+      educem |  -33.01211   63.59536    -0.52   0.607    -162.1175    96.09333
+      m_ahim |  -2874.861   532.6326    -5.40   0.000    -3956.162   -1793.559
+       _cons |   72544.15   2853.887    25.42   0.000     66750.45    78337.85
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,096
+                                                F(6, 35)          =      14.83
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.0376
+                                                Root MSE          =      53690
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+sum_wa~2010a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -5893.499   2531.686    -2.33   0.026    -11033.09   -753.9027
+         ole |   1351.266   2534.383     0.53   0.597    -3793.805    6496.337
+         boy |   15427.01   2348.169     6.57   0.000     10659.97    20194.05
+      educav |  -8.198753   36.76716    -0.22   0.825    -82.84005    66.44255
+      educem |  -26.42804     54.304    -0.49   0.630     -136.671    83.81495
+      m_ahim |  -3031.755   423.1774    -7.16   0.000    -3890.851   -2172.659
+       _cons |   71518.25    2435.24    29.37   0.000     66574.45    76462.05
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,416
+                                                F(6, 35)          =       6.34
+                                                Prob > F          =     0.0001
+                                                R-squared         =     0.0279
+                                                Root MSE          =      39409
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+sum_wa~2010a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -5550.785   1978.465    -2.81   0.008    -9567.283   -1534.287
+         ole |   7346.808   2895.959     2.54   0.016     1467.698    13225.92
+         boy |   10398.73   2859.604     3.64   0.001     4593.429    16204.04
+      educav |  -58.89824   20.93311    -2.81   0.008    -101.3947   -16.40177
+      educem |   39.96402   22.83871     1.75   0.089    -6.401024    86.32906
+      m_ahim |  -15.06263   15.02942    -1.00   0.323    -45.57397    15.44871
+       _cons |   40005.22   2035.725    19.65   0.000     35872.48    44137.97
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,178
+                                                F(6, 35)          =       7.70
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.0224
+                                                Root MSE          =      40182
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+sum_wa~2010a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -5582.553   1797.418    -3.11   0.004    -9231.505     -1933.6
+         ole |   6752.177    2078.19     3.25   0.003     2533.227    10971.13
+         boy |   8990.769   2190.325     4.10   0.000     4544.173    13437.37
+      educav |  -65.40046   23.00065    -2.84   0.007    -112.0943   -18.70665
+      educem |   30.38084   16.26734     1.87   0.070    -2.643628     63.4053
+      m_ahim |   8.268329   16.30122     0.51   0.615    -24.82492    41.36157
+       _cons |   40774.37    1912.94    21.32   0.000     36890.89    44657.84
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,359
+                                                F(1, 35)          =       4.33
+                                                Prob > F          =     0.0447
+                                                R-squared         =     0.0053
+                                                Root MSE          =      53440
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+sum_wa~2010a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -7788.613   3741.124    -2.08   0.045     -15383.5   -193.7271
+       _cons |   67274.57   2189.819    30.72   0.000        62829    71720.14
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,136
+                                                F(1, 35)          =       4.51
+                                                Prob > F          =     0.0408
+                                                R-squared         =     0.0043
+                                                Root MSE          =      54585
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+sum_wa~2010a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -7203.329   3391.599    -2.12   0.041    -14088.64   -318.0168
+       _cons |   67166.49   1914.234    35.09   0.000     63280.39    71052.59
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,416
+                                                F(1, 35)          =       5.70
+                                                Prob > F          =     0.0225
+                                                R-squared         =     0.0048
+                                                Root MSE          =      39863
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+sum_wa~2010a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -5557.618   2326.956    -2.39   0.022    -10281.59    -833.646
+       _cons |   45957.16   1657.295    27.73   0.000     42592.68    49321.65
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,178
+                                                F(1, 35)          =       9.55
+                                                Prob > F          =     0.0039
+                                                R-squared         =     0.0051
+                                                Root MSE          =      40517
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+sum_wa~2010a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -5776.846   1869.369    -3.09   0.004    -9571.867   -1981.824
+       _cons |    46267.3   1123.188    41.19   0.000     43987.11    48547.49
+------------------------------------------------------------------------------
+
+*********************************************************
+
+COMPUTING SAMPLE MEAN AND STANDARD DEVIATIONS FOR T AND C
+
+Outcome: sum_wage_2012a
+
+Cohorts: 2000
+
+Sample: All Observations
+
+*********************************************************
+
+
+Linear regression                               Number of obs     =      8,298
+                                                F(6, 35)          =      21.09
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.0528
+                                                Root MSE          =      61792
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+sum_wa~2012a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -6033.509   2864.319    -2.11   0.042    -11848.39   -218.6311
+         ole |  -3343.377   2740.123    -1.22   0.231    -8906.123    2219.369
+         boy |   24718.11   2997.878     8.25   0.000      18632.1    30804.13
+      educav |   82.73181   41.77045     1.98   0.056    -2.066706    167.5303
+      educem |   -122.041   56.38361    -2.16   0.037    -236.5058   -7.576233
+      m_ahim |  -3269.055   684.7284    -4.77   0.000    -4659.128   -1878.982
+       _cons |   81707.43   2867.579    28.49   0.000     75885.94    87528.93
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,096
+                                                F(6, 35)          =      24.77
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.0528
+                                                Root MSE          =      63066
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+sum_wa~2012a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -6429.996   2629.867    -2.44   0.020    -11768.91   -1091.082
+         ole |  -930.1644   2138.771    -0.43   0.666      -5272.1    3411.771
+         boy |   24673.98   2419.939    10.20   0.000     19761.24    29586.71
+      educav |   66.40863   42.90046     1.55   0.131    -20.68393    153.5012
+      educem |  -115.7915   39.56586    -2.93   0.006    -196.1145   -35.46854
+      m_ahim |  -3412.905   530.5245    -6.43   0.000    -4489.927   -2335.883
+       _cons |   81940.09   2362.124    34.69   0.000     77144.72    86735.45
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,416
+                                                F(6, 35)          =       5.88
+                                                Prob > F          =     0.0003
+                                                R-squared         =     0.0314
+                                                Root MSE          =      48825
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+sum_wa~2012a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -5975.122   2520.862    -2.37   0.023    -11092.74   -857.5003
+         ole |   4283.605   3190.231     1.34   0.188    -2192.909    10760.12
+         boy |   15979.44   3775.972     4.23   0.000      8313.81    23645.07
+      educav |  -67.70966   30.63849    -2.21   0.034    -129.9091   -5.510216
+      educem |   9.970989   27.17223     0.37   0.716    -45.19158    65.13355
+      m_ahim |  -43.48611   28.06864    -1.55   0.130    -100.4685    13.49625
+       _cons |   53536.84    2685.05    19.94   0.000      48085.9    58987.78
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,178
+                                                F(6, 35)          =       8.05
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.0246
+                                                Root MSE          =      50616
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+sum_wa~2012a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -5946.593   2441.345    -2.44   0.020    -10902.79   -990.3992
+         ole |    4471.73   2165.763     2.06   0.046     74.99741    8868.463
+         boy |   14101.96   2395.726     5.89   0.000     9238.373    18965.54
+      educav |   -84.4315   23.85646    -3.54   0.001    -132.8627    -36.0003
+      educem |   16.04669   20.41302     0.79   0.437    -25.39394    57.48731
+      m_ahim |  -24.34741   26.80991    -0.91   0.370    -78.77442     30.0796
+       _cons |   55448.66   1729.114    32.07   0.000     51938.37    58958.94
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,359
+                                                F(1, 35)          =       1.74
+                                                Prob > F          =     0.1957
+                                                R-squared         =     0.0020
+                                                Root MSE          =      63381
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+sum_wa~2012a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -5722.676   4338.474    -1.32   0.196    -14530.25    3084.893
+       _cons |   78179.29   2475.894    31.58   0.000     73152.96    83205.63
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,136
+                                                F(1, 35)          =       3.55
+                                                Prob > F          =     0.0679
+                                                R-squared         =     0.0033
+                                                Root MSE          =      64642
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+sum_wa~2012a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -7410.986   3934.466    -1.88   0.068    -15398.38    576.4045
+       _cons |    79714.9   2260.961    35.26   0.000     75124.91     84304.9
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,416
+                                                F(1, 35)          =       3.02
+                                                Prob > F          =     0.0909
+                                                R-squared         =     0.0027
+                                                Root MSE          =      49527
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+sum_wa~2012a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -5178.019   2978.195    -1.74   0.091    -11224.08    868.0382
+       _cons |   59812.26   1937.053    30.88   0.000     55879.84    63744.69
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,178
+                                                F(1, 35)          =       4.97
+                                                Prob > F          =     0.0323
+                                                R-squared         =     0.0032
+                                                Root MSE          =      51144
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+sum_wa~2012a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -5813.925   2608.378    -2.23   0.032    -11109.21   -518.6366
+       _cons |   61580.16   957.7803    64.29   0.000     59635.77    63524.56
+------------------------------------------------------------------------------
+
+*********************************************************
+
+COMPUTING SAMPLE MEAN AND STANDARD DEVIATIONS FOR T AND C
+
+Outcome: sum_month_2010a
+
+Cohorts: 2000
+
+Sample: All Observations
+
+*********************************************************
+
+
+Linear regression                               Number of obs     =      8,298
+                                                F(6, 35)          =       2.97
+                                                Prob > F          =     0.0190
+                                                R-squared         =     0.0109
+                                                Root MSE          =     4.4069
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+sum_mo~2010a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.6339643   .2568818    -2.47   0.019    -1.155462   -.1124665
+         ole |   -.114768   .2595491    -0.44   0.661    -.6416807    .4121447
+         boy |   .2145577    .240365     0.89   0.378    -.2734091    .7025246
+      educav |  -.0039388   .0043354    -0.91   0.370    -.0127401    .0048626
+      educem |   .0092348   .0056448     1.64   0.111    -.0022248    .0206944
+      m_ahim |  -.1421692   .0478816    -2.97   0.005     -.239374   -.0449644
+       _cons |   9.907893   .2919824    33.93   0.000     9.315137    10.50065
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,096
+                                                F(6, 35)          =       5.14
+                                                Prob > F          =     0.0007
+                                                R-squared         =     0.0071
+                                                Root MSE          =     4.5093
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+sum_mo~2010a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.3629442   .1323448    -2.74   0.010    -.6316184     -.09427
+         ole |   .1872466   .2078949     0.90   0.374    -.2348025    .6092956
+         boy |   .1021972   .2362372     0.43   0.668    -.3773897    .5817841
+      educav |  -.0020437   .0035279    -0.58   0.566    -.0092056    .0051182
+      educem |   .0052067   .0053058     0.98   0.333    -.0055646    .0159781
+      m_ahim |   -.141862   .0440937    -3.22   0.003     -.231377    -.052347
+       _cons |   9.648192    .146795    65.73   0.000     9.350182    9.946202
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,416
+                                                F(6, 35)          =       5.02
+                                                Prob > F          =     0.0008
+                                                R-squared         =     0.0099
+                                                Root MSE          =     4.6548
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+sum_mo~2010a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.7489497   .2244363    -3.34   0.002     -1.20458   -.2933199
+         ole |   .4606785   .2523476     1.83   0.076    -.0516144    .9729714
+         boy |   .0093286   .2977197     0.03   0.975    -.5950745    .6137317
+      educav |  -.0049868   .0034472    -1.45   0.157    -.0119851    .0020114
+      educem |   .0061092   .0023743     2.57   0.014     .0012891    .0109293
+      m_ahim |  -.0010267   .0021675    -0.47   0.639    -.0054269    .0033735
+       _cons |   8.639993   .2145345    40.27   0.000     8.204465    9.075521
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,178
+                                                F(6, 35)          =       5.79
+                                                Prob > F          =     0.0003
+                                                R-squared         =     0.0089
+                                                Root MSE          =      4.673
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+sum_mo~2010a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.7465287   .2148979    -3.47   0.001    -1.182795   -.3102627
+         ole |    .374243   .2185386     1.71   0.096     -.069414    .8179001
+         boy |   -.148485   .3067655    -0.48   0.631     -.771252    .4742819
+      educav |  -.0032769   .0032606    -1.01   0.322    -.0098962    .0033424
+      educem |   .0039875   .0018938     2.11   0.042     .0001429    .0078321
+      m_ahim |  -.0003799   .0020024    -0.19   0.851     -.004445    .0036852
+       _cons |   8.728094    .253288    34.46   0.000     8.213892    9.242296
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,359
+                                                F(1, 35)          =       8.16
+                                                Prob > F          =     0.0071
+                                                R-squared         =     0.0060
+                                                Root MSE          =      4.417
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+sum_mo~2010a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.6860263   .2400996    -2.86   0.007    -1.173454   -.1985983
+       _cons |   9.506045   .1894746    50.17   0.000     9.121391    9.890699
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,136
+                                                F(1, 35)          =       6.82
+                                                Prob > F          =     0.0132
+                                                R-squared         =     0.0023
+                                                Root MSE          =     4.5197
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+sum_mo~2010a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.4351415   .1665948    -2.61   0.013    -.7733469   -.0969361
+       _cons |   9.246336   .0962176    96.10   0.000     9.051003    9.441668
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,416
+                                                F(1, 35)          =       9.60
+                                                Prob > F          =     0.0038
+                                                R-squared         =     0.0071
+                                                Root MSE          =     4.6601
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+sum_mo~2010a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.7874512   .2540831    -3.10   0.004    -1.303267   -.2716351
+       _cons |   8.778017   .1631541    53.80   0.000     8.446797    9.109238
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,178
+                                                F(1, 35)          =      12.98
+                                                Prob > F          =     0.0010
+                                                R-squared         =     0.0070
+                                                Root MSE          =     4.6753
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+sum_mo~2010a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.7855629   .2180832    -3.60   0.001    -1.228295   -.3428304
+       _cons |   8.775469   .1298727    67.57   0.000     8.511814    9.039125
+------------------------------------------------------------------------------
+
+*********************************************************
+
+COMPUTING SAMPLE MEAN AND STANDARD DEVIATIONS FOR T AND C
+
+Outcome: sum_month_2012a
+
+Cohorts: 2000
+
+Sample: All Observations
+
+*********************************************************
+
+
+Linear regression                               Number of obs     =      8,298
+                                                F(6, 35)          =       1.06
+                                                Prob > F          =     0.4060
+                                                R-squared         =     0.0070
+                                                Root MSE          =     4.4163
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+sum_mo~2012a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.4240046   .2127665    -1.99   0.054    -.8559436    .0079344
+         ole |   .0165145   .3107529     0.05   0.958    -.6143475    .6473764
+         boy |   .3297391   .2346865     1.41   0.169    -.1466999    .8061781
+      educav |   .0002756   .0032567     0.08   0.933    -.0063359     .006887
+      educem |   .0045492   .0055854     0.81   0.421    -.0067897    .0158881
+      m_ahim |   -.111596    .066792    -1.67   0.104    -.2471909     .023999
+       _cons |   9.704994   .2397345    40.48   0.000     9.218307    10.19168
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,096
+                                                F(6, 35)          =       0.76
+                                                Prob > F          =     0.6094
+                                                R-squared         =     0.0051
+                                                Root MSE          =     4.4839
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+sum_mo~2012a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.2902315   .1608578    -1.80   0.080    -.6167903    .0363273
+         ole |   .0743787   .2297576     0.32   0.748     -.392054    .5408113
+         boy |   .3057103   .2168493     1.41   0.167    -.1345171    .7459378
+      educav |    .001253   .0028692     0.44   0.665    -.0045718    .0070778
+      educem |   .0006483   .0046578     0.14   0.890    -.0088076    .0101041
+      m_ahim |  -.1081423   .0743764    -1.45   0.155    -.2591344    .0428497
+       _cons |   9.561676   .2177198    43.92   0.000     9.119682    10.00367
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,416
+                                                F(6, 35)          =       3.96
+                                                Prob > F          =     0.0040
+                                                R-squared         =     0.0059
+                                                Root MSE          =     4.5205
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+sum_mo~2012a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.5468051   .2241546    -2.44   0.020    -1.001863   -.0917471
+         ole |   .3401831   .2630055     1.29   0.204    -.1937465    .8741127
+         boy |   .1486572   .3487217     0.43   0.673    -.5592854    .8565998
+      educav |  -.0021871   .0040355    -0.54   0.591    -.0103797    .0060055
+      educem |   .0038533   .0026215     1.47   0.151    -.0014687    .0091753
+      m_ahim |  -.0033687   .0036026    -0.94   0.356    -.0106824     .003945
+       _cons |   9.026488   .2213613    40.78   0.000     8.577101    9.475875
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,178
+                                                F(6, 35)          =       2.58
+                                                Prob > F          =     0.0356
+                                                R-squared         =     0.0039
+                                                Root MSE          =     4.5203
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+sum_mo~2012a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.4922262   .2244245    -2.19   0.035    -.9478321   -.0366203
+         ole |   .2649942   .2365667     1.12   0.270    -.2152617    .7452501
+         boy |  -.0841825   .2597818    -0.32   0.748    -.6115675    .4432026
+      educav |  -.0028703   .0033694    -0.85   0.400    -.0097105      .00397
+      educem |   .0012201   .0021858     0.56   0.580    -.0032173    .0056574
+      m_ahim |  -.0010329   .0025253    -0.41   0.685    -.0061595    .0040937
+       _cons |   9.180744    .206543    44.45   0.000     8.761439    9.600048
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,359
+                                                F(1, 35)          =       3.93
+                                                Prob > F          =     0.0555
+                                                R-squared         =     0.0024
+                                                Root MSE          =      4.428
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+sum_mo~2012a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.4368409   .2204877    -1.98   0.055    -.8844548    .0107731
+       _cons |   9.482359   .1162898    81.54   0.000     9.246278     9.71844
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,136
+                                                F(1, 35)          =       2.60
+                                                Prob > F          =     0.1158
+                                                R-squared         =     0.0012
+                                                Root MSE          =     4.4938
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+sum_mo~2012a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.3127072    .193933    -1.61   0.116    -.7064122    .0809978
+       _cons |    9.32614   .1030086    90.54   0.000     9.117021    9.535259
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,416
+                                                F(1, 35)          =       4.30
+                                                Prob > F          =     0.0455
+                                                R-squared         =     0.0036
+                                                Root MSE          =     4.5244
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+sum_mo~2012a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.5447553   .2626345    -2.07   0.045    -1.077932    -.011579
+       _cons |   9.152538   .1568875    58.34   0.000      8.83404    9.471037
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,178
+                                                F(1, 35)          =       4.66
+                                                Prob > F          =     0.0379
+                                                R-squared         =     0.0031
+                                                Root MSE          =     4.5199
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+sum_mo~2012a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -.5042756   .2336997    -2.16   0.038    -.9787112     -.02984
+       _cons |   9.156612   .1195537    76.59   0.000     8.913905    9.399319
+------------------------------------------------------------------------------
+
+*********************************************************
+
+COMPUTING SAMPLE MEAN AND STANDARD DEVIATIONS FOR T AND C
+
+Outcome: psum_wage_2010a
+
+Cohorts: 2000
+
+Sample: All Observations
+
+*********************************************************
+
+
+Linear regression                               Number of obs     =      8,298
+                                                F(6, 35)          =       6.85
+                                                Prob > F          =     0.0001
+                                                R-squared         =     0.0287
+                                                Root MSE          =     29.654
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+psum_w~2010a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -4.288777   1.626629    -2.64   0.012    -7.591011    -.986544
+         ole |  -1.636381   1.604908    -1.02   0.315    -4.894517    1.621755
+         boy |   6.796939     1.5012     4.53   0.000     3.749341    9.844537
+      educav |  -.0134799   .0319848    -0.42   0.676    -.0784124    .0514527
+      educem |   .0111897   .0357571     0.31   0.756    -.0614011    .0837804
+      m_ahim |  -1.532162    .333601    -4.59   0.000    -2.209408   -.8549163
+       _cons |   56.62884   1.692378    33.46   0.000     53.19313    60.06455
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,096
+                                                F(6, 35)          =       8.09
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.0263
+                                                Root MSE          =     30.143
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+psum_w~2010a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -3.231611   1.272966    -2.54   0.016     -5.81587    -.647352
+         ole |   .7367817   1.301844     0.57   0.575    -1.906103    3.379666
+         boy |   6.174486   1.459654     4.23   0.000     3.211231     9.13774
+      educav |  -.0147524   .0220184    -0.67   0.507    -.0594522    .0299474
+      educem |   .0067369   .0315177     0.21   0.832    -.0572474    .0707212
+      m_ahim |   -1.61659   .2839487    -5.69   0.000    -2.193036   -1.040143
+       _cons |   55.82591   1.360438    41.04   0.000     53.06408    58.58775
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,416
+                                                F(6, 35)          =       3.99
+                                                Prob > F          =     0.0038
+                                                R-squared         =     0.0204
+                                                Root MSE          =     30.329
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+psum_w~2010a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -4.807396   1.696424    -2.83   0.008    -8.251321   -1.363472
+         ole |   5.620693   2.207489     2.55   0.015     1.139252    10.10213
+         boy |   5.003492    2.28862     2.19   0.036     .3573467    9.649638
+      educav |  -.0342423    .020627    -1.66   0.106    -.0761174    .0076328
+      educem |   .0429439   .0193015     2.22   0.033     .0037597    .0821281
+      m_ahim |  -.0106746   .0095635    -1.12   0.272    -.0300897    .0087404
+       _cons |   48.42743   1.697393    28.53   0.000     44.98154    51.87332
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,178
+                                                F(6, 35)          =       4.28
+                                                Prob > F          =     0.0024
+                                                R-squared         =     0.0146
+                                                Root MSE          =     30.545
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+psum_w~2010a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -4.794038   1.578073    -3.04   0.004    -7.997696   -1.590381
+         ole |   4.867536   1.682927     2.89   0.007     1.451012     8.28406
+         boy |    3.57273   2.037264     1.75   0.088    -.5631365    7.708596
+      educav |  -.0350086   .0202344    -1.73   0.092    -.0760867    .0060694
+      educem |   .0259586   .0135018     1.92   0.063    -.0014514    .0533687
+      m_ahim |  -.0031953   .0117082    -0.27   0.787    -.0269643    .0205736
+       _cons |   49.39392   1.814317    27.22   0.000     45.71066    53.07718
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,359
+                                                F(1, 35)          =       5.57
+                                                Prob > F          =     0.0240
+                                                R-squared         =     0.0056
+                                                Root MSE          =     30.001
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+psum_w~2010a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -4.491613   1.903095    -2.36   0.024      -8.3551   -.6281257
+       _cons |   53.16556   1.083027    49.09   0.000     50.96689    55.36422
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,136
+                                                F(1, 35)          =       5.28
+                                                Prob > F          =     0.0276
+                                                R-squared         =     0.0042
+                                                Root MSE          =     30.498
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+psum_w~2010a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -3.972202   1.727913    -2.30   0.028    -7.480052   -.4643524
+       _cons |   52.68974   .8750268    60.21   0.000     50.91334    54.46614
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,416
+                                                F(1, 35)          =       6.15
+                                                Prob > F          =     0.0181
+                                                R-squared         =     0.0067
+                                                Root MSE          =     30.532
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+psum_w~2010a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -5.001205   2.015921    -2.48   0.018    -9.093742    -.908669
+       _cons |   52.17361   1.461048    35.71   0.000     49.20753     55.1397
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,178
+                                                F(1, 35)          =       9.49
+                                                Prob > F          =     0.0040
+                                                R-squared         =     0.0066
+                                                Root MSE          =     30.653
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+psum_w~2010a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -5.006799   1.625622    -3.08   0.004    -8.306987   -1.706612
+       _cons |   52.14063   1.039794    50.15   0.000     50.02974    54.25152
+------------------------------------------------------------------------------
+
+*********************************************************
+
+COMPUTING SAMPLE MEAN AND STANDARD DEVIATIONS FOR T AND C
+
+Outcome: psum_wage_2012a
+
+Cohorts: 2000
+
+Sample: All Observations
+
+*********************************************************
+
+
+Linear regression                               Number of obs     =      8,298
+                                                F(6, 35)          =      11.15
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.0350
+                                                Root MSE          =     30.657
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+psum_w~2012a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -3.042129   1.382226    -2.20   0.034    -5.848198     -.23606
+         ole |  -1.084372    1.59855    -0.68   0.502    -4.329601    2.160857
+         boy |   9.645239   1.606319     6.00   0.000     6.384239    12.90624
+      educav |   .0255487   .0194408     1.31   0.197    -.0139182    .0650156
+      educem |  -.0236736   .0301457    -0.79   0.438    -.0848727    .0375255
+      m_ahim |  -1.426484   .4028044    -3.54   0.001    -2.244221   -.6087481
+       _cons |   56.85448   1.502079    37.85   0.000     53.80509    59.90386
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,096
+                                                F(6, 35)          =      13.95
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.0344
+                                                Root MSE          =     31.181
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+psum_w~2012a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -2.886104   1.205649    -2.39   0.022    -5.333702   -.4385061
+         ole |  -.2016567   1.126622    -0.18   0.859    -2.488821    2.085508
+         boy |   9.329199   1.296954     7.19   0.000     6.696242    11.96216
+      educav |   .0169111   .0217422     0.78   0.442    -.0272279    .0610501
+      educem |  -.0296006   .0215035    -1.38   0.177     -.073255    .0140539
+      m_ahim |  -1.503749   .3608004    -4.17   0.000    -2.236213   -.7712853
+       _cons |   56.96494   1.199006    47.51   0.000     54.53082    59.39905
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,416
+                                                F(6, 35)          =       4.22
+                                                Prob > F          =     0.0027
+                                                R-squared         =     0.0233
+                                                Root MSE          =     29.727
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+psum_w~2012a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -4.599056   1.651736    -2.78   0.009    -7.952259   -1.245853
+         ole |   2.569174   2.218117     1.16   0.255    -1.933843    7.072191
+         boy |   7.556409   2.807204     2.69   0.011     1.857481    13.25534
+      educav |  -.0251517   .0233944    -1.08   0.290    -.0726448    .0223415
+      educem |   .0146675    .015641     0.94   0.355    -.0170854    .0464204
+      m_ahim |  -.0309556   .0157067    -1.97   0.057    -.0628419    .0009308
+       _cons |   48.16512   1.675867    28.74   0.000     44.76292    51.56731
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,178
+                                                F(6, 35)          =       3.22
+                                                Prob > F          =     0.0126
+                                                R-squared         =     0.0149
+                                                Root MSE          =      30.14
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+psum_w~2012a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -4.100945   1.682988    -2.44   0.020    -7.517593   -.6842977
+         ole |   2.861263   1.470059     1.95   0.060    -.1231156    5.845642
+         boy |     5.5223   1.702394     3.24   0.003     2.066256    8.978344
+      educav |   -.031685   .0184005    -1.72   0.094      -.06904    .0056699
+      educem |   .0082192   .0130777     0.63   0.534    -.0183299    .0347682
+      m_ahim |  -.0212051   .0165886    -1.28   0.210    -.0548816    .0124715
+       _cons |   49.40838   1.234919    40.01   0.000     46.90136     51.9154
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,359
+                                                F(1, 35)          =       2.96
+                                                Prob > F          =     0.0944
+                                                R-squared         =     0.0024
+                                                Root MSE          =     31.167
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+psum_w~2012a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -3.055733   1.777547    -1.72   0.094    -6.664346    .5528801
+       _cons |     55.245   .6471687    85.36   0.000     53.93118    56.55883
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,136
+                                                F(1, 35)          =       3.68
+                                                Prob > F          =     0.0633
+                                                R-squared         =     0.0028
+                                                Root MSE          =     31.688
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+psum_w~2012a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -3.358153   1.750865    -1.92   0.063    -6.912598    .1962918
+       _cons |   55.41897   .8418153    65.83   0.000        53.71    57.12795
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      8,416
+                                                F(1, 35)          =       4.98
+                                                Prob > F          =     0.0321
+                                                R-squared         =     0.0049
+                                                Root MSE          =     29.997
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+psum_w~2012a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |   -4.21098    1.88616    -2.23   0.032    -8.040088   -.3818717
+       _cons |   51.43056   1.124393    45.74   0.000     49.14792     53.7132
+------------------------------------------------------------------------------
+
+Linear regression                               Number of obs     =      5,178
+                                                F(1, 35)          =       5.24
+                                                Prob > F          =     0.0282
+                                                R-squared         =     0.0045
+                                                Root MSE          =     30.285
+
+                           (Std. Err. adjusted for 36 clusters in school_code)
+------------------------------------------------------------------------------
+             |               Robust
+psum_w~2012a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   treatment |  -4.063439   1.774716    -2.29   0.028    -7.666305   -.4605734
+       _cons |   51.92849   .5926138    87.63   0.000     50.72542    53.13156
+------------------------------------------------------------------------------

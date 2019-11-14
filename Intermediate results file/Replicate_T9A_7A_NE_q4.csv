@@ -1,0 +1,73 @@
+rowKey,B0,Binteraction
+"B E_12_afterSchool",.5310907,-.0462121
+"SCHOOL YEAR CLUSTERED SE E_12_afterSchool",.4991597,.035539
+"",,
+"N OBS NE_treated_before",995,
+"N OBS NE",3841,
+"Weighted N OBS NE+treated_before",1962,
+"Weighted N OBS NE",5931,
+"",,
+"B A_12_afterSchool",.2502548,-.0278153
+"SCHOOL YEAR CLUSTERED SE A_12_afterSchool",.4332702,.0413494
+"",,
+"N OBS NE_treated_before",995,
+"N OBS NE",3841,
+"Weighted N OBS NE+treated_before",1962,
+"Weighted N OBS NE",5931,
+"",,
+"B B_12_afterSchool",.1539246,-.0091994
+"SCHOOL YEAR CLUSTERED SE B_12_afterSchool",.3609684,.0320417
+"",,
+"N OBS NE_treated_before",995,
+"N OBS NE",3841,
+"Weighted N OBS NE+treated_before",1962,
+"Weighted N OBS NE",5931,
+"",,
+"B educ_12_afterSchool",1.948522,-.1894348
+"SCHOOL YEAR CLUSTERED SE educ_12_afterSchool",2.361708,.1528422
+"",,
+"N OBS NE_treated_before",995,
+"N OBS NE",3841,
+"Weighted N OBS NE+treated_before",1962,
+"Weighted N OBS NE",5931,
+"",,
+"B uni_12_afterSchool",1.008665,-.1794006
+"SCHOOL YEAR CLUSTERED SE uni_12_afterSchool",2.063111,.1989162
+"",,
+"N OBS NE_treated_before",995,
+"N OBS NE",3841,
+"Weighted N OBS NE+treated_before",1962,
+"Weighted N OBS NE",5931,
+"",,
+"B col_12_afterSchool",.4057085,-.0137042
+"SCHOOL YEAR CLUSTERED SE col_12_afterSchool",1.048798,.0775083
+"",,
+"N OBS NE_treated_before",995,
+"N OBS NE",3841,
+"Weighted N OBS NE+treated_before",1962,
+"Weighted N OBS NE",5931,
+"",,
+"B sum_wage_11_afterSchool",68622.45,-38.49659
+"SCHOOL YEAR CLUSTERED SE sum_wage_11_afterSchool",54320.09,3509.899
+"",,
+"N OBS NE_treated_before",995,
+"N OBS NE",3841,
+"Weighted N OBS NE+treated_before",1962,
+"Weighted N OBS NE",5931,
+"",,
+"B work_11_afterSchool",.8761468,-.0006023
+"SCHOOL YEAR CLUSTERED SE work_11_afterSchool",.329498,.0173297
+"",,
+"N OBS NE_treated_before",995,
+"N OBS NE",3841,
+"Weighted N OBS NE+treated_before",1962,
+"Weighted N OBS NE",5931,
+"",,
+"B months_11_afterSchool",9.568808,-.2247705
+"SCHOOL YEAR CLUSTERED SE months_11_afterSchool",4.186816,.2358729
+"",,
+"N OBS NE_treated_before",995,
+"N OBS NE",3841,
+"Weighted N OBS NE+treated_before",1962,
+"Weighted N OBS NE",5931,
+"",,

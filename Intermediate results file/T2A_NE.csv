@@ -1,0 +1,9 @@
+rowKey,pre_treat,post_treat
+"Estimate sum_wage_11_afterSchoola WITH school type",-601.1622,2358.844
+"CLUSTERED SCHOOL SE sum_wage_11_afterSchoola WIT s",2262.415,2611.788
+"Estimate sum_wage_11_afterSchoola WITHOUT school t",-5681.374,-1843.844
+"CLUSTERED SCHOOL SE sum_wage_11_afterSchoola WITHO",3265.96,3274.602
+"Estimate months_11_afterSchoola WITH school type c",-.1849453,.0161761
+"CLUSTERED SCHOOL SE months_11_afterSchoola WIT sch",.1292295,.1182444
+"Estimate months_11_afterSchoola WITHOUT school typ",-.5071005,-.2359703
+"CLUSTERED SCHOOL SE months_11_afterSchoola WITHOUT",.251855,.1934023

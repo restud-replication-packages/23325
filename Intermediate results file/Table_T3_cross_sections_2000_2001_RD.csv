@@ -1,0 +1,17 @@
+rowKey,no_weights00,weights00,no_weights01,weights01
+"MEAN A_12_after with controls",.0264862,.0360191,.068957,.1045275
+"CLUSTERED SCHOOL SE A_12_after with controls",.0296594,.0336468,.0285955,.0380713
+"MEAN B_12_after with controls",.0241805,.0276497,.0095024,.0128004
+"CLUSTERED SCHOOL SE B_12_after with controls",.0302947,.0320976,.0362924,.0325892
+"MEAN uni_12_after with controls",.116751,.1367571,.284238,.4088289
+"CLUSTERED SCHOOL SE uni_12_after with controls",.1301297,.1564786,.1348963,.1702205
+"MEAN col_12_after with controls",.0509468,.0892625,.0357966,.0664845
+"CLUSTERED SCHOOL SE col_12_after with controls",.0842918,.0843808,.1094298,.0962689
+"MEAN work_11_after with controls",-.0182865,-.0200108,-.0193268,-.0083031
+"CLUSTERED SCHOOL SE work_11_after with controls",.0211346,.0197334,.0178573,.0192067
+"MEAN months_11_after with controls",-.2832548,-.4298828,-.1494964,-.0202652
+"CLUSTERED SCHOOL SE months_11_after with controls",.2427948,.2237328,.2582234,.2456227
+"MEAN wage_11_after with controls",-1626.795,-4648.566,-78.51522,254.9116
+"CLUSTERED SCHOOL SE wage_11_after with controls",2654.775,2361.641,2465.33,2656.778
+"MEAN pctle_11_after with controls",-1.385815,-2.504887,.0352383,.2248855
+"CLUSTERED SCHOOL SE pctle_11_after with controls",1.641343,1.522768,1.492827,1.476506
