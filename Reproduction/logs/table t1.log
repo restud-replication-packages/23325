@@ -1,0 +1,134 @@
+---------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\Users\peleg\OneDrive\Documents\Victor\Other\Teacher Bonuses\For publication\Root Folder Request
+> \Final Supplementary\Reproduction\logs//table t1.log
+  log type:  text
+ opened on:  23 Nov 2019, 11:18:59
+
+. 
+end of do-file
+
+. do "C:\Users\peleg\AppData\Local\Temp\STD00000000.tmp"
+
+. use data/PublicationDataSet, clear      
+
+. 
+end of do-file
+
+. do "C:\Users\peleg\AppData\Local\Temp\STD00000000.tmp"
+
+. /************************************************
+> Tables 4A and 8A
+> 
+> Description: This do file runs the familiar DID framework for all outcomes, and calculates bootstrap standard
+>  errors. 
+> Note that the package boottest, which can be downloaded with the command “ssc install boottest” from within S
+> tata. 
+> See documentation at https://ideas.repec.org/c/boc/bocode/s458121.html.
+> Results depend on seed set. May take some time to run on older / less powerful machines.
+> 
+> Citation for package:
+> David Roodman, 2015. "BOOTTEST: Stata module to provide fast execution of the wild bootstrap with null impose
+> d," Statistical Software Components S458121, Boston College Department of Economics, revised 05 Sep 2019.
+>                          
+> *************************************************/
+. 
+. clear all
+
+. set mem 500m
+set memory ignored.
+    Memory no longer needs to be set in modern Statas; memory adjustments are performed on the fly
+    automatically.
+
+. set matsize 800
+
+. set more off
+
+. set logtype text
+
+. 
+. 
+. global name Boot
+
+. 
+. local today = "$S_DATE"
+
+. local day = word("`today'",1)
+
+. local month = word("`today'",2)
+
+. local year = substr(word("`today'",3),3,2)
+
+. if `day' < 10 local `day' = "0`day'"
+
+. 
+. /**************************************************
+> I. ENTER THE PATH NAME WHERE THE DATA FILE IS FOUND
+> ***************************************************/
+. 
+. cd "###INSERT FOLDER PATH HERE###/Reproduction"
+unable to change to ###INSERT FOLDER PATH HERE###/Reproduction
+r(170);
+
+end of do-file
+
+r(170);
+
+. do "C:\Users\peleg\AppData\Local\Temp\STD00000000.tmp"
+
+. /************************************************
+> Tables 4A and 8A
+> 
+> Description: This do file runs the familiar DID framework for all outcomes, and calculates bootstrap standard
+>  errors. 
+> Note that the package boottest, which can be downloaded with the command “ssc install boottest” from within S
+> tata. 
+> See documentation at https://ideas.repec.org/c/boc/bocode/s458121.html.
+> Results depend on seed set. May take some time to run on older / less powerful machines.
+> 
+> Citation for package:
+> David Roodman, 2015. "BOOTTEST: Stata module to provide fast execution of the wild bootstrap with null impose
+> d," Statistical Software Components S458121, Boston College Department of Economics, revised 05 Sep 2019.
+>                          
+> *************************************************/
+. 
+. clear all
+
+. set mem 500m
+set memory ignored.
+    Memory no longer needs to be set in modern Statas; memory adjustments are performed on the fly
+    automatically.
+
+. set matsize 800
+
+. set more off
+
+. set logtype text
+
+. 
+. 
+. global name Boot
+
+. 
+. local today = "$S_DATE"
+
+. local day = word("`today'",1)
+
+. local month = word("`today'",2)
+
+. local year = substr(word("`today'",3),3,2)
+
+. if `day' < 10 local `day' = "0`day'"
+
+. 
+. /**************************************************
+> I. ENTER THE PATH NAME WHERE THE DATA FILE IS FOUND
+> ***************************************************/
+. 
+. cd "C:\Users\peleg\OneDrive\Documents\Victor\Other\Teacher Bonuses\For publication\Root Folder Request\Final 
+> Supplementary\Reproduction"
+C:\Users\peleg\OneDrive\Documents\Victor\Other\Teacher Bonuses\For publication\Root Folder Request\Final Supple
+> mentary\Reproduction
+
+. 
+. cap log close
